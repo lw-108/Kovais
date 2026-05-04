@@ -1,33 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Barber from './barber/barber';
-import Spa from './spa/spa';
-import Parlour from './parlour/parlour';
-import Hotel from './RoomSearch/RoomSearch';
-import SearchResults from './RoomSearch/SearchResults';
-import Gym from './gym/gym';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import Home from './components/Home';
 import ScrollToTop from './ScrollToTop';
 import Header from './components/Header';
-import About from './components/About/About';
-import Profile from './components/Profile';
-import ServiceInfo from './barber/ServiceInfo';
-import Contact from './components/Contact';
-import BookedOrders from './components/BookedOrders';
-import History from './components/History';
-import Funeral from './Funeral/Funeral';
-import Function from './Function/Function';
-import Form from './components/Form';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import TermsAndConditions from './components/TermsConditions';
-import PrivacyPolicy from './components/PrivacyAndPolicy';
-import Refund from './components/Refund'
-import Points from './components/Points';
+
+// Lazy load all route components for code splitting
+const Barber = lazy(() => import('./barber/barber'));
+const Spa = lazy(() => import('./spa/spa'));
+const Parlour = lazy(() => import('./parlour/parlour'));
+const Hotel = lazy(() => import('./RoomSearch/RoomSearch'));
+const SearchResults = lazy(() => import('./RoomSearch/SearchResults'));
+const Gym = lazy(() => import('./gym/gym'));
+const Signup = lazy(() => import('./components/Signup'));
+const Login = lazy(() => import('./components/Login'));
+const Home = lazy(() => import('./components/Home'));
+const About = lazy(() => import('./components/About/About'));
+const Profile = lazy(() => import('./components/Profile'));
+const ServiceInfo = lazy(() => import('./barber/ServiceInfo'));
+const Contact = lazy(() => import('./components/Contact'));
+const BookedOrders = lazy(() => import('./components/BookedOrders'));
+const History = lazy(() => import('./components/History'));
+const Funeral = lazy(() => import('./Funeral/Funeral'));
+const Function = lazy(() => import('./Function/Function'));
+const Form = lazy(() => import('./components/Form'));
+const TermsAndConditions = lazy(() => import('./components/TermsConditions'));
+const PrivacyPolicy = lazy(() => import('./components/PrivacyAndPolicy'));
+const Refund = lazy(() => import('./components/Refund'));
+const Points = lazy(() => import('./components/Points'));
+const Gallery = lazy(() => import('./components/Gallery/Gallery'));
+
 
 const App = () => {
   const [user, setUser] = useState(() => {
@@ -67,8 +69,6 @@ const App = () => {
   // Load user from localStorage and handle loading state
 
   useEffect(() => {
-    AOS.init({ duration: 1500 });
-
     if (showSplash) {
       const splashTimeout = setTimeout(() => {
         setShowSplash(false);
@@ -119,6 +119,13 @@ const App = () => {
   }
     // localStorage.setItem('fcm_token', JSON.stringify('de985ad4e255a320cda6c55cf79809b4a2c2e7d3'))
 
+  // Loading fallback component
+  const LoadingFallback = () => (
+    <div className="route-loading-fallback d-flex align-items-center justify-content-center" style={{ minHeight: '50vh' }}>
+      <div className="simple-loader"></div>
+    </div>
+  );
+
   return (
     <Router>
       <ScrollToTop />
@@ -131,7 +138,8 @@ const App = () => {
         />
       }
 
-      <Routes>
+      <Suspense fallback={<LoadingFallback />}>
+        <Routes>
         {/*  <Route path="/" element={<Navigate replace to="/home" />} />*/}
         <Route path="/signup" element={<Signup setUser={handleLogin} setPoints={setPoints} setUrl={setUrl} />} />
         <Route path="/login" element={<Login setUser={handleLogin} setPoints={setPoints} setUrl={setUrl} setAadhar={setAadhar} />} />
@@ -155,8 +163,10 @@ const App = () => {
         <Route path="/policy" element={<PrivacyPolicy />} />
         <Route path="/refund" element={<Refund />} />
         <Route path="/points" element={<Points points={points} setPoints={setPoints} />} />
+        <Route path="/gallery" element={<Gallery />} />
 
       </Routes>
+      </Suspense>
     </Router>
   );
 };

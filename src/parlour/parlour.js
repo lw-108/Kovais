@@ -689,7 +689,7 @@ const Parlour = ({ user, setUser, points, setPoints }) => {
 
       {/* ═══ FOOTER ═══ */}
       <footer className="parlour-footer">
-        <p>&copy; {new Date().getFullYear()} KOVAIS Beauty Parlour. All Rights Reserved. | Contact: 9234567891 | Email: info@kovaisbeauty.com</p>
+        <p>&copy; {new Date().getFullYear()} KOVAIS Beauty Parlour. All Rights Reserved. | Contact: <a href="tel:9234567891" style={{ color: 'inherit', textDecoration: 'none' }}>9234567891</a> | Email: <a href="mailto:info@kovaisbeauty.com" style={{ color: 'inherit', textDecoration: 'none' }}>info@kovaisbeauty.com</a></p>
       </footer>
 
       {/* ═══ SERVICE DETAIL MODAL ═══ */}

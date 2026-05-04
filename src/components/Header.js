@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Navbar, Nav, Container, Modal, Form, Button, InputGroup, Tabs, Tab, Alert } from "react-bootstrap";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { Navbar, Nav, Container, Modal, Form, Button, InputGroup, Tabs, Tab } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from 'sweetalert2';
@@ -8,20 +8,18 @@ import Swal from 'sweetalert2';
 import logo from "./Image/logo.jpg";
 
 // Import Icons
-import { FaHotel, FaCut, FaSpa, FaDumbbell, FaUser, FaLock, FaEye, FaEyeSlash, FaPhoneAlt, FaChevronDown, FaInfoCircle, FaShieldAlt, FaFileContract, FaMoneyBillWave, FaPaintBrush } from "react-icons/fa";
+import { FaHotel, FaCut, FaSpa, FaDumbbell, FaUser, FaLock, FaEye, FaEyeSlash, FaPhoneAlt, FaChevronDown, FaShieldAlt, FaFileContract, FaMoneyBillWave, FaPaintBrush, FaHome, FaInfoCircle } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import { BsArrowDownRightSquareFill } from "react-icons/bs";
 import { MdWorkHistory } from "react-icons/md";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 
-// import "../App.css";
 import "./Header.css";
 
-function Header({ user, setUser, points, setPoints }) {
+function Header({ user, setUser, points, setPoints, url }) {
   const navigate = useNavigate();
 
   // --- State Management ---
-  // const [points, setPoints] = useState(0);
   const [emblemUrl, setEmblemUrl] = useState("");
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [userData, setUserData] = useState({ username: '', password: '', phone_number: '' });
@@ -30,172 +28,113 @@ function Header({ user, setUser, points, setPoints }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [phoneError, setPhoneError] = useState('');
-  const [expanded, setExpanded] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  
+  // --- Side Drawer State ---
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  // --- Dropdown States ---
+  // --- Dropdown States (Desktop) ---
   const [showDesktopBooking, setShowDesktopBooking] = useState(false);
   const [showDesktopProfile, setShowDesktopProfile] = useState(false);
+  const [showDesktopInfo, setShowDesktopInfo] = useState(false);
+
+  // --- Dropdown States (Mobile/Drawer) ---
   const [showMobileBooking, setShowMobileBooking] = useState(false);
   const [showMobileProfile, setShowMobileProfile] = useState(false);
-  const [showDesktopInfo, setShowDesktopInfo] = useState(false);
   const [showMobileInfo, setShowMobileInfo] = useState(false);
 
-  // --- Refs for Click Outside Logic ---
+  // --- Refs ---
   const bookingRef = useRef(null);
   const profileRef = useRef(null);
   const infoRef = useRef(null);
 
   // --- Effects ---
-
-  // 1. Scroll Effect
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 2. Click Outside to Close Dropdowns
   useEffect(() => {
     function handleClickOutside(event) {
-      if (bookingRef.current && !bookingRef.current.contains(event.target)) {
-        setShowDesktopBooking(false);
-      }
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
-        setShowDesktopProfile(false);
-    setShowDesktopInfo(false);
-      }
-      if (infoRef.current && !infoRef.current.contains(event.target)) {
-        setShowDesktopInfo(false);
-      }
+      if (bookingRef.current && !bookingRef.current.contains(event.target)) setShowDesktopBooking(false);
+      if (profileRef.current && !profileRef.current.contains(event.target)) setShowDesktopProfile(false);
+      if (infoRef.current && !infoRef.current.contains(event.target)) setShowDesktopInfo(false);
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 3. Load User Data
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
+      
       const storedPoints = localStorage.getItem(`points_${parsedUser.user_id}`);
-      if (storedPoints) setPoints(JSON.parse(storedPoints));
-      const storedUrl = localStorage.getItem("url");
-      if (storedUrl) setEmblemUrl(JSON.parse(storedUrl));
+      if (storedPoints) {
+        setPoints(JSON.parse(storedPoints));
+      } else if (parsedUser.points !== undefined) {
+        setPoints(parsedUser.points);
+      }
+      
+      const rawUrl = localStorage.getItem("url");
+      if (rawUrl) {
+        try {
+          setEmblemUrl(JSON.parse(rawUrl));
+        } catch (e) {
+          setEmblemUrl(rawUrl);
+        }
+      } else if (url) {
+        setEmblemUrl(url);
+      }
     }
-  }, [setUser]);
+  }, [setUser, url, setPoints]);
 
-  // --- Helper Functions ---
-
-  const resetDropdowns = () => {
-    setShowDesktopBooking(false);
-    setShowDesktopProfile(false);
-    setShowDesktopInfo(false);
-    setShowMobileBooking(false);
-    setShowMobileProfile(false);
-    setShowMobileInfo(false);
-  };
-
-  const handleNavbarToggle = (newExpandedState) => {
-    setExpanded(newExpandedState);
-    resetDropdowns();
-  };
-
-  const handleNavigation = (path) => {
+  // --- Handlers ---
+  const handleNavigation = useCallback((path) => {
     navigate(path);
-    setExpanded(false);
-    resetDropdowns();
-  };
-
-  const toggleDesktopBooking = (e) => {
-    e.preventDefault();
-    setShowDesktopBooking(!showDesktopBooking);
-    setShowDesktopProfile(false);
-    setShowDesktopInfo(false);
-    setShowDesktopInfo(false);
-  };
-
-  const toggleDesktopProfile = (e) => {
-    e.preventDefault();
-    setShowDesktopProfile(!showDesktopProfile);
-    setShowDesktopBooking(false);
-    setShowDesktopInfo(false);
-  };
-
-  const toggleDesktopInfo = (e) => {
-    e.preventDefault();
-    setShowDesktopInfo(!showDesktopInfo);
+    setIsDrawerOpen(false);
     setShowDesktopBooking(false);
     setShowDesktopProfile(false);
-  };
+    setShowDesktopInfo(false);
+  }, [navigate]);
 
-  const toggleMobileDropdown = (type) => {
-    if (type === 'booking') {
-      setShowMobileBooking(!showMobileBooking);
-      setShowMobileProfile(false);
-      setShowMobileInfo(false);
-    } else if (type === 'profile') {
-      setShowMobileProfile(!showMobileProfile);
-      setShowMobileBooking(false);
-      setShowMobileInfo(false);
-    } else if (type === 'info') {
-      setShowMobileInfo(!showMobileInfo);
-      setShowMobileBooking(false);
-      setShowMobileProfile(false);
-    }
-  };
-
-  // --- Auth Functions ---
-
-  const handleAuthClick = () => {
+  const handleAuthClick = useCallback(() => {
     if (user) {
-      localStorage.clear();
-      setUser(null);
-      setPoints(0);
-      setEmblemUrl("");
-      navigate("/");
+      Swal.fire({
+        title: 'Logout?',
+        text: "Are you sure you want to exit?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#daa520',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Logout'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          localStorage.clear();
+          setUser(null);
+          setPoints(0);
+          setEmblemUrl("");
+          navigate("/");
+        }
+      });
     } else {
       setShowLoginModal(true);
-      setErrorMessage('');
-      setUserData({ username: '', password: '', phone_number: '' });
     }
-    setExpanded(false);
-    resetDropdowns();
-  };
+    setIsDrawerOpen(false);
+  }, [user, setUser, setPoints, navigate]);
 
-  const validatePhoneNumber = (number) => {
-    if (!number) {
-      setPhoneError('Phone number is required.');
-      return false;
-    }
-    const phoneRegex = /^[\d\s\-\(\)]+$/;
-    if (!phoneRegex.test(number)) {
-      setPhoneError('Invalid characters.');
-      return false;
-    }
-    const digitsOnly = number.replace(/[^\d]/g, '');
-    if (digitsOnly.length < 10) {
-      setPhoneError('Must be at least 10 digits.');
-      return false;
-    }
-    setPhoneError('');
-    return true;
-  };
+  const validatePhoneNumber = useCallback((number) => {
+    if (!number) { setPhoneError('Required'); return false; }
+    const digits = number.replace(/[^\d]/g, '');
+    if (digits.length < 10) { setPhoneError('10 digits min'); return false; }
+    setPhoneError(''); return true;
+  }, []);
 
-  const handlePhoneNumberChange = (e) => {
-    const value = e.target.value;
-    setUserData({ ...userData, phone_number: value });
-    if (isNewUser) validatePhoneNumber(value);
-  };
-
-  const loginUser = async () => {
-    if (!userData.username || !userData.password) {
-      setErrorMessage('Username and password are required');
-      return;
-    }
+  const loginUser = useCallback(async () => {
+    if (!userData.username || !userData.password) { setErrorMessage('Required fields missing'); return; }
     setLoading(true);
-    setErrorMessage('');
     try {
       const response = await axios.post("https://api.codingboss.in/kovais/customer-login/", {
         username: userData.username,
@@ -204,22 +143,17 @@ function Header({ user, setUser, points, setPoints }) {
       localStorage.setItem("loggedInUser", JSON.stringify(response.data));
       localStorage.setItem("currentUserId", JSON.stringify(response.data.user_id));
       if (response.data.emblem_url) localStorage.setItem("url", JSON.stringify(response.data.emblem_url));
-      if (response.data.points !== undefined) localStorage.setItem(`points_${response.data.user_id}`, JSON.stringify(response.data.points));
-      
       setUser(response.data);
       setPoints(response.data.points || 0);
       setEmblemUrl(response.data.emblem_url || "");
-      
-      Swal.fire({ icon: "success", title: "Login Successful!", timer: 1500, showConfirmButton: false });
-      setTimeout(() => { setShowLoginModal(false); }, 500);
+      setShowLoginModal(false);
+      Swal.fire({ icon: 'success', title: 'Welcome Back!', timer: 1500, showConfirmButton: false });
     } catch (error) {
       setErrorMessage("Invalid credentials.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    } finally { setLoading(false); }
+  }, [userData.username, userData.password, setUser, setPoints]);
 
-  const signUp = async () => {
+  const signUp = useCallback(async () => {
     setLoading(true);
     try {
       await axios.post("https://api.codingboss.in/kovais/create-customer/", {
@@ -227,31 +161,15 @@ function Header({ user, setUser, points, setPoints }) {
         phone_number: userData.phone_number,
         password: userData.password,
       });
-      Swal.fire({ icon: "success", title: "Account Created!", text: "Please sign in." });
+      Swal.fire({ icon: "success", title: "Account Created!", text: "Please login." });
       setIsNewUser(false);
     } catch (error) {
       setErrorMessage("Sign-up failed.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    } finally { setLoading(false); }
+  }, [userData.username, userData.phone_number, userData.password]);
 
-  const handleSignUpClick = () => {
-    if (validatePhoneNumber(userData.phone_number) && userData.username && userData.password) {
-      signUp();
-    }
-  };
-
-  // --- Data Arrays ---
-
-  const infoItems = [
-    { path: "/contact", icon: FaPhoneAlt, label: "Contact Us" },
-    { path: "/policy", icon: FaShieldAlt, label: "Privacy Policy" },
-    { path: "/terms", icon: FaFileContract, label: "Terms & Conditions" },
-    { path: "/refund", icon: FaMoneyBillWave, label: "Refund Policy" }
-  ];
-
-  const bookingItems = [
+  // --- Data - Memoized to prevent re-renders ---
+  const bookingItems = useMemo(() => [
     { path: "/search-results", icon: FaHotel, label: "Hotels" },
     { path: "/barber", icon: FaCut, label: "Barber Shop" },
     { path: "/spa", icon: FaSpa, label: "Spa Center" },
@@ -259,151 +177,114 @@ function Header({ user, setUser, points, setPoints }) {
     { path: "/gym", icon: FaDumbbell, label: "Gym" },
     { path: "/function", icon: FaCut, label: "Function" },
     { path: "/funeral", icon: FaCut, label: "Funeral" }
-  ];
+  ], []);
 
-  const profileItems = [
-    { path: "/profile", icon: ImProfile, label: "Profile" },
-    { path: "/bookedOrders", icon: BsArrowDownRightSquareFill, label: "Booked Orders" },
+  const profileItems = useMemo(() => [
+    { path: "/profile", icon: ImProfile, label: "My Profile" },
+    { path: "/bookedOrders", icon: BsArrowDownRightSquareFill, label: "Orders" },
     { path: "/history", icon: MdWorkHistory, label: "History" }
-  ];
+  ], []);
+
+  const infoItems = useMemo(() => [
+    { path: "/contact", icon: FaPhoneAlt, label: "Contact Us" },
+    { path: "/policy", icon: FaShieldAlt, label: "Privacy" },
+    { path: "/terms", icon: FaFileContract, label: "Terms" },
+    { path: "/refund", icon: FaMoneyBillWave, label: "Refunds" }
+  ], []);
 
   return (
     <header className={`modern-header ${scrolled ? 'scrolled' : ''}`}>
-      <Navbar expand="lg" className="modern-navbar" expanded={expanded} onToggle={handleNavbarToggle}>
+      <Navbar className="modern-navbar">
         <Container className="navbar-container">
           
-          {/* Logo */}
-          <Navbar.Brand className="brand-wrapper" onClick={() => handleNavigation("/")}>
+          {/* Logo Section */}
+          <div className="brand-wrapper" onClick={() => handleNavigation("/")} style={{ cursor: 'pointer' }}>
             <div className="logo-container">
-              <img src={logo} alt="Logo" className="brand-logo" />
+              <img src={logo} alt="Kovais Logo" className="brand-logo" />
               <div className="logo-shine"></div>
             </div>
             <span className="brand-name">KOVAIS</span>
-          </Navbar.Brand>
+          </div>
 
-          {/* Mobile Toggle */}
-          <button className={`mobile-toggle ${expanded ? 'active' : ''}`} onClick={() => handleNavbarToggle(!expanded)}>
-            {expanded ? <HiX /> : <HiMenuAlt3 />}
-          </button>
+          {/* Desktop Navigation */}
+          <div className="nav-menu d-none d-lg-flex">
+            <button className="nav-item-link" onClick={() => handleNavigation("/")}>
+              <span className="link-text">Home</span>
+              <span className="link-underline"></span>
+            </button>
+            <button className="nav-item-link" onClick={() => handleNavigation("/about")}>
+              <span className="link-text">About</span>
+              <span className="link-underline"></span>
+            </button>
 
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="nav-menu">
-
-              <button onClick={() => handleNavigation("/")} className="nav-item-link">
-                <span className="link-text">Home</span>
+            {/* Booking Dropdown */}
+            <div className="dropdown-wrapper" ref={bookingRef}>
+              <button 
+                className={`nav-item-link dropdown-trigger ${showDesktopBooking ? 'active' : ''}`}
+                onClick={() => { setShowDesktopBooking(!showDesktopBooking); setShowDesktopProfile(false); setShowDesktopInfo(false); }}
+              >
+                <span className="link-text">Booking</span>
+                <FaChevronDown className="dropdown-arrow" />
                 <span className="link-underline"></span>
               </button>
+              <div className={`mega-dropdown ${showDesktopBooking ? 'show' : ''}`}>
+                <div className="dropdown-grid">
+                  {bookingItems.map((item, i) => (
+                    <button key={i} className="dropdown-card" onClick={() => handleNavigation(item.path)}>
+                      <item.icon className="card-icon" />
+                      <span className="card-label">{item.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-              <button onClick={() => handleNavigation("/about")} className="nav-item-link">
-                <span className="link-text">About</span>
+            {/* Info Dropdown */}
+            <div className="dropdown-wrapper" ref={infoRef}>
+              <button 
+                className={`nav-item-link dropdown-trigger ${showDesktopInfo ? 'active' : ''}`}
+                onClick={() => { setShowDesktopInfo(!showDesktopInfo); setShowDesktopBooking(false); setShowDesktopProfile(false); }}
+              >
+                <span className="link-text">Info</span>
+                <FaChevronDown className="dropdown-arrow" />
                 <span className="link-underline"></span>
               </button>
-
-
-
-              {/* Desktop Info Dropdown */}
-              <div className="dropdown-wrapper d-none d-lg-block" ref={infoRef}>
-                <button 
-                  className={`nav-item-link dropdown-trigger ${showDesktopInfo ? 'active' : ''}`}
-                  onClick={toggleDesktopInfo}
-                >
-                  <span className="link-text">Info</span>
-                  <FaChevronDown className={`dropdown-arrow ${showDesktopInfo ? 'rotated' : ''}`} />
-                  <span className="link-underline"></span>
-                </button>
-                <div className={`mega-dropdown profile-dropdown ${showDesktopInfo ? 'show' : ''}`}>
-                  <div className="dropdown-list">
-                    {infoItems.map((item, index) => (
-                      <button key={index} className="dropdown-list-item" onClick={() => handleNavigation(item.path)}>
-                        <item.icon className="list-icon" />
-                        <span>{item.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Desktop Booking Dropdown (Click Based) */}
-              <div className="dropdown-wrapper d-none d-lg-block" ref={bookingRef}>
-                <button 
-                  className={`nav-item-link dropdown-trigger ${showDesktopBooking ? 'active' : ''}`}
-                  onClick={toggleDesktopBooking}
-                >
-                  <span className="link-text">Booking</span>
-                  <FaChevronDown className={`dropdown-arrow ${showDesktopBooking ? 'rotated' : ''}`} />
-                  <span className="link-underline"></span>
-                </button>
-                <div className={`mega-dropdown ${showDesktopBooking ? 'show' : ''}`}>
-                  <div className="dropdown-grid">
-                    {bookingItems.map((item, index) => (
-                      <button key={index} className="dropdown-card" onClick={() => handleNavigation(item.path)}>
-                        <item.icon className="card-icon" />
-                        <span className="card-label">{item.label}</span>
-                        <div className="card-hover-bg"></div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Mobile Info Dropdown */}
-              <div className="d-lg-none mobile-dropdown-section">
-                <button className="mobile-dropdown-trigger" onClick={() => toggleMobileDropdown('info')}>
-                  <span>Info</span>
-                  <FaChevronDown className={`mobile-arrow ${showMobileInfo ? 'rotated' : ''}`} />
-                </button>
-                <div className={`mobile-dropdown-content ${showMobileInfo ? 'show' : ''}`}>
-                  {infoItems.map((item, index) => (
-                    <button key={index} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                      <item.icon className="mobile-item-icon" />
+              <div className={`mega-dropdown ${showDesktopInfo ? 'show' : ''}`} style={{ minWidth: '220px' }}>
+                <div className="dropdown-list">
+                  {infoItems.map((item, i) => (
+                    <button key={i} className="dropdown-list-item" onClick={() => handleNavigation(item.path)}>
+                      <item.icon className="list-icon" />
                       <span>{item.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
+            </div>
 
-              {/* Mobile Booking Dropdown */}
-              <div className="d-lg-none mobile-dropdown-section">
-                <button className="mobile-dropdown-trigger" onClick={() => toggleMobileDropdown('booking')}>
-                  <span>Booking</span>
-                  <FaChevronDown className={`mobile-arrow ${showMobileBooking ? 'rotated' : ''}`} />
-                </button>
-                <div className={`mobile-dropdown-content ${showMobileBooking ? 'show' : ''}`}>
-                  {bookingItems.map((item, index) => (
-                    <button key={index} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                      <item.icon className="mobile-item-icon" />
-                      <span>{item.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Points */}
-              {user && emblemUrl && (
-                <Nav.Link onClick={() => handleNavigation("/points")} className="points-link">
+            {/* Points & Profile */}
+            {user && (
+              <>
+                <div className="points-link" onClick={() => handleNavigation("/points")} style={{ cursor: 'pointer' }}>
                   <div className="points-badge">
-                    <img src={emblemUrl} alt="Medal" className="points-icon" />
+                    <img src={emblemUrl || url} alt="Medal" className="points-icon" />
                     <span className="points-text">{points}</span>
                     <span className="points-label">pts</span>
                   </div>
-                </Nav.Link>
-              )}
+                </div>
 
-              {/* Desktop Profile Dropdown (Click Based) */}
-              {user && (
-                <div className="dropdown-wrapper d-none d-lg-block" ref={profileRef}>
+                <div className="dropdown-wrapper" ref={profileRef}>
                   <button 
                     className={`nav-item-link dropdown-trigger ${showDesktopProfile ? 'active' : ''}`}
-                    onClick={toggleDesktopProfile}
+                    onClick={() => { setShowDesktopProfile(!showDesktopProfile); setShowDesktopBooking(false); setShowDesktopInfo(false); }}
                   >
                     <span className="link-text">Profile</span>
-                    <FaChevronDown className={`dropdown-arrow ${showDesktopProfile ? 'rotated' : ''}`} />
+                    <FaChevronDown className="dropdown-arrow" />
                     <span className="link-underline"></span>
                   </button>
-                  <div className={`mega-dropdown profile-dropdown ${showDesktopProfile ? 'show' : ''}`}>
+                  <div className={`mega-dropdown ${showDesktopProfile ? 'show' : ''}`} style={{ minWidth: '220px' }}>
                     <div className="dropdown-list">
-                      {profileItems.map((item, index) => (
-                        <button key={index} className="dropdown-list-item" onClick={() => handleNavigation(item.path)}>
+                      {profileItems.map((item, i) => (
+                        <button key={i} className="dropdown-list-item" onClick={() => handleNavigation(item.path)}>
                           <item.icon className="list-icon" />
                           <span>{item.label}</span>
                         </button>
@@ -411,106 +292,176 @@ function Header({ user, setUser, points, setPoints }) {
                     </div>
                   </div>
                 </div>
-              )}
+              </>
+            )}
 
-              {/* Mobile Profile Dropdown */}
-              {user && (
-                <div className="d-lg-none mobile-dropdown-section">
-                  <button className="mobile-dropdown-trigger" onClick={() => toggleMobileDropdown('profile')}>
-                    <span>Profile</span>
-                    <FaChevronDown className={`mobile-arrow ${showMobileProfile ? 'rotated' : ''}`} />
-                  </button>
-                  <div className={`mobile-dropdown-content ${showMobileProfile ? 'show' : ''}`}>
-                    {profileItems.map((item, index) => (
-                      <button key={index} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                        <item.icon className="mobile-item-icon" />
-                        <span>{item.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
+            <button className={`auth-btn ${user ? 'logout' : ''}`} onClick={handleAuthClick}>
+              {user ? 'Logout' : 'Login'}
+            </button>
+          </div>
 
-              {/* Auth Button */}
-              <button className={`auth-btn ${user ? 'logout' : 'login'}`} onClick={handleAuthClick}>
-                <span className="btn-text">{user ? 'Logout' : 'Login'}</span>
-              </button>
+          {/* Mobile Hamburger */}
+          <button className="mobile-toggle" onClick={() => setIsDrawerOpen(true)}>
+            <HiMenuAlt3 />
+          </button>
 
-            </Nav>
-          </Navbar.Collapse>
         </Container>
       </Navbar>
 
-      {/* Login/Signup Modal */}
+      {/* ─── SIDE DRAWER (MOBILE) ─── */}
+      <div className={`drawer-overlay ${isDrawerOpen ? 'show' : ''}`} onClick={() => setIsDrawerOpen(false)}></div>
+      <div className={`side-drawer ${isDrawerOpen ? 'open' : ''}`}>
+        <button className="mobile-toggle" style={{ position: 'absolute', top: '2rem', right: '2rem', display: 'block' }} onClick={() => setIsDrawerOpen(false)}>
+          <HiX />
+        </button>
+
+        <div className="brand-wrapper mb-5" onClick={() => handleNavigation("/")}>
+          <div className="logo-container" style={{ width: '40px', height: '40px' }}>
+            <img src={logo} alt="Logo" className="brand-logo" />
+          </div>
+          <span className="brand-name" style={{ fontSize: '1.4rem' }}>KOVAIS</span>
+        </div>
+
+        <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/")}>
+          <FaHome className="me-2" /> Home
+        </button>
+        
+        <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/about")}>
+          <FaInfoCircle className="me-2" /> About Us
+        </button>
+
+        {/* Mobile Booking */}
+        <div className="mobile-dropdown-section">
+          <button className={`mobile-dropdown-trigger ${showMobileBooking ? 'active' : ''}`} onClick={() => setShowMobileBooking(!showMobileBooking)}>
+            <span><FaHotel className="me-2" /> Booking</span>
+            <FaChevronDown className="mobile-arrow" />
+          </button>
+          <div className={`mobile-dropdown-content ${showMobileBooking ? 'show' : ''}`}>
+            {bookingItems.map((item, i) => (
+              <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+                <item.icon className="me-2" /> {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Info */}
+        <div className="mobile-dropdown-section">
+          <button className={`mobile-dropdown-trigger ${showMobileInfo ? 'active' : ''}`} onClick={() => setShowMobileInfo(!showMobileInfo)}>
+            <span><FaInfoCircle className="me-2" /> Information</span>
+            <FaChevronDown className="mobile-arrow" />
+          </button>
+          <div className={`mobile-dropdown-content ${showMobileInfo ? 'show' : ''}`}>
+            {infoItems.map((item, i) => (
+              <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+                <item.icon className="me-2" /> {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {user && (
+          <div className="mobile-dropdown-section">
+            <button className={`mobile-dropdown-trigger ${showMobileProfile ? 'active' : ''}`} onClick={() => setShowMobileProfile(!showMobileProfile)}>
+              <span><FaUser className="me-2" /> My Account</span>
+              <FaChevronDown className="mobile-arrow" />
+            </button>
+            <div className={`mobile-dropdown-content ${showMobileProfile ? 'show' : ''}`}>
+              {profileItems.map((item, i) => (
+                <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+                  <item.icon className="me-2" /> {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-auto">
+          {user && (
+            <div className="points-badge mb-4" onClick={() => handleNavigation("/points")}>
+              <img src={emblemUrl || url} alt="Medal" className="points-icon" />
+              <span className="points-text">{points} pts</span>
+            </div>
+          )}
+          <button className={`auth-btn w-100 m-0 ${user ? 'logout' : ''}`} onClick={handleAuthClick}>
+            {user ? 'Logout' : 'Login / Register'}
+          </button>
+        </div>
+      </div>
+
+      {/* ─── AUTH MODAL ─── */}
       <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered className="modern-auth-modal">
-        <Modal.Header closeButton className="modal-header-custom border-0 pb-0">
-          <Modal.Title className="modal-title-custom">Welcome</Modal.Title>
+        <Modal.Header closeButton className="modal-header-custom p-4">
+          <Modal.Title className="modal-title-custom-white w-100 text-center">Welcome to Kovais</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="modal-body-custom px-4 pt-0">
+        <Modal.Body className="p-4">
           <Tabs activeKey={isNewUser ? 'signup' : 'login'} onSelect={(k) => setIsNewUser(k === 'signup')} className="auth-tabs mb-4 nav-fill">
-            <Tab eventKey="login" title="Login" />
-            <Tab eventKey="signup" title="Sign Up" />
+            <Tab eventKey="login" title="Sign In" />
+            <Tab eventKey="signup" title="Join Now" />
           </Tabs>
 
-          <Form className="auth-form">
-            <Form.Group className="mb-3">
+          <Form>
+            <Form.Group className="mb-4">
               <InputGroup className="input-group-custom">
-                <InputGroup.Text><FaUser /></InputGroup.Text>
+                <InputGroup.Text className="bg-transparent border-0"><FaUser color="#daa520"/></InputGroup.Text>
                 <Form.Control 
+                  className="form-input-custom"
                   type="text" 
                   placeholder="Username" 
                   value={userData.username} 
                   onChange={(e) => setUserData({ ...userData, username: e.target.value })} 
-                  className="form-input-custom" 
                 />
               </InputGroup>
             </Form.Group>
 
             {isNewUser && (
-              <Form.Group className="mb-3">
+              <Form.Group className="mb-4">
                 <InputGroup className="input-group-custom">
-                  <InputGroup.Text><FaPhoneAlt /></InputGroup.Text>
+                  <InputGroup.Text className="bg-transparent border-0"><FaPhoneAlt color="#daa520"/></InputGroup.Text>
                   <Form.Control 
+                    className="form-input-custom"
                     type="tel" 
                     placeholder="Phone Number" 
                     value={userData.phone_number} 
-                    onChange={handlePhoneNumberChange} 
+                    onChange={(e) => {
+                      setUserData({ ...userData, phone_number: e.target.value });
+                      validatePhoneNumber(e.target.value);
+                    }} 
                     isInvalid={!!phoneError}
-                    className="form-input-custom" 
                   />
                   <Form.Control.Feedback type="invalid">{phoneError}</Form.Control.Feedback>
                 </InputGroup>
               </Form.Group>
             )}
 
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-4">
               <InputGroup className="input-group-custom">
-                <InputGroup.Text><FaLock /></InputGroup.Text>
+                <InputGroup.Text className="bg-transparent border-0"><FaLock color="#daa520"/></InputGroup.Text>
                 <Form.Control 
+                  className="form-input-custom"
                   type={showPassword ? "text" : "password"} 
                   placeholder="Password" 
                   value={userData.password} 
                   onChange={(e) => setUserData({ ...userData, password: e.target.value })} 
-                  className="form-input-custom" 
                 />
-                <InputGroup.Text className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                <InputGroup.Text className="bg-transparent border-0 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </InputGroup.Text>
               </InputGroup>
             </Form.Group>
 
-            {errorMessage && <div className="error-message mb-3">{errorMessage}</div>}
+            {errorMessage && <div className="text-danger small mb-3 text-center">{errorMessage}</div>}
 
             <Button 
               className="submit-btn w-100" 
-              onClick={isNewUser ? handleSignUpClick : loginUser} 
+              onClick={isNewUser ? signUp : loginUser} 
               disabled={loading || (isNewUser && !!phoneError)}
             >
-              {loading ? "Processing..." : (isNewUser ? "Create Account" : "Login")}
+              {loading ? "Verifying..." : (isNewUser ? "Create Account" : "Secure Login")}
             </Button>
             
-            <p className="terms-text mt-3">
-              By continuing, you agree to our <a href="#" className="terms-link">Terms</a> and <a href="#" className="terms-link">Privacy Policy</a>.
+            <p className="text-muted small text-center mt-4">
+              Experience the pinnacle of luxury grooming and hospitality.
             </p>
           </Form>
         </Modal.Body>
@@ -519,4 +470,4 @@ function Header({ user, setUser, points, setPoints }) {
   );
 }
 
-export default Header;
+export default React.memo(Header);

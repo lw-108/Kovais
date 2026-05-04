@@ -456,7 +456,14 @@ const PaymentPage = ({
                       className={`payment-method-card ${paymentMethod === "offline" ? "selected" : ""}`}
                       onClick={() => setPaymentMethod("offline")}
                     >
-                      <i className="fas fa-store"></i>
+                      <svg width="40" height="40" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginBottom: "8px" }}>
+                        <rect x="40" y="65" width="120" height="78" rx="12" fill="#4F46E5" stroke="#1E2937" stroke-width="14"/>
+                        <rect x="40" y="88" width="120" height="14" fill="#1E2937"/>
+                        <circle cx="135" cy="118" r="26" fill="#F8FAFC" stroke="#FBBF24" stroke-width="10"/>
+                        <line x1="135" y1="118" x2="135" y2="102" stroke="#1E2937" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="135" y1="118" x2="148" y2="125" stroke="#1E2937" stroke-width="5" stroke-linecap="round"/>
+                        <text x="68" y="118" font-family="Arial" font-size="32" font-weight="bold" fill="#F1F5F9" text-anchor="middle" dominant-baseline="middle">$</text>
+                      </svg>
                       <span>Pay Later</span>
                       <small>₹0 now</small>
                     </div>
@@ -468,7 +475,7 @@ const PaymentPage = ({
                       className={`payment-method-card ${paymentMethod === "upi" ? "selected" : ""}`}
                       onClick={() => setPaymentMethod("upi")}
                     >
-                      <i className="fas fa-mobile-alt"></i>
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" style={{ height: "40px", width: "40px", objectFit: "contain", marginBottom: "8px" }} />
                       <span>UPI</span>
                       <small>GPay, PhonePe</small>
                     </div>
@@ -480,7 +487,14 @@ const PaymentPage = ({
                       className={`payment-method-card ${paymentMethod === "card" ? "selected" : ""}`}
                       onClick={() => setPaymentMethod("card")}
                     >
-                      <i className="fas fa-credit-card"></i>
+                      <svg width="40" height="40" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginBottom: "8px" }}>
+                        <rect x="40" y="65" width="120" height="78" rx="12" fill="#4F46E5" stroke="#1E2937" stroke-width="14"/>
+                        <rect x="40" y="88" width="120" height="14" fill="#1E2937"/>
+                        <circle cx="135" cy="118" r="26" fill="#F8FAFC" stroke="#FBBF24" stroke-width="10"/>
+                        <line x1="135" y1="118" x2="135" y2="102" stroke="#1E2937" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="135" y1="118" x2="148" y2="125" stroke="#1E2937" stroke-width="5" stroke-linecap="round"/>
+                        <text x="68" y="118" font-family="Arial" font-size="32" font-weight="bold" fill="#F1F5F9" text-anchor="middle" dominant-baseline="middle">$</text>
+                      </svg>
                       <span>Card</span>
                       <small>Debit/Credit</small>
                     </div>
@@ -492,7 +506,17 @@ const PaymentPage = ({
                       className={`payment-method-card ${paymentMethod === "netbanking" ? "selected" : ""}`}
                       onClick={() => setPaymentMethod("netbanking")}
                     >
-                      <i className="fas fa-university"></i>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" style={{ marginBottom: "8px" }}>
+                        <title>bank</title>
+                        <path d="M11.614 0.673l-10.864 5.231v2.721h22.5v-2.736zM21.75 7.125h-19.5v-0.279l9.386-4.519 10.114 4.534z" fill="#daa520"/>
+                        <path d="M2.25 19.125h19.5v1.5h-19.5v-1.5z" fill="#daa520"/>
+                        <path d="M0.75 21.75h22.5v1.5h-22.5v-1.5z" fill="#daa520"/>
+                        <path d="M2.625 10.125h1.5v7.5h-1.5v-7.5z" fill="#daa520"/>
+                        <path d="M19.875 10.125h1.5v7.5h-1.5v-7.5z" fill="#daa520"/>
+                        <path d="M15.375 10.125h1.5v7.5h-1.5v-7.5z" fill="#daa520"/>
+                        <path d="M7.125 10.125h1.5v7.5h-1.5v-7.5z" fill="#daa520"/>
+                        <path d="M11.25 10.125h1.5v7.5h-1.5v-7.5z" fill="#daa520"/>
+                      </svg>
                       <span>Net Banking</span>
                       <small>All Banks</small>
                     </div>
@@ -511,10 +535,15 @@ const PaymentPage = ({
                       className="payment-form-section"
                     >
                       <div className="upi-apps-row">
-                        {["Google Pay", "PhonePe", "Paytm", "BHIM"].map((app) => (
-                          <div key={app} className="upi-app-chip">
-                            <i className="fas fa-mobile-alt me-1"></i>
-                            {app}
+                        {[
+                          { name: "Google Pay", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo_%282020%29.svg" },
+                          { name: "PhonePe", logo: "https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" },
+                          { name: "Paytm", logo: "https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg" },
+                          { name: "BHIM", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e4/BHIM_Logo.png" }
+                        ].map((app) => (
+                          <div key={app.name} className="upi-app-chip">
+                            <img src={app.logo} alt={app.name} style={{ height: "16px", marginRight: "6px" }} />
+                            {app.name}
                           </div>
                         ))}
                       </div>
@@ -602,16 +631,32 @@ const PaymentPage = ({
                     >
                       <Form.Label className="fw-medium">Select Your Bank</Form.Label>
                       <div className="bank-grid">
-                        {banks.map((bank) => (
-                          <div
-                            key={bank.value}
-                            className={`bank-option ${selectedBank === bank.value ? "selected" : ""}`}
-                            onClick={() => setSelectedBank(bank.value)}
-                          >
-                            <i className="fas fa-university me-2"></i>
-                            {bank.label}
-                          </div>
-                        ))}
+                        {banks.map((bank) => {
+                          const bankLogos = {
+                            sbi: "https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-Logo.svg",
+                            hdfc: "https://upload.wikimedia.org/wikipedia/commons/c/cc/HDFC_Bank_logo.svg",
+                            icici: "https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg",
+                            axis: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Axis_Bank_logo.svg",
+                            kotak: "https://upload.wikimedia.org/wikipedia/commons/3/39/Kotak_Mahindra_Bank_logo.svg",
+                            bob: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Bank_of_Baroda_logo.svg",
+                            pnb: "https://upload.wikimedia.org/wikipedia/commons/1/1d/Punjab_National_Bank_Logo.svg",
+                            canara: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Canara_Bank_Logo.svg"
+                          };
+                          return (
+                            <div
+                              key={bank.value}
+                              className={`bank-option ${selectedBank === bank.value ? "selected" : ""}`}
+                              onClick={() => setSelectedBank(bank.value)}
+                            >
+                              {bankLogos[bank.value] ? (
+                                <img src={bankLogos[bank.value]} alt={bank.label} style={{ height: "20px", marginRight: "8px", maxWidth: "40px", objectFit: "contain" }} />
+                              ) : (
+                                <i className="fas fa-university me-2"></i>
+                              )}
+                              {bank.label}
+                            </div>
+                          );
+                        })}
                       </div>
                     </motion.div>
                   )}

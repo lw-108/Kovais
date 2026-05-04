@@ -14,6 +14,7 @@ import {
 import "./barber.css";
 import { FaScissors } from "react-icons/fa6";
 import { PaymentPage, ConfirmationPage } from "../components/Payment";
+import HerosBeards from "./images/HerosBeards.png";
 // import { set } from "react-datepicker/dist/date_utils";
 
 const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
@@ -277,12 +278,17 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
   // Gallery Data
   const galleryItems = [
     { id: 1, image: "https://www.snip.co.in/wp-content/uploads/2025/03/haircuts-for-long-hair-banner.webp", category: "haircuts", title: "Classic Cut" },
-    { id: 2, image: "https://thevou.com/wp-content/uploads/2025/02/oval-face-shape-men-beard-styles.jpg", category: "beards", title: "Beard Styling" },
+    { id: 2, image: HerosBeards, category: "beards", title: "Beard Styling" },
     { id: 3, image: "https://cdn.prod.website-files.com/5cb569e54ca2fddd5451cbb2/5f90d9f6524b4ef970668f66_shaving.jpg", category: "shaves", title: "Traditional Shave" },
     { id: 4, image: "https://5.imimg.com/data5/SELLER/Default/2024/2/390915581/QH/RY/VA/5937917/men-hair-cutting-services-500x500.jpg", category: "haircuts", title: "Modern Style" },
     { id: 5, image: "https://images.squarespace-cdn.com/content/v1/5616c8cde4b0bbc1cabb7c79/1722260249364-2KSRDUK610AJXEZLJU7Y/The+Complete+Beard+Grooming+Guide_+How+To+Trim+A+Beard+%26+Maintain+It+Like+A+Pro.jpeg?format=1500w", category: "beards", title: "Beard Trim" },
-    { id: 6, image: "https://i.ytimg.com/vi/RJp9PSsuL_M/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAtW6soae77-oaPufaJK6HsMpgEGg", category: "haircuts", title: "Fade Cut" },
-    { id: 7, image: "https://wimpoleclinic.com/wp-content/uploads/2024/05/7-Low-Maintenance-Full-Beard-Styles-For-Confident-Men.jpg", category: "beards", title: "Full Grooming" },
+    { id: 6, image: "https://media.istockphoto.com/id/680907176/photo/little-boy-getting-haircut-by-barber-while-sitting-in-chair-at-barbershop.jpg?s=612x612&w=0&k=20&c=pjQ1u-clewaVhuVzJfguXE29upc0-dg79bY4XCpR8t4=", category: "haircuts", title: "Kids Haircut" },
+    { id: 7, image: "https://t4.ftcdn.net/jpg/04/81/61/63/360_F_481616375_FJDU9iucCA0iMY06iCsqpVUL12qohLRL.jpg", category: "haircuts", title: "Fade Cut" },
+    { id: 8, image: "https://wimpoleclinic.com/wp-content/uploads/2024/05/7-Low-Maintenance-Full-Beard-Styles-For-Confident-Men.jpg", category: "beards", title: "Full Grooming" },
+    { id: 9, image: "https://www.shutterstock.com/image-photo/shaving-brush-foam-razors-on-600nw-2695446057.jpg", category: "shaves", title: "Luxury Shave" },
+    { id: 10, image: "https://img.freepik.com/free-photo/mid-section-barber-applying-cream-clients-beard_107420-94760.jpg?semt=ais_hybrid&w=740&q=80", category: "shaves", title: "Hot Towel Shave" },
+    { id: 11, image: "https://img.freepik.com/premium-photo/man-with-mustache-having-shave_1212-2693.jpg", category: "shaves", title: "Classic Shave" },
+    { id: 12, image: "https://t4.ftcdn.net/jpg/02/31/11/07/360_F_231110781_OWK0WLiOgYWn9DhNF7bYqJrkuiwEiEPw.jpg", category: "beards", title: "Professional Beard Grooming" },
   ];
 
   // Effects
@@ -1283,17 +1289,17 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
               <div className="row justify-content-center g-4">
                 <div className="col-md-6 col-lg-4">
                   <div
-                    className={`card h-100 text-center cursor-pointer ${booking.location === 'salon' ? 'border-golden border-3 shadow-lg' : 'border-secondary'
-                      }`}
+                    className={`card h-100 text-center cursor-pointer ${booking.location === 'salon' ? 'shadow-lg' : ''}`}
                     onClick={() => {
                       handleLocationChange('salon')
-                      // const service = document.getElementById('second');
-                      // service.scrollIntoView({ behavior: 'smooth' });
                     }}
                     style={{
                       cursor: 'pointer',
                       backgroundColor: '#fff',
-                      borderColor: booking.location === 'salon' ? '#daa520' : '#dee2e6'
+                      border: 'none',
+                      boxShadow: booking.location === 'salon' ? '0 12px 30px rgba(218, 165, 32, 0.25)' : '0 2px 10px rgba(0,0,0,0.05)',
+                      transition: 'all 0.3s ease',
+                      transform: booking.location === 'salon' ? 'translateY(-5px)' : 'none'
                     }}
                   >
                     <div className="card-body p-4">
@@ -1305,17 +1311,17 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                 </div>
                 <div className="col-md-6 col-lg-4">
                   <div
-                    className={`card h-100 text-center cursor-pointer ${booking.location === 'doorstep' ? 'border-golden border-3 shadow-lg' : 'border-secondary'
-                      }`}
+                    className={`card h-100 text-center cursor-pointer ${booking.location === 'doorstep' ? 'shadow-lg' : ''}`}
                     onClick={() => {
                       handleLocationChange('doorstep')
-                      // const service = document.getElementById('second');
-                      // service.scrollIntoView({ behavior: 'smooth' });
                     }}
                     style={{
                       cursor: 'pointer',
                       backgroundColor: '#fff',
-                      borderColor: booking.location === 'doorstep' ? '#daa520' : '#dee2e6'
+                      border: 'none',
+                      boxShadow: booking.location === 'doorstep' ? '0 12px 30px rgba(218, 165, 32, 0.25)' : '0 2px 10px rgba(0,0,0,0.05)',
+                      transition: 'all 0.3s ease',
+                      transform: booking.location === 'doorstep' ? 'translateY(-5px)' : 'none'
                     }}
                   >
                     <div className="card-body p-4">
@@ -1333,10 +1339,17 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
               {categories.map((category) => (
                 <button
                   key={category}
-                  className={`btn px-4 py-2 ${selectedCategory === category
-                    ? 'btn-golden text-white fw-bold'
-                    : 'btn-outline-golden'
+                  className={`px-4 py-3 border-0 transition-all rounded-4 d-flex align-items-center justify-content-center ${selectedCategory === category
+                    ? 'text-dark fw-bold'
+                    : 'text-muted'
                     }`}
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor: '#fff',
+                    boxShadow: selectedCategory === category ? '0 12px 30px rgba(218, 165, 32, 0.25)' : '0 4px 15px rgba(0,0,0,0.05)',
+                    transform: selectedCategory === category ? 'translateY(-3px)' : 'none',
+                    minWidth: '120px'
+                  }}
                   onClick={() => {
                     if (booking.services.length === 0) {
                       setSelectedCategory(category === selectedCategory ? null : category);
@@ -1363,14 +1376,18 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                   whileHover={{ y: -5 }}
                   className="col-md-6 col-lg-4"
                 >
-                  <div className={`card h-100 shadow ${booking.services.some(s => s.id === service.id)
-                    ? 'border-golden border-3 shadow-lg'
-                    : 'border-secondary'
+                  <div className={`card h-100 border-0 ${booking.services.some(s => s.id === service.id)
+                    ? 'shadow-lg'
+                    : 'shadow-sm'
                     }`}
                     style={{
                       backgroundColor: '#fff',
                       cursor: 'pointer',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.3s ease',
+                      boxShadow: booking.services.some(s => s.id === service.id) 
+                        ? '0 12px 30px rgba(218, 165, 32, 0.25)' 
+                        : '0 4px 15px rgba(0,0,0,0.05)',
+                      transform: booking.services.some(s => s.id === service.id) ? 'translateY(-5px)' : 'none'
                     }}>
                     <div className="position-relative overflow-hidden">
                       <img
@@ -1669,36 +1686,34 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
           </p>
           <br />
           <div className="row justify-content-center" >
-            <div className="col-lg-8 col-xl-6" style={{ maxWidth: '900px', width: '100%' }}>
+            <div className="col-lg-10 col-xl-8" style={{ width: '100%' }}>
               <div className="mb-5">
-                <div className="card shadow-lg" style={{ backgroundColor: '#fff', borderColor: '#dc3545' }}>
-                  <div className="card-header" style={{ backgroundColor: '#dc3545', color: '#fff' }}>
-                    <h4 className="card-title d-flex align-items-center gap-2 mb-0">
-                      <Scissors style={{ width: '24px', height: '24px' }} />
-                      Book Your Appointment
-                    </h4>
-
+                <div className="card shadow-lg border-0 rounded-4" style={{ backgroundColor: '#fff', overflow: 'hidden' }}>
+                  <div className="card-header bg-white border-0 pt-5 pb-4 px-4 px-md-5">
                     {/* Progress Steps */}
-                    <div className="row justify-content-center mt-4">
-                      <div className="col-12">
-                        <div className="d-flex align-items-center justify-content-between position-relative">
+                    <div className="row justify-content-center position-relative">
+                      <div className="col-12 px-0">
+                        <div className="d-flex align-items-start justify-content-between position-relative px-3 px-md-5">
                           {/* Progress Line */}
                           <div
-                            className="position-absolute w-100 progress-line"
-                          // style={{
-                          //   height: '2px',
-                          //   backgroundColor: 'rgba(255,255,255,0.3)',
-                          //   top: '50%',
-                          //   transform: 'translateY(-50%)',
-                          //   zIndex: 1
-                          // }}
+                            className="position-absolute"
+                            style={{
+                              height: '3px',
+                              backgroundColor: '#f1f3f5',
+                              top: '24px',
+                              left: '10%',
+                              right: '10%',
+                              zIndex: 1,
+                              borderRadius: '3px'
+                            }}
                           >
                             <div
                               className="h-100"
                               style={{
-                                backgroundColor: '#fff',
+                                backgroundColor: '#daa520',
                                 width: `${((currentStep) / 4) * 100}%`,
-                                transition: 'width 0.3s ease'
+                                transition: 'width 0.4s ease-in-out',
+                                borderRadius: '3px'
                               }}
                             />
                           </div>
@@ -1707,34 +1722,38 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                             const isCurrent = currentStep === index;
 
                             return (
-                              <div key={step.number} className="text-center position-relative" style={{ zIndex: 2 }}>
+                              <div key={step.number} className="text-center position-relative" style={{ zIndex: 2, flex: '1', maxWidth: '100px' }}>
                                 <div
-                                  className="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2"
+                                  className="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3 shadow-sm"
                                   style={{
-                                    width: '40px',
-                                    height: '40px',
-                                    backgroundColor: isActive ? '#fff' : 'rgba(255,255,255,0.3)',
-                                    border: `2px solid ${isActive ? '#fff' : 'rgba(255,255,255,0.5)'}`,
-                                    color: isActive ? '#dc3545' : 'rgba(255,255,255,0.7)',
-                                    transition: 'all 0.3s ease'
+                                    width: '52px',
+                                    height: '52px',
+                                    backgroundColor: isActive ? '#daa520' : '#fff',
+                                    border: `3px solid ${isActive ? '#daa520' : '#f1f3f5'}`,
+                                    color: isActive ? '#fff' : '#adb5bd',
+                                    transition: 'all 0.4s ease-in-out',
+                                    transform: isCurrent ? 'scale(1.1)' : 'scale(1)'
                                   }}
                                 >
-                                  <step.icon size={16} />
+                                  <step.icon size={22} />
                                 </div>
-                                <div>
+                                <div className="d-none d-sm-block">
                                   <div
-                                    className="fw-bold"
+                                    className="fw-bold text-uppercase"
                                     style={{
-                                      color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
-                                      fontSize: '0.75rem'
+                                      color: isActive ? '#000' : '#adb5bd',
+                                      fontSize: '0.7rem',
+                                      letterSpacing: '1px'
                                     }}
                                   >
                                     Step {step.number}
                                   </div>
                                   <div
                                     style={{
-                                      color: 'rgba(255,255,255,0.8)',
-                                      fontSize: '0.7rem'
+                                      color: isActive ? '#6c757d' : '#ced4da',
+                                      fontSize: '0.85rem',
+                                      marginTop: '4px',
+                                      fontWeight: isCurrent ? '600' : '400'
                                     }}
                                   >
                                     {step.title}
@@ -1747,7 +1766,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="card-body">
+                  <div className="card-body p-4 p-md-5 pt-0">
                     <AnimatePresence mode="wait">
                       {currentStep === 0 && (
                         <motion.div
@@ -1760,31 +1779,32 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                             Selected Services
                           </h5>
                           {booking.services.length === 0 ? (
-                            <div className="text-center py-5">
-                              <Scissors className="mx-auto mb-3" style={{ width: '48px', height: '48px', color: '#6c757d' }} />
+                            <div className="text-center py-5 rounded-4" style={{ backgroundColor: '#f8f9fa', border: '1px dashed #dee2e6' }}>
+                              <Scissors className="mx-auto mb-3" style={{ width: '48px', height: '48px', color: '#adb5bd' }} />
                               <h6 style={{ color: '#6c757d' }}>No services selected</h6>
-                              <p className="small" style={{ color: '#6c757d' }}>
+                              <p className="small mb-0" style={{ color: '#adb5bd' }}>
                                 Please select services from the options above to continue
                               </p>
                             </div>
                           ) : (
                             <div className="mb-4">
                               {booking.services.map((service) => (
-                                <div key={service.id} className="d-flex justify-content-between align-items-center p-3 mb-3 rounded border" style={{ backgroundColor: '#f8f9fa' }}>
+                                <div key={service.id} className="d-flex justify-content-between align-items-center p-4 mb-3 rounded-4 shadow-sm" style={{ backgroundColor: '#fff', borderLeft: '4px solid #daa520' }}>
                                   <div>
                                     <h6 className="fw-medium mb-1" style={{ color: '#000' }}>{service.name}</h6>
                                     <small style={{ color: '#6c757d' }}>{service.duration}</small>
                                   </div>
-                                  <span className="fw-bold" style={{ color: '#dc3545' }}>₹ {service.price}</span>
+                                  <span className="fw-bold fs-5" style={{ color: '#daa520' }}>₹ {service.price}</span>
                                 </div>
                               ))}
                             </div>
                           )}
-                          <div className="text-end">
+                          <div className="text-end mt-5 border-top pt-4">
                             <button
                               onClick={nextStep}
                               disabled={booking.services.length === 0}
-                              className="btn btn-danger text-white fw-bold px-4"
+                              className="btn px-5 py-2 fw-semibold text-white rounded-pill shadow-sm"
+                              style={{ backgroundColor: '#daa520', border: 'none' }}
                             >
                               Continue
                             </button>
@@ -1802,45 +1822,57 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                           <h5 className="fw-semibold mb-4" style={{ color: '#000' }}>
                             Choose Your Specialist
                           </h5>
-                          <div className="row g-3 mb-4">
-                            {availableEmployees.map((employee) => (
-                              <div key={employee.id} className="col-md-6">
-                                <div
-                                  className={`card border cursor-pointer ${booking.employee?.id === employee.id
-                                    ? 'border-danger border-3 shadow-lg'
-                                    : 'border-secondary'
-                                    }`}
-                                  onClick={() => setBooking(prev => ({ ...prev, employee }))}
-                                  style={{ cursor: 'pointer', backgroundColor: '#fff' }}
-                                >
-                                  <div className="card-body">
-                                    <div className="d-flex align-items-center gap-3">
-                                      <div className="rounded-circle d-flex align-items-center justify-content-center"
-                                        style={{ backgroundColor: '#dc3545', width: '64px', height: '64px' }}>
-                                        <User style={{ width: '32px', height: '32px', color: '#fff' }} />
-                                      </div>
-                                      <div className="flex-grow-1">
-                                        <h6 className="fw-semibold mb-1" style={{ color: '#000' }}>{employee.name}</h6>
-                                        <p className="small mb-1" style={{ color: '#6c757d' }}>{employee.speciality}</p>
-                                        <div className="d-flex align-items-center gap-1">
-                                          <Star style={{ width: '16px', height: '16px', color: '#dc3545', fill: '#dc3545' }} />
-                                          <small style={{ color: '#dc3545' }}>{employee.rating}</small>
+                          <div className="row g-4 mb-5">
+                            {availableEmployees.map((employee) => {
+                              const isSelected = booking.employee?.id === employee.id;
+                              return (
+                                <div key={employee.id} className="col-md-6">
+                                  <div
+                                    className={`card h-100 text-center cursor-pointer border-0 rounded-4 ${isSelected ? 'shadow-lg' : 'shadow-sm'}`}
+                                    onClick={() => setBooking(prev => ({ ...prev, employee }))}
+                                    style={{ 
+                                      cursor: 'pointer', 
+                                      backgroundColor: '#fff',
+                                      border: 'none',
+                                      boxShadow: isSelected ? '0 12px 30px rgba(218, 165, 32, 0.25)' : '0 4px 15px rgba(0,0,0,0.05)',
+                                      transform: isSelected ? 'translateY(-3px)' : 'none',
+                                      transition: 'all 0.3s ease'
+                                    }}
+                                  >
+                                    <div className="card-body p-4">
+                                      <div className="d-flex align-items-center gap-4">
+                                        <div className="rounded-circle d-flex align-items-center justify-content-center shadow-sm flex-shrink-0"
+                                          style={{ backgroundColor: '#f8f9fa', border: '1px solid #dee2e6', width: '64px', height: '64px' }}>
+                                          <User style={{ width: '30px', height: '30px', color: '#daa520' }} />
+                                        </div>
+                                        <div className="flex-grow-1 text-start">
+                                          <h6 className="fw-semibold mb-1" style={{ color: '#000', fontSize: '1.1rem' }}>{employee.name}</h6>
+                                          <p className="small mb-2" style={{ color: '#6c757d' }}>{employee.speciality}</p>
+                                          <div className="d-flex align-items-center gap-1">
+                                            <Star style={{ width: '16px', height: '16px', color: '#daa520', fill: '#daa520' }} />
+                                            <small className="fw-medium" style={{ color: '#000' }}>{employee.rating}</small>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
-                          <div className="d-flex justify-content-between">
-                            <button onClick={prevStep} className="btn btn-outline-danger">
+                          <div className="d-flex justify-content-between mt-5 border-top pt-4">
+                            <button 
+                              onClick={prevStep} 
+                              className="btn px-4 py-2 fw-semibold rounded-pill"
+                              style={{ backgroundColor: '#f8f9fa', color: '#495057', border: '1px solid #dee2e6' }}
+                            >
                               Previous
                             </button>
                             <button
                               onClick={nextStep}
                               disabled={!booking.employee}
-                              className="btn btn-danger text-white fw-bold px-4"
+                              className="btn px-5 py-2 fw-semibold text-white rounded-pill shadow-sm"
+                              style={{ backgroundColor: '#daa520', border: 'none' }}
                             >
                               Continue
                             </button>
@@ -1855,38 +1887,38 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -50 }}
                         >
-                          <h3 className="text-center fw-bold mb-5" style={{ color: '#000', fontSize: '2rem' }}>
+                          <h4 className="fw-semibold mb-5" style={{ color: '#000' }}>
                             Choose Date & Time
-                          </h3>
+                          </h4>
 
                           <div className="row g-5">
                             {/* Date Selection */}
-                            <div className="col-lg-4">
-                              <h5 className="fw-semibold mb-4" style={{ color: '#000' }}>
+                            <div className="col-lg-5">
+                              <h6 className="fw-medium mb-3" style={{ color: '#000' }}>
                                 Select Date
-                              </h5>
+                              </h6>
                               <div className="position-relative">
                                 <input
                                   type="date"
-                                  className="form-control form-control-lg"
+                                  className="form-control form-control-lg shadow-sm"
                                   value={booking.date}
                                   onChange={(e) => setBooking(prev => ({ ...prev, date: e.target.value, time: null }))}
                                   min={new Date().toISOString().split('T')[0]}
                                   style={{
-                                    fontSize: '1.1rem',
-                                    padding: '12px 16px',
-                                    border: '2px solid #e9ecef',
-                                    borderRadius: '8px'
+                                    fontSize: '1rem',
+                                    padding: '14px 20px',
+                                    border: '1px solid #dee2e6',
+                                    borderRadius: '12px'
                                   }}
                                 />
                               </div>
                             </div>
 
                             {/* Time Selection */}
-                            <div className="col-lg-8">
-                              <h5 className="fw-semibold mb-4" style={{ color: '#000' }}>
+                            <div className="col-lg-7">
+                              <h6 className="fw-medium mb-3" style={{ color: '#000' }}>
                                 Available Times
-                              </h5>
+                              </h6>
                               <div className="row g-3">
                                 {timeSlots.map((time, index) => {
                                   const selectedDate = booking.date ? new Date(booking.date) : null;
@@ -1894,25 +1926,20 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                                   const isSelected = booking.time === time;
 
                                   return (
-                                    <div key={time} className="col-4">
+                                    <div key={time} className="col-6 col-sm-4">
                                       <button
-                                        className={`btn w-100 ${isSelected
-                                          ? 'text-white fw-semibold'
-                                          : isPassed
-                                            ? 'btn-outline-secondary disabled opacity-50'
-                                            : 'btn-outline-danger'
-                                          }`}
+                                        className={`btn w-100 shadow-none ${isSelected ? 'fw-bold' : ''}`}
                                         onClick={() => setBooking(prev => ({ ...prev, time }))}
                                         disabled={isPassed}
                                         style={{
-                                          padding: '12px 16px',
+                                          padding: '12px 0',
                                           fontSize: '0.95rem',
-                                          borderWidth: '2px',
-                                          borderRadius: '8px',
-                                          backgroundColor: isSelected ? '#dc3545' : 'transparent',
-                                          borderColor: isSelected ? '#dc3545' : '#dc3545',
-                                          color: isSelected ? '#fff' : '#dc3545',
-                                          transition: 'all 0.2s ease'
+                                          border: isSelected ? '2px solid #daa520' : '1px solid #dee2e6',
+                                          borderRadius: '12px',
+                                          backgroundColor: isSelected ? '#daa520' : '#fff',
+                                          color: isSelected ? '#fff' : (isPassed ? '#adb5bd' : '#495057'),
+                                          opacity: isPassed ? 0.5 : 1,
+                                          transition: 'all 0.3s ease'
                                         }}
                                       >
                                         {time}
@@ -1925,28 +1952,19 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                           </div>
 
                           {/* Navigation Buttons */}
-                          <div className="d-flex justify-content-between mt-5 pt-4">
-                            <button
-                              onClick={prevStep}
-                              className="btn btn-outline-secondary btn-lg px-5"
-                              style={{
-                                borderRadius: '8px',
-                                fontSize: '1.1rem',
-                                fontWeight: '500'
-                              }}
+                          <div className="d-flex justify-content-between mt-5 pt-4 border-top">
+                            <button 
+                              onClick={prevStep} 
+                              className="btn px-4 py-2 fw-semibold rounded-pill"
+                              style={{ backgroundColor: '#f8f9fa', color: '#495057', border: '1px solid #dee2e6' }}
                             >
                               Previous
                             </button>
                             <button
                               onClick={nextStep}
                               disabled={!booking.date || !booking.time}
-                              className="btn btn-lg px-5 text-white fw-semibold"
-                              style={{
-                                backgroundColor: '#dc3545',
-                                borderColor: '#dc3545',
-                                borderRadius: '8px',
-                                fontSize: '1.1rem'
-                              }}
+                              className="btn px-5 py-2 fw-semibold text-white rounded-pill shadow-sm"
+                              style={{ backgroundColor: '#daa520', border: 'none' }}
                             >
                               Next
                             </button>
@@ -1961,66 +1979,69 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -50 }}
                         >
-                          <h5 className="fw-semibold mb-4" style={{ color: '#000' }}>
+                          <h4 className="fw-semibold mb-5" style={{ color: '#000' }}>
                             Your Details
-                          </h5>
-                          <div className="row g-3 mb-4">
+                          </h4>
+                          <div className="row g-4 mb-5">
                             <div className="col-md-6">
-                              <label htmlFor="name" className="form-label" style={{ color: '#000' }}>Full Name *</label>
+                              <label htmlFor="name" className="form-label fw-medium" style={{ color: '#495057' }}>Full Name <span style={{color: '#daa520'}}>*</span></label>
                               <input
                                 id="name"
                                 type="text"
-                                className={`form-control ${showErrors && !booking.customerInfo.name ? 'is-invalid' : ''}`}
+                                className={`form-control shadow-sm ${showErrors && !booking.customerInfo.name ? 'is-invalid' : ''}`}
                                 value={booking.customerInfo.name}
                                 onChange={(e) => setBooking(prev => ({
                                   ...prev,
                                   customerInfo: { ...prev.customerInfo, name: e.target.value }
                                 }))}
                                 placeholder="Enter your full name"
+                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
                               />
                               {showErrors && !booking.customerInfo.name && (
                                 <div className="invalid-feedback">Please enter your name.</div>
                               )}
                             </div>
                             <div className="col-md-6">
-                              <label htmlFor="phone" className="form-label" style={{ color: '#000' }}>Phone Number *</label>
+                              <label htmlFor="phone" className="form-label fw-medium" style={{ color: '#495057' }}>Phone Number <span style={{color: '#daa520'}}>*</span></label>
                               <input
                                 id="phone"
                                 type="tel"
-                                className={`form-control ${showErrors && (!booking.customerInfo.phone || !/^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) || booking.customerInfo.phone.replace(/[^\d]/g, '').length < 10) ? 'is-invalid' : ''}`}
+                                className={`form-control shadow-sm ${showErrors && (!booking.customerInfo.phone || !/^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) || booking.customerInfo.phone.replace(/[^\d]/g, '').length < 10) ? 'is-invalid' : ''}`}
                                 value={booking.customerInfo.phone}
                                 onChange={(e) => setBooking(prev => ({
                                   ...prev,
                                   customerInfo: { ...prev.customerInfo, phone: e.target.value }
                                 }))}
                                 placeholder="Enter your phone number"
+                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
                               />
                               {showErrors && (!booking.customerInfo.phone || !/^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) || booking.customerInfo.phone.replace(/[^\d]/g, '').length < 10) && (
                                 <div className="invalid-feedback">Please enter a valid phone number.</div>
                               )}
                             </div>
                             <div className="col-12">
-                              <label htmlFor="email" className="form-label" style={{ color: '#000' }}>Email Address *</label>
+                              <label htmlFor="email" className="form-label fw-medium" style={{ color: '#495057' }}>Email Address <span style={{color: '#daa520'}}>*</span></label>
                               <input
                                 id="email"
                                 type="email"
-                                className={`form-control ${showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) ? 'is-invalid' : ''}`}
+                                className={`form-control shadow-sm ${showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) ? 'is-invalid' : ''}`}
                                 value={booking.customerInfo.email}
                                 onChange={(e) => setBooking(prev => ({
                                   ...prev,
                                   customerInfo: { ...prev.customerInfo, email: e.target.value }
                                 }))}
                                 placeholder="Enter your email address"
+                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
                               />
                               {showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) && (
                                 <div className="invalid-feedback">Please enter a valid email address.</div>
                               )}
                             </div>
                             <div className="col-12">
-                              <label htmlFor="notes" className="form-label" style={{ color: '#000' }}>Special Notes (Optional)</label>
+                              <label htmlFor="notes" className="form-label fw-medium" style={{ color: '#495057' }}>Special Notes (Optional)</label>
                               <textarea
                                 id="notes"
-                                className="form-control"
+                                className="form-control shadow-sm"
                                 rows="3"
                                 value={booking.customerInfo.notes}
                                 onChange={(e) => setBooking(prev => ({
@@ -2028,11 +2049,16 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                                   customerInfo: { ...prev.customerInfo, notes: e.target.value }
                                 }))}
                                 placeholder="Any special requests or notes..."
+                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
                               />
                             </div>
                           </div>
-                          <div className="d-flex justify-content-between">
-                            <button onClick={prevStep} className="btn btn-outline-danger">
+                          <div className="d-flex justify-content-between mt-5 pt-4 border-top">
+                            <button 
+                              onClick={prevStep} 
+                              className="btn px-4 py-2 fw-semibold rounded-pill"
+                              style={{ backgroundColor: '#f8f9fa', color: '#495057', border: '1px solid #dee2e6' }}
+                            >
                               Previous
                             </button>
                             <button
@@ -2044,7 +2070,8 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                                   setShowErrors(true);
                                 }
                               }}
-                              className="btn btn-danger text-white fw-bold px-4"
+                              className="btn px-5 py-2 fw-semibold text-white rounded-pill shadow-sm"
+                              style={{ backgroundColor: '#daa520', border: 'none' }}
                             >
                               Review Booking
                             </button>
@@ -2059,23 +2086,23 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -50 }}
                         >
-                          <h5 className="fw-semibold mb-4 d-flex align-items-center gap-2" style={{ color: '#000' }}>
-                            <CheckCircle style={{ width: '24px', height: '24px', color: '#dc3545' }} />
+                          <h4 className="fw-semibold mb-4 d-flex align-items-center gap-2" style={{ color: '#000' }}>
+                            <CheckCircle style={{ width: '28px', height: '28px', color: '#daa520' }} />
                             Booking Confirmation
-                          </h5>
+                          </h4>
 
                           <div className="row g-4">
                             {/* Services Summary */}
                             <div className="col-12">
-                              <h6 className="fw-semibold mb-3" style={{ color: '#000' }}>Selected Services</h6>
+                              <h6 className="fw-semibold mb-3 text-uppercase tracking-wider" style={{ color: '#adb5bd', fontSize: '0.85rem', letterSpacing: '1px' }}>Selected Services</h6>
                               <div className="mb-4">
                                 {booking.services.map((service) => (
-                                  <div key={service.id} className="d-flex justify-content-between align-items-center p-3 mb-2 rounded border" style={{ backgroundColor: '#f8f9fa' }}>
+                                  <div key={service.id} className="d-flex justify-content-between align-items-center p-3 mb-2 rounded-4 shadow-sm" style={{ backgroundColor: '#fff', borderLeft: '4px solid #daa520', border: '1px solid #f1f3f5', borderLeftColor: '#daa520' }}>
                                     <div>
                                       <span className="fw-medium" style={{ color: '#000' }}>{service.name}</span>
                                       <small className="ms-2" style={{ color: '#6c757d' }}>({service.duration})</small>
                                     </div>
-                                    <span className="fw-bold" style={{ color: '#dc3545' }}>₹ {service.price}</span>
+                                    <span className="fw-bold fs-6" style={{ color: '#daa520' }}>₹ {service.price}</span>
                                   </div>
                                 ))}
                               </div>
@@ -2083,59 +2110,64 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
 
                             {/* Appointment Details */}
                             <div className="col-md-6">
-                              <h6 className="fw-semibold mb-3" style={{ color: '#000' }}>Appointment Details</h6>
-                              <div style={{ color: '#6c757d' }}>
-                                <p><strong style={{ color: '#000' }}>Date:</strong> {new Date(booking.date).toLocaleDateString()}</p>
-                                <p><strong style={{ color: '#000' }}>Time:</strong> {booking.time}</p>
-                                <p><strong style={{ color: '#000' }}>Location:</strong> {booking.location === 'salon' ? 'Salon' : 'Doorstep Service'}</p>
-                                <p><strong style={{ color: '#000' }}>Specialist:</strong> {booking.employee?.name}</p>
+                              <h6 className="fw-semibold mb-3 text-uppercase tracking-wider" style={{ color: '#adb5bd', fontSize: '0.85rem', letterSpacing: '1px' }}>Appointment Details</h6>
+                              <div className="p-4 rounded-4 shadow-sm" style={{ backgroundColor: '#f8f9fa', border: '1px solid #dee2e6' }}>
+                                <p className="mb-2"><strong style={{ color: '#495057' }}>Date:</strong> <span style={{color: '#000'}}>{new Date(booking.date).toLocaleDateString()}</span></p>
+                                <p className="mb-2"><strong style={{ color: '#495057' }}>Time:</strong> <span style={{color: '#000'}}>{booking.time}</span></p>
+                                <p className="mb-2"><strong style={{ color: '#495057' }}>Location:</strong> <span style={{color: '#000'}}>{booking.location === 'salon' ? 'Salon' : 'Doorstep Service'}</span></p>
+                                <p className="mb-0"><strong style={{ color: '#495057' }}>Specialist:</strong> <span style={{color: '#000'}}>{booking.employee?.name}</span></p>
                               </div>
                             </div>
 
                             <div className="col-md-6">
-                              <h6 className="fw-semibold mb-3" style={{ color: '#000' }}>Customer Information</h6>
-                              <div style={{ color: '#6c757d' }}>
-                                <p><strong style={{ color: '#000' }}>Name:</strong> {booking.customerInfo.name}</p>
-                                <p><strong style={{ color: '#000' }}>Phone:</strong> {booking.customerInfo.phone}</p>
-                                <p><strong style={{ color: '#000' }}>Email:</strong> {booking.customerInfo.email}</p>
+                              <h6 className="fw-semibold mb-3 text-uppercase tracking-wider" style={{ color: '#adb5bd', fontSize: '0.85rem', letterSpacing: '1px' }}>Customer Information</h6>
+                              <div className="p-4 rounded-4 shadow-sm" style={{ backgroundColor: '#f8f9fa', border: '1px solid #dee2e6' }}>
+                                <p className="mb-2"><strong style={{ color: '#495057' }}>Name:</strong> <span style={{color: '#000'}}>{booking.customerInfo.name}</span></p>
+                                <p className="mb-2"><strong style={{ color: '#495057' }}>Phone:</strong> <span style={{color: '#000'}}>{booking.customerInfo.phone}</span></p>
+                                <p className="mb-2"><strong style={{ color: '#495057' }}>Email:</strong> <span style={{color: '#000'}}>{booking.customerInfo.email}</span></p>
                                 {booking.customerInfo.notes && (
-                                  <p><strong style={{ color: '#000' }}>Notes:</strong> {booking.customerInfo.notes}</p>
+                                  <p className="mb-0"><strong style={{ color: '#495057' }}>Notes:</strong> <span style={{color: '#000'}}>{booking.customerInfo.notes}</span></p>
                                 )}
                               </div>
                             </div>
 
                             {/* Total */}
-                            <div className="col-12">
-                              <div className="border-top pt-4">
+                            <div className="col-12 mt-5">
+                              <div className="p-4 rounded-4" style={{ backgroundColor: '#fff', border: '2px dashed #daa520' }}>
                                 <div className="d-flex justify-content-between mb-2">
-                                  <span style={{ color: '#6c757d' }}>Services Total:</span>
-                                  <span style={{ color: '#000' }}>
+                                  <span style={{ color: '#6c757d', fontWeight: '500' }}>Services Total:</span>
+                                  <span style={{ color: '#000', fontWeight: '500' }}>
                                     ₹ {booking.services.reduce((sum, service) => sum + service.price, 0)}
                                   </span>
                                 </div>
                                 {booking.location === 'doorstep' && (
-                                  <div className="d-flex justify-content-between mb-2">
-                                    <span style={{ color: '#6c757d' }}>Doorstep Service:</span>
-                                    <span style={{ color: '#000' }}>₹ 25</span>
+                                  <div className="d-flex justify-content-between mb-3">
+                                    <span style={{ color: '#6c757d', fontWeight: '500' }}>Doorstep Service:</span>
+                                    <span style={{ color: '#000', fontWeight: '500' }}>₹ 25</span>
                                   </div>
                                 )}
-                                <div className="d-flex justify-content-between h4 fw-bold border-top pt-2">
+                                <div className="d-flex justify-content-between align-items-center h4 fw-bold border-top pt-3 mt-3 mb-0">
                                   <span style={{ color: '#000' }}>Total Amount:</span>
-                                  <span style={{ color: '#dc3545' }}>₹ {calculateTotal()}</span>
+                                  <span style={{ color: '#daa520', fontSize: '1.75rem' }}>₹ {calculateTotal()}</span>
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div className="d-flex justify-content-between mt-4">
-                            <button onClick={prevStep} className="btn btn-outline-danger">
+                          <div className="d-flex justify-content-between mt-5 pt-4 border-top">
+                            <button 
+                              onClick={prevStep} 
+                              className="btn px-4 py-2 fw-semibold rounded-pill"
+                              style={{ backgroundColor: '#f8f9fa', color: '#495057', border: '1px solid #dee2e6' }}
+                            >
                               Previous
                             </button>
                             <button
                               onClick={() => {
                                 handlePayment();
                               }}
-                              className="btn btn-danger text-white fw-bold px-4"
+                              className="btn px-5 py-2 fw-semibold text-white rounded-pill shadow-lg"
+                              style={{ backgroundColor: '#daa520', border: 'none' }}
                             >
                               Confirm Booking
                             </button>
@@ -2354,7 +2386,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
           </Row>
           <hr className="my-3" />
           <p className="text-center mb-0">
-            &copy; 2024 KOVAIS. All Rights Reserved. | Contact: 9234567891 | Email: info@kovaisbeauty.com
+            &copy; 2024 KOVAIS. All Rights Reserved. | Contact: <a href="tel:9234567891" style={{ color: 'inherit', textDecoration: 'none' }}>9234567891</a> | Email: <a href="mailto:info@kovaisbeauty.com" style={{ color: 'inherit', textDecoration: 'none' }}>info@kovaisbeauty.com</a>
           </p>
         </Container>
       </footer>

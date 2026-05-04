@@ -1232,7 +1232,7 @@ body {
 }
 
 .story-badge-item {
-  background: var(--primary-red);
+  background: var(--barbershop-primary);
   color: white;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 9999px;
@@ -1260,7 +1260,7 @@ body {
   width: 4rem;
   height: 4rem;
   margin: 0 auto var(--spacing-md);
-  background: var(--primary-red);
+  background: var(--barbershop-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1371,9 +1371,9 @@ body {
 .filter-category-btn {
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: 9999px;
-  border: 2px solid var(--primary-red);
+  border: 2px solid var(--barbershop-primary);
   background: transparent;
-  color: var(--primary-red);
+  color: var(--barbershop-primary);
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-normal);
@@ -1381,7 +1381,7 @@ body {
 
 .filter-category-btn:hover,
 .filter-category-btn.filter-btn-active {
-  background: var(--primary-red);
+  background: var(--barbershop-primary);
   color: white;
   box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3);
 }

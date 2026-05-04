@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import img1 from '../img/img (1).jpeg';
@@ -19,20 +19,16 @@ import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaMapMarkerAlt, FaStar, FaDownload, FaChevronRight, FaArrowRight } from 'react-icons/fa';
 import '../Carousel.css'
 import "./Home.css";
-import { FaClock, FaUsers, FaHeart, FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarker, FaLeaf, FaAward, FaShieldAlt } from "react-icons/fa";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { FaClock, FaUsers, FaHeart, FaWhatsapp, FaPhoneAlt, FaEnvelope, FaMapMarker, FaLeaf, FaAward, FaShieldAlt, FaHotel, FaSpa, FaDumbbell, FaCut, FaGlassCheers } from "react-icons/fa";
 
 // Counter animation hook
-function useCounter(target, duration = 2000, startOnView = true) {
+function useCounter(target, duration = 2000) {
   const [count, setCount] = useState(0);
-  const [started, setStarted] = useState(false);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
+  const inView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
-    if (inView && !started) {
-      setStarted(true);
+    if (inView) {
       let start = 0;
       const step = target / (duration / 16);
       const timer = setInterval(() => {
@@ -46,13 +42,13 @@ function useCounter(target, duration = 2000, startOnView = true) {
       }, 16);
       return () => clearInterval(timer);
     }
-  }, [inView, started, target, duration]);
+  }, [inView, target, duration]);
 
   return { count, ref };
 }
 
-// Stat Item Component
-function StatItem({ value, suffix, label, icon }) {
+// Stat Item Component - memoized to prevent unnecessary re-renders
+const StatItem = React.memo(function StatItem({ value, suffix, label, icon }) {
   const numericValue = parseInt(value);
   const { count, ref } = useCounter(numericValue);
 
@@ -65,7 +61,7 @@ function StatItem({ value, suffix, label, icon }) {
       <p className="stat-label">{label}</p>
     </div>
   );
-}
+});
 
 function Home({ user }) {
   const navigate = useNavigate();
@@ -75,11 +71,12 @@ function Home({ user }) {
   const heroRef = useRef(null);
   const { scrollY } = useScroll();
   const parallaxY = useTransform(scrollY, [0, 500], [0, -80]);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleNavigation = (path) => navigate(path);
 
   useEffect(() => {
-    AOS.init({ duration: 900, easing: 'ease-out-cubic', once: true, offset: 80 });
+    // Preload critical images for better performance
     const preloadImages = [banner2, banner3];
     preloadImages.forEach(src => {
       const imgEl = new Image();
@@ -87,46 +84,47 @@ function Home({ user }) {
     });
   }, []);
 
-  const testimonials = [
+  // Memoize static data to prevent unnecessary re-renders
+  const testimonials = useMemo(() => [
     { id: 1, name: "Rajesh Kumar", role: "Hotel Guest", comment: "An unparalleled experience. The staff anticipated every need before I even asked. This is what true luxury feels like.", rating: 5, image: testimonial1 },
     { id: 2, name: "Priya Suresh", role: "Spa Client", comment: "The spa treatments left me completely rejuvenated. The ambiance, the therapists, the products — absolutely world-class.", rating: 5, image: testimonial2 },
     { id: 3, name: "Vikram Mohan", role: "Regular Member", comment: "I've been coming to Kovais for two years. The consistency of quality and the personal attention keeps me coming back.", rating: 5, image: testimonial3 },
-  ];
+  ], []);
 
-  const services = [
+  const services = useMemo(() => [
     { title: "Luxury Hotel", shortDesc: "Book your sanctuary.", fullDesc: "Experience world-class comfort in our meticulously curated rooms. Every detail has been thoughtfully designed to provide an unparalleled stay.", image: img1, path: "/search-results", tag: "Accommodation" },
     { title: "Wellness Spa", shortDesc: "Restore your essence.", fullDesc: "Immerse yourself in therapeutic rituals drawn from ancient traditions. Our expert therapists craft bespoke treatments for your complete renewal.", image: img2, path: "/spa", tag: "Wellness" },
     { title: "Fitness Studio", shortDesc: "Elevate your form.", fullDesc: "State-of-the-art equipment meets elite personal training. Achieve your peak performance in our premium fitness environment.", image: img4, path: "/gym", tag: "Fitness" },
     { title: "Grooming Salon", shortDesc: "Refine your look.", fullDesc: "Master barbers blend classic techniques with contemporary styles. Step in, transform, and step out as the best version of yourself.", image: img3, path: "/barber", tag: "Grooming" },
     { title: "Funeral Service", shortDesc: "Dignified, compassionate care.", fullDesc: "Providing respectful and compassionate grooming services during mourning periods, at your home or our salon, with the utmost sensitivity.", image: funeral, path: "/funeral", tag: "Special Care" },
     { title: "Function Service", shortDesc: "Celebrate in style.", fullDesc: "Look your absolute finest for life's most memorable occasions. Our function grooming service ensures you are impeccably presented.", image: Function, path: "/function", tag: "Events" },
-  ];
+  ], []);
 
   const scrollToOffer = () => {
     document.getElementById('bookings')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const galleryItems = [
+  const galleryItems = useMemo(() => [
     { image: img1, caption: "Grand Suite" },
     { image: img2, caption: "Spa Retreat" },
     { image: img3, caption: "Grooming Studio" },
     { image: img4, caption: "Fitness Centre" },
     { image: funeral, caption: "Special Services" },
     { image: Function, caption: "Function Prep" },
-  ];
+  ], []);
 
-  const processSteps = [
+  const processSteps = useMemo(() => [
     { step: "01", title: "Choose Your Service", desc: "Browse our curated range of luxury services and select what speaks to you." },
     { step: "02", title: "Book Your Slot", desc: "Pick a convenient time with our seamless online booking system." },
     { step: "03", title: "Arrive & Unwind", desc: "Walk in and let our expert team take care of everything else." },
     { step: "04", title: "Leave Transformed", desc: "Depart refreshed, refined, and ready to conquer the world." },
-  ];
+  ], []);
 
-  const awards = [
+  const awards = useMemo(() => [
     { icon: <FaAward size={28} />, title: "Best Luxury Salon", year: "2023", org: "Tamil Nadu Hospitality Awards" },
     { icon: <FaShieldAlt size={28} />, title: "Excellence in Service", year: "2022", org: "South India Wellness Council" },
     { icon: <FaLeaf size={28} />, title: "Eco-Friendly Practices", year: "2023", org: "Green Business Initiative" },
-  ];
+  ], []);
 
   return (
     <>
@@ -203,12 +201,26 @@ function Home({ user }) {
         </div>
       </section>
 
-      {/* ─── MARQUEE STRIP ─── */}
       <div className="marquee-strip">
         <div className="marquee-track">
-          {["Luxury Hotel", "Wellness Spa", "Fitness Studio", "Master Grooming", "Special Care", "Function Services", "Luxury Hotel", "Wellness Spa", "Fitness Studio", "Master Grooming", "Special Care", "Function Services"].map((item, i) => (
-            <span key={i} className="marquee-item">
-              <span className="marquee-dot">◆</span> {item}
+          {[
+            { name: "Luxury Hotel", path: "/search-results", icon: <FaHotel /> },
+            { name: "Wellness Spa", path: "/spa", icon: <FaSpa /> },
+            { name: "Fitness Studio", path: "/gym", icon: <FaDumbbell /> },
+            { name: "Master Grooming", path: "/barber", icon: <FaCut /> },
+            { name: "Special Care", path: "/funeral", icon: <FaShieldAlt /> },
+            { name: "Function Services", path: "/function", icon: <FaGlassCheers /> },
+            { name: "Luxury Hotel", path: "/search-results", icon: <FaHotel /> },
+            { name: "Wellness Spa", path: "/spa", icon: <FaSpa /> },
+            { name: "Fitness Studio", path: "/gym", icon: <FaDumbbell /> },
+            { name: "Master Grooming", path: "/barber", icon: <FaCut /> },
+            { name: "Special Care", path: "/funeral", icon: <FaShieldAlt /> },
+            { name: "Function Services", path: "/function", icon: <FaGlassCheers /> }
+          ].map((item, i) => (
+            <span key={i} className="marquee-item" onClick={() => handleNavigation(item.path)} style={{ cursor: 'pointer' }}>
+              <span className="marquee-icon">{item.icon}</span>
+              <span className="marquee-text">{item.name}</span>
+              <span className="marquee-separator">✦</span>
             </span>
           ))}
         </div>
@@ -367,6 +379,8 @@ function Home({ user }) {
               transition={{ delay: i * 0.07, duration: 0.5 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.03 }}
+              onClick={() => setSelectedImage(item)}
+              style={{ cursor: 'pointer' }}
             >
               <img src={item.image} alt={item.caption} loading="lazy" decoding="async" />
               <div className="gallery-caption">{item.caption}</div>
@@ -544,34 +558,34 @@ function Home({ user }) {
             <Col lg={4} md={4}>
               <h6 className="footer-col-title">Contact Us</h6>
               <div className="footer-contact-list">
-                <div className="footer-contact-item">
+                <a href="tel:+919234567891" className="footer-contact-item" style={{ textDecoration: 'none' }}>
                   <FaPhoneAlt className="footer-contact-icon" />
                   <div>
                     <span className="footer-contact-label">Phone</span>
                     <span className="footer-contact-value">+91 92345 67891</span>
                   </div>
-                </div>
-                <div className="footer-contact-item">
+                </a>
+                <a href="https://wa.me/919234567891" target="_blank" rel="noopener noreferrer" className="footer-contact-item" style={{ textDecoration: 'none' }}>
                   <FaWhatsapp className="footer-contact-icon" />
                   <div>
                     <span className="footer-contact-label">WhatsApp</span>
                     <span className="footer-contact-value">+91 92345 67891</span>
                   </div>
-                </div>
-                <div className="footer-contact-item">
+                </a>
+                <a href="mailto:info@kovaisbeauty.com" className="footer-contact-item" style={{ textDecoration: 'none' }}>
                   <FaEnvelope className="footer-contact-icon" />
                   <div>
                     <span className="footer-contact-label">Email</span>
                     <span className="footer-contact-value">info@kovaisbeauty.com</span>
                   </div>
-                </div>
-                <div className="footer-contact-item">
+                </a>
+                <a href="https://maps.google.com/?q=Coimbatore,Tamil+Nadu" target="_blank" rel="noopener noreferrer" className="footer-contact-item" style={{ textDecoration: 'none' }}>
                   <FaMapMarkerAlt className="footer-contact-icon" />
                   <div>
                     <span className="footer-contact-label">Location</span>
                     <span className="footer-contact-value">Coimbatore, Tamil Nadu</span>
                   </div>
-                </div>
+                </a>
               </div>
             </Col>
           </Row>
@@ -585,6 +599,29 @@ function Home({ user }) {
           </div>
         </Container>
       </footer>
+
+      {/* Image Lightbox Modal */}
+      {selectedImage && (
+        <motion.div
+          className="gallery-lightbox"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setSelectedImage(null)}
+        >
+          <motion.div
+            className="lightbox-content"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="lightbox-close" onClick={() => setSelectedImage(null)}>×</button>
+            <img src={selectedImage.image} alt={selectedImage.caption} />
+            <div className="lightbox-caption">{selectedImage.caption}</div>
+          </motion.div>
+        </motion.div>
+      )}
     </>
   );
 }

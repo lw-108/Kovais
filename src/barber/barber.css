@@ -1039,7 +1039,7 @@ p { color: var(--text-secondary); }
 .achievement-icon-circle {
   width: 58px; height: 58px;
   margin: 0 auto 16px;
-  background: var(--gold-pale);
+  background: var(--gold-primary);
   border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
   transition: var(--tr);

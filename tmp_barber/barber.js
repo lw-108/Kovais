@@ -2193,7 +2193,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
           </Row>
           <hr className="my-3" />
           <p className="text-center mb-0">
-            &copy; 2024 KOVAIS. All Rights Reserved. | Contact: 9234567891 | Email: info@kovaisbeauty.com
+            &copy; 2024 KOVAIS. All Rights Reserved. | Contact: <a href="tel:9234567891" style={{ color: 'inherit', textDecoration: 'none' }}>9234567891</a> | Email: <a href="mailto:info@kovaisbeauty.com" style={{ color: 'inherit', textDecoration: 'none' }}>info@kovaisbeauty.com</a>
           </p>
         </Container>
       </footer>

@@ -199,8 +199,8 @@ function About() {
         <Container>
           <div className="section-header" data-aos="fade-up">
             <span className="section-tag" style={{ color: 'var(--gold-light)' }}>How It Works</span>
-            <h2 className="section-heading mt-2" style={{ color: '#fff' }}>Simple. Seamless. <span className="text-gradient">Premium.</span></h2>
-            <p className="section-desc mt-3" style={{ color: 'rgba(255,255,255,0.5)' }}>From discovery to confirmation — four effortless steps to your perfect experience.</p>
+            <h2 className="section-heading-white mt-2">Simple. Seamless. <span className="text-gradient">Premium.</span></h2>
+            <p className="section-desc-white mt-3">From discovery to confirmation — four effortless steps to your perfect experience.</p>
           </div>
           <Row className="g-4 justify-content-center">
             {processSteps.map((step, i) => (
@@ -311,9 +311,9 @@ function About() {
       <section className="about-testimonials py-5">
         <Container>
           <div className="section-header" data-aos="fade-up">
-            <span className="section-tag">Testimonials</span>
-            <h2 className="section-heading mt-2" style={{ color: '#fff' }}>What Our <span className="text-gradient">Clients</span> Say</h2>
-            <p className="section-desc mt-3" style={{ color: 'rgba(255,255,255,0.5)' }}>Real stories from people who've experienced the Kovais difference.</p>
+            <span className="section-tag" style={{ color: 'var(--gold-light)' }}>Testimonials</span>
+            <h2 className="section-heading-white mt-2">What Our <span className="text-gradient">Clients</span> Say</h2>
+            <p className="section-desc-white mt-3">Real stories from people who've experienced the Kovais difference.</p>
           </div>
           <Row className="g-4 justify-content-center">
             {testimonials.map((t, i) => (

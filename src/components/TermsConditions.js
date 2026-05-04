@@ -17,7 +17,7 @@ const TermsAndConditions = () => {
       <header className="terms-header">
         <div className="container">
           <div className="brand-header">
-            <div className="brand-logo">THIRAN360AI</div>
+            <div className="brand-logo">Kovais</div>
             <h1>Terms & Conditions</h1>
           </div>
           <p>Last updated: {new Date().toLocaleDateString()}</p>
@@ -126,7 +126,7 @@ const TermsAndConditions = () => {
                       onChange={(e) => setAccepted(e.target.checked)}
                     />
                     <span className="checkmark"></span>
-                    I have read and agree to the THIRAN360AI Terms and Conditions
+                    I have read and agree to the Kovais Terms and Conditions
                   </label>
                   <button 
                     className={`accept-btn ${accepted ? 'active' : ''}`}
@@ -145,14 +145,14 @@ const TermsAndConditions = () => {
       {/* Footer */}
       <footer className="terms-footer">
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} THIRAN360AI. All rights reserved.</p>
-          <div className="footer-links">
+          <p>&copy; {new Date().getFullYear()} Kovais. All rights reserved.</p>
+          <nav className="footer-links">
             <a href="/privacy">Privacy Policy</a>
             <a href="/refund">Refund Policy</a>
             <a href="/contact">Contact Us</a>
-          </div>
+          </nav>
           <div className="payment-footer-note">
-            <p>Payment processed by THIRAN360AI.</p>
+            <p>Secure payment processing for your safety</p>
           </div>
         </div>
       </footer>
@@ -167,7 +167,7 @@ const TermsAndConditions = () => {
             </div>
             <div className="modal-body">
               {/* <div className="modal-icon">🤖</div> */}
-              <p>Thank you for accepting THIRAN360AI Terms and Conditions. You can now continue using our AI-powered wellness services.</p>
+              <p>Thank you for accepting Kovais Terms and Conditions. You can now continue using our premium wellness services.</p>
             </div>
             <div className="modal-footer">
               <button onClick={handleAccept} className="confirm-btn">Continue</button>
