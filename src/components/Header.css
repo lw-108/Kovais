@@ -1,54 +1,46 @@
 /* ============================================================
    KOVAIS PREMIER HEADER — IVORY & GOLD (LIGHT THEME)
-   Design Language: Frosted Glass / Liquid Gold / Side Drawer
+   FIXED: HAMBURGER MENU VISIBILITY
    ============================================================ */
 
 :root {
-  /* Core HSL Palette */
   --gold-h: 43;
   --gold-s: 74%;
   --gold-l: 49%;
-  
-  --gold-primary: hsl(var(--gold-h), var(--gold-s), var(--gold-l)); /* #daa520 */
+  --gold-primary: hsl(var(--gold-h), var(--gold-s), var(--gold-l));
   --gold-light: hsl(var(--gold-h), var(--gold-s), 65%);
   --gold-dark: hsl(var(--gold-h), var(--gold-s), 35%);
   --gold-soft: hsla(var(--gold-h), var(--gold-s), var(--gold-l), 0.1);
-  
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-scrolled: rgba(255, 255, 255, 0.95);
   --glass-border: rgba(218, 165, 32, 0.2);
-  
   --text-primary: #1a1a1a;
   --text-secondary: #555555;
-  --text-gold: var(--gold-primary);
-
-  /* Shadows & Blurs */
   --header-blur: 20px;
   --shadow-premium: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
   --shadow-gold: 0 4px 15px hsla(var(--gold-h), var(--gold-s), var(--gold-l), 0.2);
-
-  /* Transitions */
   --ease-premium: cubic-bezier(0.23, 1, 0.32, 1);
   --transition: all 0.5s var(--ease-premium);
 }
 
-/* ─── HEADER BASE ─── */
+/* Header Base */
 .modern-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 2000;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   transition: var(--transition);
-  padding: 1.5rem 0;
+  padding: 1rem 0;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
 }
 
 .modern-header.scrolled {
   padding: 0.8rem 0;
   background: var(--glass-scrolled);
   backdrop-filter: blur(var(--header-blur));
-  -webkit-backdrop-filter: blur(var(--header-blur));
   border-bottom: 1px solid var(--glass-border);
   box-shadow: var(--shadow-premium);
 }
@@ -64,9 +56,10 @@
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 2rem;
+  position: relative;
 }
 
-/* ─── BRANDING ─── */
+/* Brand Section */
 .brand-wrapper {
   display: flex;
   align-items: center;
@@ -89,28 +82,12 @@
 
 .brand-wrapper:hover .logo-container {
   transform: rotate(0deg) scale(1.1);
-  box-shadow: 0 0 30px hsla(var(--gold-h), var(--gold-s), var(--gold-l), 0.4);
 }
 
 .brand-logo {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.logo-shine {
-  position: absolute;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 300%;
-  background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.4) 50%, transparent 60%);
-  animation: logo-shine 4s infinite;
-}
-
-@keyframes logo-shine {
-  0% { transform: translate(-100%, -100%) rotate(45deg); }
-  100% { transform: translate(100%, 100%) rotate(45deg); }
 }
 
 .brand-name {
@@ -122,19 +99,112 @@
   text-transform: uppercase;
 }
 
-.modern-header:not(.scrolled) .brand-name {
-  color: #ffffff; /* Keep it white if it's over a dark hero banner until scrolled */
+/* ============================================================
+   CRITICAL FIX: HAMBURGER MENU BUTTON
+   ============================================================ */
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  margin: 0;
+  z-index: 2005;
+  position: relative;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
-/* ─── NAVIGATION MENU ─── */
+.mobile-toggle svg {
+  font-size: 28px;
+  color: #1a1a1a;
+  display: block;
+}
+
+.mobile-toggle:hover {
+  background: rgba(218, 165, 32, 0.1);
+  transform: scale(1.05);
+}
+
+.mobile-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Desktop Navigation - Hidden on mobile */
 .nav-menu {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
+/* ============================================================
+   MOBILE BREAKPOINTS - SHOW HAMBURGER
+   ============================================================ */
+@media (max-width: 991px) {
+  /* Hide desktop nav */
+  .nav-menu {
+    display: none !important;
+  }
+  
+  /* Show hamburger button */
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(218, 165, 32, 0.1) !important;
+    border-radius: 12px !important;
+  }
+  
+  .mobile-toggle svg {
+    color: var(--gold-primary) !important;
+    font-size: 26px !important;
+  }
+  
+  .modern-header {
+    background: rgba(255, 255, 255, 0.98) !important;
+    padding: 0.6rem 0 !important;
+  }
+  
+  .navbar-container {
+    padding: 0 1rem !important;
+  }
+  
+  .brand-name {
+    font-size: 1.3rem !important;
+  }
+  
+  .logo-container {
+    width: 38px !important;
+    height: 38px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .mobile-toggle {
+    padding: 8px !important;
+  }
+  
+  .mobile-toggle svg {
+    font-size: 24px !important;
+  }
+  
+  .brand-name {
+    font-size: 1.1rem !important;
+  }
+  
+  .logo-container {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .navbar-container {
+    padding: 0 0.8rem !important;
+  }
+}
+
+/* Desktop nav item styles */
 .nav-item-link {
-  color: #ffffff; /* White initially for hero banner overlay */
+  color: var(--text-primary);
   font-size: 0.95rem;
   font-weight: 600;
   padding: 0.6rem 1.2rem;
@@ -143,11 +213,7 @@
   border: none;
   position: relative;
   transition: var(--transition);
-  letter-spacing: 0.5px;
-}
-
-.modern-header.scrolled .nav-item-link {
-  color: var(--text-primary);
+  cursor: pointer;
 }
 
 .nav-item-link:hover {
@@ -164,15 +230,13 @@
   background: var(--gold-primary);
   transform: scaleX(0);
   transition: transform 0.4s var(--ease-premium);
-  transform-origin: right;
 }
 
 .nav-item-link:hover .link-underline {
   transform: scaleX(1);
-  transform-origin: left;
 }
 
-/* ─── DROPDOWNS ─── */
+/* Dropdown styles */
 .dropdown-wrapper {
   position: relative;
 }
@@ -181,12 +245,12 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
 }
 
 .dropdown-arrow {
   font-size: 0.7rem;
   transition: transform 0.3s ease;
-  opacity: 0.7;
 }
 
 .dropdown-trigger.active .dropdown-arrow {
@@ -218,7 +282,6 @@
   transform: translateX(-50%) translateY(0);
 }
 
-/* Dropdown Grid (Booking) */
 .dropdown-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -226,14 +289,14 @@
 }
 
 .dropdown-card {
-  padding: 1.2rem;
+  padding: 1rem;
   background: #fbfbfb;
   border: 1px solid rgba(218, 165, 32, 0.1);
   border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.5rem;
   transition: var(--transition);
   cursor: pointer;
 }
@@ -241,7 +304,7 @@
 .dropdown-card:hover {
   background: var(--gold-soft);
   border-color: var(--gold-primary);
-  transform: translateY(-5px);
+  transform: translateY(-3px);
 }
 
 .card-icon {
@@ -250,93 +313,59 @@
 }
 
 .card-label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #1a1a1a;
-  text-align: center;
 }
 
-/* Dropdown List (Profile/Info) */
-.dropdown-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.dropdown-list-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0.8rem 1rem;
-  border-radius: 12px;
-  color: #555;
-  background: transparent;
-  border: none;
-  width: 100%;
-  text-align: left;
-  transition: var(--transition);
-}
-
-.dropdown-list-item:hover {
-  background: var(--gold-soft);
-  color: var(--gold-primary);
-  padding-left: 1.2rem;
-}
-
-/* ─── POINTS BADGE ─── */
+/* Points Badge */
 .points-link {
   margin: 0 1rem;
+  cursor: pointer;
 }
 
 .points-badge {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0.5rem 1.2rem;
+  gap: 8px;
+  padding: 0.4rem 1rem;
   background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
   border-radius: 100px;
-  box-shadow: var(--shadow-gold);
 }
 
 .points-text {
   font-weight: 800;
   color: #fff;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .points-label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.7rem;
   color: rgba(255,255,255,0.8);
-  text-transform: uppercase;
 }
 
 .points-icon {
-  width: 24px !important;
-  height: 24px !important;
+  width: 20px !important;
+  height: 20px !important;
   object-fit: contain !important;
-  filter: drop-shadow(0 0 5px rgba(255,255,255,0.4));
 }
 
-/* ─── AUTH BUTTON ─── */
+/* Auth Button */
 .auth-btn {
-  padding: 0.7rem 2.2rem;
+  padding: 0.5rem 1.8rem;
   border-radius: 100px;
   font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
   font-size: 0.85rem;
   border: 2px solid var(--gold-primary);
   background: transparent;
   color: var(--gold-primary);
   transition: var(--transition);
-  margin-left: 1rem;
+  cursor: pointer;
 }
 
 .auth-btn:hover {
   background: var(--gold-primary);
   color: #fff;
-  box-shadow: var(--shadow-gold);
 }
 
 .auth-btn.logout {
@@ -344,27 +373,7 @@
   color: #ff4444;
 }
 
-.auth-btn.logout:hover {
-  background: #ff4444;
-  color: #fff;
-}
-
-/* ─── MOBILE TOGGLE (HAMBURGER) ─── */
-.mobile-toggle {
-  display: none;
-  background: transparent;
-  border: none;
-  font-size: 2rem;
-  color: #ffffff;
-  cursor: pointer;
-  z-index: 2001;
-}
-
-.modern-header.scrolled .mobile-toggle {
-  color: var(--text-primary);
-}
-
-/* ─── SIDE DRAWER (MOBILE NAV) ─── */
+/* Side Drawer */
 .side-drawer {
   position: fixed;
   top: 0;
@@ -375,12 +384,13 @@
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(30px);
   z-index: 3000;
-  padding: 6rem 2rem 2rem;
-  transition: right 0.5s var(--ease-premium);
+  padding: 5rem 1.5rem 2rem;
+  transition: right 0.4s var(--ease-premium);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   border-left: 1px solid var(--glass-border);
+  overflow-y: auto;
 }
 
 .side-drawer.open {
@@ -403,8 +413,12 @@
   visibility: visible;
 }
 
-.side-drawer .brand-name {
-  color: #1a1a1a !important;
+.side-drawer .mobile-toggle {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  display: flex !important;
+  background: rgba(218, 165, 32, 0.1) !important;
 }
 
 .mobile-dropdown-trigger {
@@ -412,115 +426,438 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: #f8f8f8;
+  padding: 0.8rem 1rem;
+  background: #f5f5f5;
   border-radius: 12px;
   color: #1a1a1a;
   font-weight: 600;
   border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.mobile-dropdown-trigger:hover {
+  background: var(--gold-soft);
+  color: var(--gold-primary);
+}
+
+.mobile-arrow {
+  transition: transform 0.3s ease;
+}
+
+.mobile-dropdown-trigger.active .mobile-arrow {
+  transform: rotate(180deg);
+}
+
+.mobile-dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding-left: 1rem;
+}
+
+.mobile-dropdown-content.show {
+  max-height: 400px;
 }
 
 .mobile-dropdown-item {
-  color: #555;
-  padding: 0.8rem 1rem;
   width: 100%;
-  text-align: left;
+  padding: 0.7rem 1rem;
+  color: #555;
   background: transparent;
   border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .mobile-dropdown-item:hover {
   color: var(--gold-primary);
+  padding-left: 1.2rem;
+  background: rgba(218, 165, 32, 0.05);
 }
 
-/* ─── MODAL CUSTOMIZATION — LIGHT THEME ─── */
+/* Modal Styles */
 .modern-auth-modal .modal-content {
   background: #ffffff !important;
-  border: none !important;
   border-radius: 32px !important;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2) !important;
+  overflow: hidden;
 }
 
 .modal-header-custom {
   background: #fff !important;
   border-bottom: 1px solid #eee !important;
-  padding: 2.5rem 2rem 1.5rem !important;
 }
 
 .modal-title-custom-white {
   color: #1a1a1a !important;
   font-family: 'Playfair Display', serif !important;
-  font-weight: 800 !important;
-}
-
-.auth-tabs {
-  background: #f5f5f5 !important;
-  border-radius: 16px !important;
-  padding: 5px !important;
-  border: none !important;
-}
-
-.auth-tabs .nav-link {
-  color: #777 !important;
-  border-radius: 12px !important;
-  border: none !important;
 }
 
 .auth-tabs .nav-link.active {
   background: var(--gold-primary) !important;
   color: #fff !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-.auth-tabs .nav-link::after,
-.auth-tabs .nav-link::before {
-  display: none !important;
-  content: none !important;
-}
-
-.input-group-custom {
-  background: #fff !important;
-  border: 2px solid #eee !important;
-  border-radius: 16px !important;
-}
-
-.input-group-custom:focus-within {
-  border-color: var(--gold-primary) !important;
-  background: #fff !important;
-}
-
-.form-input-custom {
-  background: #fff !important;
-  color: #1a1a1a !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.form-input-custom:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  background: #fff !important;
-}
-
-.form-input-custom::placeholder {
-  color: #aaa !important;
 }
 
 .submit-btn {
   background: var(--gold-primary) !important;
-  color: #fff !important;
-  border-radius: 16px !important;
-  padding: 1.2rem !important;
-  font-weight: 800 !important;
+  border: none !important;
 }
 
 .submit-btn:hover {
-  transform: translateY(-3px) !important;
-  box-shadow: 0 10px 20px rgba(218, 165, 32, 0.3) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(218, 165, 32, 0.3);
 }
 
-.terms-text {
-  color: #888 !important;
+
+
+/* ============================================================
+   EMERGENCY FIX - FORCE HAMBURGER VISIBILITY
+   ============================================================ */
+
+/* Force hamburger to be visible on ALL screen sizes below 992px */
+@media screen and (max-width: 992px) {
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(218, 165, 32, 0.15) !important;
+    border-radius: 12px !important;
+    width: 44px !important;
+    height: 44px !important;
+    padding: 5 !important;
+    margin: 0 !important;
+    border: none !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
+    position: relative !important;
+  }
+  
+  .mobile-toggle svg {
+    font-size: 26px !important;
+    color: #daa520 !important;
+    width: 26px !important;
+    height: 26px !important;
+  }
+  
+  /* Hide desktop navigation */
+  .nav-menu {
+    display: none !important;
+  }
+}
+
+/* Also force on very small screens */
+@media screen and (max-width: 768px) {
+  .mobile-toggle {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .mobile-toggle svg {
+    font-size: 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+/* Make sure no other rule is hiding it */
+.mobile-toggle[style*="display: none"],
+.mobile-toggle[style*="display:none"] {
+  display: flex !important;
+}
+
+/* ============================================================
+   SINGLE HAMBURGER/X BUTTON - CLEAN & MODERN
+   ============================================================ */
+
+.mobile-toggle {
+  display: none;
+  background: rgba(218, 165, 32, 0.12);
+  border: 1px solid rgba(218, 165, 32, 0.2);
+  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2005;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-toggle svg {
+  font-size: 26px;
+  color: #daa520;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Open state - transforms to X */
+.mobile-toggle.open {
+  background: rgba(218, 165, 32, 0.2);
+  border-color: rgba(218, 165, 32, 0.4);
+  transform: rotate(0deg);
+}
+
+.mobile-toggle.open svg {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+/* Hover effects */
+.mobile-toggle:hover {
+  background: rgba(218, 165, 32, 0.2);
+  transform: scale(1.05);
+  border-color: rgba(218, 165, 32, 0.5);
+}
+
+.mobile-toggle.open:hover {
+  transform: scale(1.05);
+}
+
+/* Active press effect */
+.mobile-toggle:active {
+  transform: scale(0.95);
+}
+
+/* Mobile visibility */
+@media (max-width: 992px) {
+  .mobile-toggle {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .mobile-toggle {
+    width: 42px;
+    height: 42px;
+  }
+  
+  .mobile-toggle svg {
+    font-size: 22px;
+  }
+}
+
+/* ============================================================
+   UPDATED SIDE DRAWER - Remove duplicate close button
+   ============================================================ */
+
+.side-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 85%;
+  max-width: 380px;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  backdrop-filter: blur(20px);
+  z-index: 2000;
+  padding: 5rem 1.5rem 2rem;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  border-left: 2px solid rgba(218, 165, 32, 0.15);
+  overflow-y: auto;
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
+}
+
+.side-drawer.open {
+  right: 0;
+}
+
+/* Hide any mobile-toggle inside drawer */
+.side-drawer .mobile-toggle {
+  display: none !important;
+}
+
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.drawer-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Brand in drawer */
+.side-drawer .brand-wrapper {
+  cursor: pointer;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(218, 165, 32, 0.15);
+  margin-bottom: 0.5rem !important;
+}
+
+/* Dropdown triggers in drawer */
+.side-drawer .mobile-dropdown-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  background: rgba(218, 165, 32, 0.04);
+  border-radius: 12px;
+  color: #1a1a1a;
+  font-weight: 600;
+  border: 1px solid rgba(218, 165, 32, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.side-drawer .mobile-dropdown-trigger:hover {
+  background: rgba(218, 165, 32, 0.12);
+  border-color: rgba(218, 165, 32, 0.3);
+  transform: translateX(5px);
+}
+
+.side-drawer .mobile-dropdown-trigger.active {
+  background: rgba(218, 165, 32, 0.15);
+  border-color: #daa520;
+  color: #daa520;
+}
+
+.mobile-arrow {
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+  color: #daa520;
+}
+
+.mobile-dropdown-trigger.active .mobile-arrow {
+  transform: rotate(180deg);
+}
+
+.mobile-dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-left: 1rem;
+}
+
+.mobile-dropdown-content.show {
+  max-height: 500px;
+}
+
+.mobile-dropdown-item {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  color: #555;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin: 0.2rem 0;
+}
+
+.mobile-dropdown-item:hover {
+  color: #daa520;
+  padding-left: 1.5rem;
+  background: rgba(218, 165, 32, 0.08);
+}
+
+/* Points badge in drawer */
+.side-drawer .points-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #daa520, #ffd700);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.side-drawer .points-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(218, 165, 32, 0.3);
+}
+
+/* Auth button in drawer */
+.side-drawer .auth-btn {
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+  text-align: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+/* Drawer scrollbar */
+.side-drawer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.side-drawer::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.side-drawer::-webkit-scrollbar-thumb {
+  background: #daa520;
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .side-drawer {
+    width: 100%;
+    padding: 4rem 1.2rem 1.5rem;
+  }
+  
+  .side-drawer .brand-name {
+    font-size: 1.2rem !important;
+  }
+  
+  .side-drawer .mobile-dropdown-trigger {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .mobile-dropdown-item {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Smooth animation for drawer items */
+.side-drawer.open > * {
+  animation: fadeInSlide 0.3s ease backwards;
+}
+
+.side-drawer.open > :nth-child(1) { animation-delay: 0.05s; }
+.side-drawer.open > :nth-child(2) { animation-delay: 0.1s; }
+.side-drawer.open > :nth-child(3) { animation-delay: 0.15s; }
+.side-drawer.open > :nth-child(4) { animation-delay: 0.2s; }
+.side-drawer.open > :nth-child(5) { animation-delay: 0.25s; }
+.side-drawer.open > :nth-child(6) { animation-delay: 0.3s; }
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

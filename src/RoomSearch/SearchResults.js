@@ -6,6 +6,7 @@ import {
   Bookmark, Navigation, Sun, Sparkles, Zap,
   ChevronLeft, ChevronRight, ChevronDown, ChevronUp, Check
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { format } from 'date-fns';
@@ -431,17 +432,47 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
   return (
     <div className="kov-root">
       {/* ── Hero Search ─────────────────────────────── */}
-      <div className="kov-hero">
+      <motion.div 
+        className="kov-hero"
+        id="kov-hero-section"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="kov-hero-bg-glow" />
         <div className="kov-hero-inner">
-          <div className="kov-eyebrow">
+          <motion.div 
+            className="kov-eyebrow"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             <span className="kov-eyebrow-dot" />
             Gobichettipalayam · Tamil Nadu
-          </div>
-          <h1 className="kov-hero-title">Find your perfect <em>retreat</em></h1>
-          <p className="kov-hero-sub">Curated stays with exceptional comfort</p>
+          </motion.div>
+          <motion.h1 
+            className="kov-hero-title"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            Find your perfect <em>retreat</em>
+          </motion.h1>
+          <motion.p 
+            className="kov-hero-sub"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Curated stays with exceptional comfort
+          </motion.p>
 
-          <div className="kov-search-glass">
+          <motion.div 
+            className="kov-search-glass"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
+          >
             <div className="kov-search-field full">
               <span className="kov-search-label">Location</span>
               <div className="kov-search-input-row">
@@ -479,9 +510,9 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
                 </select>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Calendars */}
       <DateCalendar isOpen={showCheckInCalendar} onClose={() => setShowCheckInCalendar(false)} onDateSelect={handleCheckInDateSelect} selectedDate={checkInDate} position="checkIn" />
@@ -503,20 +534,34 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
       <div className="kov-content">
 
         {/* Stay summary bar (when dates selected) */}
-        {checkInDate && checkOutDate && (
-          <div className="kov-date-bar">
+        <AnimatePresence>
+          {checkInDate && checkOutDate && (
+            <motion.div 
+              className="kov-date-bar"
+              initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+              animate={{ opacity: 1, height: 'auto', marginBottom: '1rem' }}
+              exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+            >
             <div className="kov-date-bar-dates">
               <span className="kov-date-bar-from">{format(checkInDate, "EEE, dd MMM")}</span>
               <span className="kov-date-bar-arrow">→</span>
               <span className="kov-date-bar-to">{format(checkOutDate, "EEE, dd MMM")}</span>
             </div>
             <span className="kov-date-bar-nights">{getNights()} night{getNights() !== 1 ? 's' : ''}</span>
-          </div>
+          </motion.div>
         )}
+        </AnimatePresence>
 
         {/* ── Room Cards ──────────────────────────── */}
         {rooms.map((room, index) => (
-          <div key={room.id} className="kov-room-card">
+          <motion.div 
+            key={room.id} 
+            className="kov-room-card"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+          >
 
             {/* Image Gallery */}
             <div className="kov-gallery">
@@ -697,11 +742,16 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
         ))}
 
         {/* ── Nearby Attractions ───────────────────── */}
-        <div className="kov-section">
+        <motion.div 
+          className="kov-section"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
           <div className="kov-section-head">
             <Navigation size={16} className="kov-section-icon" />
             <h3 className="kov-section-title">Explore Nearby</h3>
@@ -719,10 +769,15 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Footer card ──────────────────────────── */}
-        <div className="kov-footer-card">
+        <motion.div 
+          className="kov-footer-card"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
           <iframe
             src="https://www.google.com/maps?q=Kovais+Lodge+A%2FC+Rooms,+097,+SH+15,+Otthakkuthirai,+Gobichettipalayam,+Tamil+Nadu+638455&output=embed"
             width="100%" height="180" style={{ border: 0, display: 'block' }}
@@ -736,7 +791,7 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
               <span>✉️ info@kovaisbeauty.com</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <div className="kov-copyright">© 2024 KOVAIS · All Rights Reserved</div>
       </div>

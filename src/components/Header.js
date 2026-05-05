@@ -300,94 +300,101 @@ function Header({ user, setUser, points, setPoints, url }) {
             </button>
           </div>
 
-          {/* Mobile Hamburger */}
-          <button className="mobile-toggle" onClick={() => setIsDrawerOpen(true)}>
-            <HiMenuAlt3 />
-          </button>
+          {/* Mobile Hamburger - Single button that transforms */}
+<button 
+  className={`mobile-toggle ${isDrawerOpen ? 'open' : ''}`}
+  onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+  aria-label={isDrawerOpen ? "Close menu" : "Open menu"}
+>
+  {isDrawerOpen ? <HiX /> : <HiMenuAlt3 />}
+</button>
 
-        </Container>
-      </Navbar>
+</Container>
+</Navbar>
 
-      {/* ─── SIDE DRAWER (MOBILE) ─── */}
-      <div className={`drawer-overlay ${isDrawerOpen ? 'show' : ''}`} onClick={() => setIsDrawerOpen(false)}></div>
-      <div className={`side-drawer ${isDrawerOpen ? 'open' : ''}`}>
-        <button className="mobile-toggle" style={{ position: 'absolute', top: '2rem', right: '2rem', display: 'block' }} onClick={() => setIsDrawerOpen(false)}>
-          <HiX />
+{/* ─── SIDE DRAWER (MOBILE) - REMOVE the duplicate close button ─── */}
+<div className={`drawer-overlay ${isDrawerOpen ? 'show' : ''}`} onClick={() => setIsDrawerOpen(false)}></div>
+<div className={`side-drawer ${isDrawerOpen ? 'open' : ''}`}>
+  {/* REMOVE THIS ENTIRE LINE - Delete the button with HiX */}
+  {/* <button className="mobile-toggle" style={{ position: 'absolute', top: '2rem', right: '2rem', display: 'block' }} onClick={() => setIsDrawerOpen(false)}>
+    <HiX />
+  </button> */}
+
+  <div className="brand-wrapper mb-5" onClick={() => handleNavigation("/")}>
+    <div className="logo-container" style={{ width: '40px', height: '40px' }}>
+      <img src={logo} alt="Logo" className="brand-logo" />
+    </div>
+    <span className="brand-name" style={{ fontSize: '1.4rem' }}>KOVAIS</span>
+  </div>
+
+  {/* Rest of your drawer content remains the same */}
+  <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/")}>
+    <FaHome className="me-2" /> Home
+  </button>
+  
+  <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/about")}>
+    <FaInfoCircle className="me-2" /> About Us
+  </button>
+
+  {/* Mobile Booking */}
+  <div className="mobile-dropdown-section">
+    <button className={`mobile-dropdown-trigger ${showMobileBooking ? 'active' : ''}`} onClick={() => setShowMobileBooking(!showMobileBooking)}>
+      <span><FaHotel className="me-2" /> Booking</span>
+      <FaChevronDown className="mobile-arrow" />
+    </button>
+    <div className={`mobile-dropdown-content ${showMobileBooking ? 'show' : ''}`}>
+      {bookingItems.map((item, i) => (
+        <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+          <item.icon className="me-2" /> {item.label}
         </button>
+      ))}
+    </div>
+  </div>
 
-        <div className="brand-wrapper mb-5" onClick={() => handleNavigation("/")}>
-          <div className="logo-container" style={{ width: '40px', height: '40px' }}>
-            <img src={logo} alt="Logo" className="brand-logo" />
-          </div>
-          <span className="brand-name" style={{ fontSize: '1.4rem' }}>KOVAIS</span>
-        </div>
-
-        <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/")}>
-          <FaHome className="me-2" /> Home
+  {/* Mobile Info */}
+  <div className="mobile-dropdown-section">
+    <button className={`mobile-dropdown-trigger ${showMobileInfo ? 'active' : ''}`} onClick={() => setShowMobileInfo(!showMobileInfo)}>
+      <span><FaInfoCircle className="me-2" /> Information</span>
+      <FaChevronDown className="mobile-arrow" />
+    </button>
+    <div className={`mobile-dropdown-content ${showMobileInfo ? 'show' : ''}`}>
+      {infoItems.map((item, i) => (
+        <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+          <item.icon className="me-2" /> {item.label}
         </button>
-        
-        <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/about")}>
-          <FaInfoCircle className="me-2" /> About Us
-        </button>
+      ))}
+    </div>
+  </div>
 
-        {/* Mobile Booking */}
-        <div className="mobile-dropdown-section">
-          <button className={`mobile-dropdown-trigger ${showMobileBooking ? 'active' : ''}`} onClick={() => setShowMobileBooking(!showMobileBooking)}>
-            <span><FaHotel className="me-2" /> Booking</span>
-            <FaChevronDown className="mobile-arrow" />
+  {/* Add Profile section if user is logged in */}
+  {user && (
+    <div className="mobile-dropdown-section">
+      <button className={`mobile-dropdown-trigger ${showMobileProfile ? 'active' : ''}`} onClick={() => setShowMobileProfile(!showMobileProfile)}>
+        <span><FaUser className="me-2" /> My Account</span>
+        <FaChevronDown className="mobile-arrow" />
+      </button>
+      <div className={`mobile-dropdown-content ${showMobileProfile ? 'show' : ''}`}>
+        {profileItems.map((item, i) => (
+          <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+            <item.icon className="me-2" /> {item.label}
           </button>
-          <div className={`mobile-dropdown-content ${showMobileBooking ? 'show' : ''}`}>
-            {bookingItems.map((item, i) => (
-              <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                <item.icon className="me-2" /> {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile Info */}
-        <div className="mobile-dropdown-section">
-          <button className={`mobile-dropdown-trigger ${showMobileInfo ? 'active' : ''}`} onClick={() => setShowMobileInfo(!showMobileInfo)}>
-            <span><FaInfoCircle className="me-2" /> Information</span>
-            <FaChevronDown className="mobile-arrow" />
-          </button>
-          <div className={`mobile-dropdown-content ${showMobileInfo ? 'show' : ''}`}>
-            {infoItems.map((item, i) => (
-              <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                <item.icon className="me-2" /> {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {user && (
-          <div className="mobile-dropdown-section">
-            <button className={`mobile-dropdown-trigger ${showMobileProfile ? 'active' : ''}`} onClick={() => setShowMobileProfile(!showMobileProfile)}>
-              <span><FaUser className="me-2" /> My Account</span>
-              <FaChevronDown className="mobile-arrow" />
-            </button>
-            <div className={`mobile-dropdown-content ${showMobileProfile ? 'show' : ''}`}>
-              {profileItems.map((item, i) => (
-                <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                  <item.icon className="me-2" /> {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="mt-auto">
-          {user && (
-            <div className="points-badge mb-4" onClick={() => handleNavigation("/points")}>
-              <img src={emblemUrl || url} alt="Medal" className="points-icon" />
-              <span className="points-text">{points} pts</span>
-            </div>
-          )}
-          <button className={`auth-btn w-100 m-0 ${user ? 'logout' : ''}`} onClick={handleAuthClick}>
-            {user ? 'Logout' : 'Login / Register'}
-          </button>
-        </div>
+        ))}
       </div>
+    </div>
+  )}
+
+  <div className="mt-auto">
+    {user && (
+      <div className="points-badge mb-4" onClick={() => handleNavigation("/points")}>
+        <img src={emblemUrl || url} alt="Medal" className="points-icon" />
+        <span className="points-text">{points} pts</span>
+      </div>
+    )}
+    <button className={`auth-btn w-100 m-0 ${user ? 'logout' : ''}`} onClick={handleAuthClick}>
+      {user ? 'Logout' : 'Login / Register'}
+    </button>
+  </div>
+</div>
 
       {/* ─── AUTH MODAL ─── */}
       <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered className="modern-auth-modal">

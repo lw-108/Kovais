@@ -5,30 +5,50 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ScrollToTop from './ScrollToTop';
 import Header from './components/Header';
 
+// Function to handle lazy loading with retry for ChunkLoadError
+const lazyWithRetry = (componentImport) =>
+  lazy(async () => {
+    const pageHasAlreadyBeenForceRefreshed = JSON.parse(
+      window.sessionStorage.getItem('page-has-been-force-refreshed') || 'false'
+    );
+    try {
+      const component = await componentImport();
+      window.sessionStorage.setItem('page-has-been-force-refreshed', 'false');
+      return component;
+    } catch (error) {
+      if (!pageHasAlreadyBeenForceRefreshed) {
+        window.sessionStorage.setItem('page-has-been-force-refreshed', 'true');
+        window.location.reload();
+        return new Promise(() => {}); // wait for reload indefinitely
+      }
+      throw error;
+    }
+  });
+
 // Lazy load all route components for code splitting
-const Barber = lazy(() => import('./barber/barber'));
-const Spa = lazy(() => import('./spa/spa'));
-const Parlour = lazy(() => import('./parlour/parlour'));
-const Hotel = lazy(() => import('./RoomSearch/RoomSearch'));
-const SearchResults = lazy(() => import('./RoomSearch/SearchResults'));
-const Gym = lazy(() => import('./gym/gym'));
-const Signup = lazy(() => import('./components/Signup'));
-const Login = lazy(() => import('./components/Login'));
-const Home = lazy(() => import('./components/Home'));
-const About = lazy(() => import('./components/About/About'));
-const Profile = lazy(() => import('./components/Profile'));
-const ServiceInfo = lazy(() => import('./barber/ServiceInfo'));
-const Contact = lazy(() => import('./components/Contact'));
-const BookedOrders = lazy(() => import('./components/BookedOrders'));
-const History = lazy(() => import('./components/History'));
-const Funeral = lazy(() => import('./Funeral/Funeral'));
-const Function = lazy(() => import('./Function/Function'));
-const Form = lazy(() => import('./components/Form'));
-const TermsAndConditions = lazy(() => import('./components/TermsConditions'));
-const PrivacyPolicy = lazy(() => import('./components/PrivacyAndPolicy'));
-const Refund = lazy(() => import('./components/Refund'));
-const Points = lazy(() => import('./components/Points'));
-const Gallery = lazy(() => import('./components/Gallery/Gallery'));
+const Barber = lazyWithRetry(() => import('./barber/barber'));
+const Spa = lazyWithRetry(() => import('./spa/spa'));
+const Parlour = lazyWithRetry(() => import('./parlour/parlour'));
+const Hotel = lazyWithRetry(() => import('./RoomSearch/RoomSearch'));
+const SearchResults = lazyWithRetry(() => import('./RoomSearch/SearchResults'));
+const Gym = lazyWithRetry(() => import('./gym/gym'));
+const Signup = lazyWithRetry(() => import('./components/Signup'));
+const Login = lazyWithRetry(() => import('./components/Login'));
+const Home = lazyWithRetry(() => import('./components/Home'));
+const About = lazyWithRetry(() => import('./components/About/About'));
+const Profile = lazyWithRetry(() => import('./components/Profile'));
+const ServiceInfo = lazyWithRetry(() => import('./barber/ServiceInfo'));
+const Contact = lazyWithRetry(() => import('./components/Contact'));
+const BookedOrders = lazyWithRetry(() => import('./components/BookedOrders'));
+const History = lazyWithRetry(() => import('./components/History'));
+const Funeral = lazyWithRetry(() => import('./Funeral/Funeral'));
+const Function = lazyWithRetry(() => import('./Function/Function'));
+const Form = lazyWithRetry(() => import('./components/Form'));
+const TermsAndConditions = lazyWithRetry(() => import('./components/TermsConditions'));
+const PrivacyPolicy = lazyWithRetry(() => import('./components/PrivacyAndPolicy'));
+const Refund = lazyWithRetry(() => import('./components/Refund'));
+const Points = lazyWithRetry(() => import('./components/Points'));
+const Gallery = lazyWithRetry(() => import('./components/Gallery/Gallery'));
 
 
 const App = () => {
