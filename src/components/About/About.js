@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -20,8 +21,7 @@ import {
 function useCounter(target, isFloat = false, duration = 2000) {
   const [count, setCount] = useState(0);
   const [started, setStarted] = useState(false);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   useEffect(() => {
     if (inView && !started) {
@@ -61,7 +61,7 @@ function StatItem({ value, suffix, label, icon, isFloat = false }) {
 
 function About() {
   const services = [
-    { img: hotel, title: "Luxury AC Room", description: "Experience world-class hospitality with premium AC rooms, offering unmatched comfort, elegant interiors, and a tranquil ambiance for your perfect stay.", number: "01" },
+    { img: spa, title: "Luxury AC Room", description: "Experience world-class hospitality with premium AC rooms, offering unmatched comfort, elegant interiors, and a tranquil ambiance for your perfect stay.", number: "01" },
     { img: spa, title: "Relaxing Spa", description: "Rejuvenate your body and mind with our expert spa treatments, crafted to deliver deep relaxation and holistic wellness.", number: "02" },
     { img: gym, title: "Modern Gym", description: "Train with state-of-the-art equipment in our fully-equipped modern gym, designed to help you achieve your fitness goals.", number: "03" },
     { img: barber, title: "Premium Salon", description: "Get styled by expert professionals in our premium salon, offering trending haircuts, grooming, and beauty services.", number: "04" },
