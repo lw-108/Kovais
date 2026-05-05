@@ -94,7 +94,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
   // Hero Slides
   const slides = [
     {
-      title: "Premium Barber Experience",
+      title: "Premium Experience",
       subtitle: "Crafting Confidence Since 1995",
       description: "Experience the finest in traditional barbering with modern techniques. Our master barbers deliver precision cuts and luxurious grooming services.",
       image: "https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg",
@@ -436,6 +436,21 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
     setAmount(calculateTotal());
   }, [booking.services, booking.location]);
 
+  // Pre-fill customer info for logged-in users
+  useEffect(() => {
+    if (user) {
+      setBooking(prev => ({
+        ...prev,
+        customerInfo: {
+          ...prev.customerInfo,
+          name: user.username || user.name || '',
+          phone: user.phone_number || user.phone || '',
+          email: user.email || ''
+        }
+      }));
+    }
+  }, [user]);
+
   const calculateTotal = () => {
     const serviceTotal = booking.services.reduce((sum, service) => sum + service.price, 0);
     const doorstepCharge = booking.location === 'doorstep' ? 250 : 0;
@@ -449,6 +464,15 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
       case 1: return booking.employee !== null;
       case 2: return booking.date !== '' && booking.time !== null;
       case 3:
+        // For logged-in users, step 3 is the confirmation step (no details needed)
+        if (user) {
+          // For doorstep services, require address
+          if (booking.location === 'doorstep') {
+            return booking.customerInfo.address && booking.customerInfo.address.trim() !== '';
+          }
+          return true; // Salon services don't need additional validation
+        }
+        // For non-logged-in users, validate customer details
         const isPhoneValid = booking.customerInfo.phone && /^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) && booking.customerInfo.phone.replace(/[^\d]/g, '').length >= 10;
         const isEmailValid = booking.customerInfo.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email);
         return booking.customerInfo.name && isPhoneValid && isEmailValid;
@@ -457,7 +481,8 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
   };
 
   const nextStep = () => {
-    if (currentStep < 4 && isStepValid(currentStep)) {
+    const maxStep = user ? 3 : 4; // Logged-in users skip to step 4 (confirmation)
+    if (currentStep < maxStep && isStepValid(currentStep)) {
       setShowErrors(false);
       setCurrentStep(prev => prev + 1);
     }
@@ -489,7 +514,12 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
     return slotTime <= today;
   };
 
-  const stepConfig = [
+  const stepConfig = user ? [
+    { number: 1, title: 'Select Service', icon: User },
+    { number: 2, title: 'Choose Specialist', icon: Star },
+    { number: 3, title: 'Choose Date & Time', icon: CalendarIcon },
+    { number: 4, title: 'Booking Confirmation', icon: CheckCircle }
+  ] : [
     { number: 1, title: 'Select Service', icon: User },
     { number: 2, title: 'Choose Specialist', icon: Star },
     { number: 3, title: 'Choose Date & Time', icon: CalendarIcon },
@@ -1980,79 +2010,130 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                           exit={{ opacity: 0, x: -50 }}
                         >
                           <h4 className="fw-semibold mb-5" style={{ color: '#000' }}>
-                            Your Details
+                            {user ? (booking.location === 'doorstep' ? 'Doorstep Service Details' : 'Booking Confirmation') : 'Your Details'}
                           </h4>
-                          <div className="row g-4 mb-5">
-                            <div className="col-md-6">
-                              <label htmlFor="name" className="form-label fw-medium" style={{ color: '#495057' }}>Full Name <span style={{color: '#daa520'}}>*</span></label>
-                              <input
-                                id="name"
-                                type="text"
-                                className={`form-control shadow-sm ${showErrors && !booking.customerInfo.name ? 'is-invalid' : ''}`}
-                                value={booking.customerInfo.name}
-                                onChange={(e) => setBooking(prev => ({
-                                  ...prev,
-                                  customerInfo: { ...prev.customerInfo, name: e.target.value }
-                                }))}
-                                placeholder="Enter your full name"
-                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
-                              />
-                              {showErrors && !booking.customerInfo.name && (
-                                <div className="invalid-feedback">Please enter your name.</div>
-                              )}
+                          
+                          {!user ? (
+                            // Non-logged-in users: Full details form
+                            <div className="row g-4 mb-5">
+                              <div className="col-md-6">
+                                <label htmlFor="name" className="form-label fw-medium" style={{ color: '#495057' }}>Full Name <span style={{color: '#daa520'}}>*</span></label>
+                                <input
+                                  id="name"
+                                  type="text"
+                                  className={`form-control shadow-sm ${showErrors && !booking.customerInfo.name ? 'is-invalid' : ''}`}
+                                  value={booking.customerInfo.name}
+                                  onChange={(e) => setBooking(prev => ({
+                                    ...prev,
+                                    customerInfo: { ...prev.customerInfo, name: e.target.value }
+                                  }))}
+                                  placeholder="Enter your full name"
+                                  style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
+                                />
+                                {showErrors && !booking.customerInfo.name && (
+                                  <div className="invalid-feedback">Please enter your name.</div>
+                                )}
+                              </div>
+                              <div className="col-md-6">
+                                <label htmlFor="phone" className="form-label fw-medium" style={{ color: '#495057' }}>Phone Number <span style={{color: '#daa520'}}>*</span></label>
+                                <input
+                                  id="phone"
+                                  type="tel"
+                                  className={`form-control shadow-sm ${showErrors && (!booking.customerInfo.phone || !/^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) || booking.customerInfo.phone.replace(/[^\d]/g, '').length < 10) ? 'is-invalid' : ''}`}
+                                  value={booking.customerInfo.phone}
+                                  onChange={(e) => setBooking(prev => ({
+                                    ...prev,
+                                    customerInfo: { ...prev.customerInfo, phone: e.target.value }
+                                  }))}
+                                  placeholder="Enter your phone number"
+                                  style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
+                                />
+                                {showErrors && (!booking.customerInfo.phone || !/^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) || booking.customerInfo.phone.replace(/[^\d]/g, '').length < 10) && (
+                                  <div className="invalid-feedback">Please enter a valid phone number.</div>
+                                )}
+                              </div>
+                              <div className="col-12">
+                                <label htmlFor="email" className="form-label fw-medium" style={{ color: '#495057' }}>Email Address <span style={{color: '#daa520'}}>*</span></label>
+                                <input
+                                  id="email"
+                                  type="email"
+                                  className={`form-control shadow-sm ${showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) ? 'is-invalid' : ''}`}
+                                  value={booking.customerInfo.email}
+                                  onChange={(e) => setBooking(prev => ({
+                                    ...prev,
+                                    customerInfo: { ...prev.customerInfo, email: e.target.value }
+                                  }))}
+                                  placeholder="Enter your email address"
+                                  style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
+                                />
+                                {showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) && (
+                                  <div className="invalid-feedback">Please enter a valid email address.</div>
+                                )}
+                              </div>
+                              <div className="col-12">
+                                <label htmlFor="notes" className="form-label fw-medium" style={{ color: '#495057' }}>Special Notes (Optional)</label>
+                                <textarea
+                                  id="notes"
+                                  className="form-control shadow-sm"
+                                  rows="3"
+                                  value={booking.customerInfo.notes}
+                                  onChange={(e) => setBooking(prev => ({
+                                    ...prev,
+                                    customerInfo: { ...prev.customerInfo, notes: e.target.value }
+                                  }))}
+                                  placeholder="Any special requests or notes..."
+                                  style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
+                                />
+                              </div>
                             </div>
-                            <div className="col-md-6">
-                              <label htmlFor="phone" className="form-label fw-medium" style={{ color: '#495057' }}>Phone Number <span style={{color: '#daa520'}}>*</span></label>
-                              <input
-                                id="phone"
-                                type="tel"
-                                className={`form-control shadow-sm ${showErrors && (!booking.customerInfo.phone || !/^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) || booking.customerInfo.phone.replace(/[^\d]/g, '').length < 10) ? 'is-invalid' : ''}`}
-                                value={booking.customerInfo.phone}
-                                onChange={(e) => setBooking(prev => ({
-                                  ...prev,
-                                  customerInfo: { ...prev.customerInfo, phone: e.target.value }
-                                }))}
-                                placeholder="Enter your phone number"
-                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
-                              />
-                              {showErrors && (!booking.customerInfo.phone || !/^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) || booking.customerInfo.phone.replace(/[^\d]/g, '').length < 10) && (
-                                <div className="invalid-feedback">Please enter a valid phone number.</div>
-                              )}
-                            </div>
-                            <div className="col-12">
-                              <label htmlFor="email" className="form-label fw-medium" style={{ color: '#495057' }}>Email Address <span style={{color: '#daa520'}}>*</span></label>
-                              <input
-                                id="email"
-                                type="email"
-                                className={`form-control shadow-sm ${showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) ? 'is-invalid' : ''}`}
-                                value={booking.customerInfo.email}
-                                onChange={(e) => setBooking(prev => ({
-                                  ...prev,
-                                  customerInfo: { ...prev.customerInfo, email: e.target.value }
-                                }))}
-                                placeholder="Enter your email address"
-                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
-                              />
-                              {showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) && (
-                                <div className="invalid-feedback">Please enter a valid email address.</div>
-                              )}
-                            </div>
-                            <div className="col-12">
-                              <label htmlFor="notes" className="form-label fw-medium" style={{ color: '#495057' }}>Special Notes (Optional)</label>
-                              <textarea
-                                id="notes"
-                                className="form-control shadow-sm"
-                                rows="3"
-                                value={booking.customerInfo.notes}
-                                onChange={(e) => setBooking(prev => ({
-                                  ...prev,
-                                  customerInfo: { ...prev.customerInfo, notes: e.target.value }
-                                }))}
-                                placeholder="Any special requests or notes..."
-                                style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
-                              />
-                            </div>
-                          </div>
+                          ) : (
+                            // Logged-in users: Only show doorstep address if needed
+                            booking.location === 'doorstep' && (
+                              <div className="row g-4 mb-5">
+                                <div className="col-12">
+                                  <label htmlFor="address" className="form-label fw-medium" style={{ color: '#495057' }}>
+                                    Service Address <span style={{color: '#daa520'}}>*</span>
+                                  </label>
+                                  <textarea
+                                    id="address"
+                                    className={`form-control shadow-sm ${showErrors && !booking.customerInfo.address ? 'is-invalid' : ''}`}
+                                    value={booking.customerInfo.address || ''}
+                                    onChange={(e) => setBooking(prev => ({
+                                      ...prev,
+                                      customerInfo: { ...prev.customerInfo, address: e.target.value }
+                                    }))}
+                                    placeholder="Enter your complete address for doorstep service"
+                                    rows="3"
+                                    style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
+                                  />
+                                  {showErrors && !booking.customerInfo.address && (
+                                    <div className="invalid-feedback">Please enter your service address.</div>
+                                  )}
+                                  <small className="text-muted d-block mt-2">
+                                    <MapPin size={14} className="me-1" />
+                                    Our specialist will visit this address for your appointment
+                                  </small>
+                                </div>
+                                <div className="col-12">
+                                  <label htmlFor="doorstep-notes" className="form-label fw-medium" style={{ color: '#495057' }}>
+                                    Special Instructions (Optional)
+                                  </label>
+                                  <textarea
+                                    id="doorstep-notes"
+                                    className="form-control shadow-sm"
+                                    value={booking.customerInfo.notes || ''}
+                                    onChange={(e) => setBooking(prev => ({
+                                      ...prev,
+                                      customerInfo: { ...prev.customerInfo, notes: e.target.value }
+                                    }))}
+                                    placeholder="Any landmarks, special instructions for finding your location..."
+                                    rows="2"
+                                    style={{ padding: '12px 16px', borderRadius: '12px', border: '1px solid #dee2e6' }}
+                                  />
+                                </div>
+                              </div>
+                            )
+                          )}
                           <div className="d-flex justify-content-between mt-5 pt-4 border-top">
                             <button 
                               onClick={prevStep} 
@@ -2065,7 +2146,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                               onClick={() => {
                                 if (isStepValid(3)) {
                                   setShowErrors(false);
-                                  nextStep();
+                                  handlePayment();
                                 } else {
                                   setShowErrors(true);
                                 }
@@ -2073,7 +2154,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                               className="btn px-5 py-2 fw-semibold text-white rounded-pill shadow-sm"
                               style={{ backgroundColor: '#daa520', border: 'none' }}
                             >
-                              Review Booking
+                              Proceed
                             </button>
                           </div>
                         </motion.div>

@@ -58,7 +58,7 @@ const DateCalendar = ({ isOpen, onClose, onDateSelect, selectedDate, position })
           {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => <span key={d}>{d}</span>)}
         </div>
         <div className="kov-cal-grid">
-          {[...Array(firstDayOfMonth)].map((_,i) => <div key={`e${i}`}/>)}
+          {[...Array(firstDayOfMonth)].map((_,i) => <div key={`e${i}`} className="kov-cal-empty"/>)}
           {[...Array(daysInMonth)].map((_,i) => {
             const day = i + 1;
             const date = new Date(currentYear, currentMonth, day);
@@ -554,19 +554,7 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
                   </button>
                 </div>
 
-                {/* Image nav arrows */}
-                {(currentImageIndex[room.id] || 0) > 0 && (
-                  <button className="kov-img-arrow left" onClick={() => setCurrentImageIndex(p => ({ ...p, [room.id]: (p[room.id] || 0) - 1 }))}>
-                    <ChevronLeft size={16} />
-                  </button>
-                )}
-                {(currentImageIndex[room.id] || 0) < room.images.length - 1 && (
-                  <button className="kov-img-arrow right" onClick={() => setCurrentImageIndex(p => ({ ...p, [room.id]: (p[room.id] || 0) + 1 }))}>
-                    <ChevronRight size={16} />
-                  </button>
-                )}
-
-                {/* Counter */}
+                {/* Image counter */}
                 <div className="kov-img-counter">{(currentImageIndex[room.id] || 0) + 1}/{room.images.length}</div>
               </div>
 
@@ -574,11 +562,21 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
               <div className="kov-thumbs">
                 {room.images.map((img, i) => (
                   <img
-                    key={i} src={img} alt=""
+                    key={i} src={img} alt={`Thumbnail ${i + 1}`}
                     className={`kov-thumb ${(currentImageIndex[room.id] || 0) === i ? 'active' : ''}`}
                     onClick={() => setCurrentImageIndex(p => ({ ...p, [room.id]: i }))}
                   />
                 ))}
+              </div>
+
+              {/* Tour and Reviews buttons under gallery on desktop */}
+              <div className="kov-gallery-actions">
+                <button className="kov-btn-outline" onClick={() => handleVirtualTour(room)}>
+                  <Camera size={14} /> Tour
+                </button>
+                <button className="kov-btn-outline" onClick={() => setShowReviewModal(true)}>
+                  <MessageCircle size={14} /> Reviews
+                </button>
               </div>
             </div>
 
@@ -628,7 +626,7 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
                   <div className="kov-counter">
                     <button className="kov-cnt-btn" onClick={() => decrementRoom(index)} disabled={roomCounts[index] <= 1}>−</button>
                     <span className="kov-cnt-num">{roomCounts[index]}</span>
-                    <button className="kov-cnt-btn" onClick={() => incrementRoom(index)} disabled={roomCounts[index] >= (availableRooms || 10)}>+</button>
+                    <button className="kov-cnt-btn" onClick={() => incrementRoom(index)} disabled={roomCounts[index] >= (availableRooms || 100)}>+</button>
                   </div>
                   <span className="kov-avail-note">of {availableRooms} left</span>
                 </div>
@@ -640,6 +638,7 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
                     <span className="kov-cnt-num">{guestCounts[index]}</span>
                     <button className="kov-cnt-btn" onClick={() => incrementGuest(index)} disabled={guestCounts[index] >= roomCounts[index] * 3}>+</button>
                   </div>
+                  <span className="kov-avail-note">&nbsp;</span>
                 </div>
 
                 <div className="kov-total-block">
@@ -727,6 +726,7 @@ const SearchResults = ({ user, setUser, setAadhar, aadhar, setPoints, points }) 
             src="https://www.google.com/maps?q=Kovais+Lodge+A%2FC+Rooms,+097,+SH+15,+Otthakkuthirai,+Gobichettipalayam,+Tamil+Nadu+638455&output=embed"
             width="100%" height="180" style={{ border: 0, display: 'block' }}
             allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
+            title="Kovais Hotel Location"
           />
           <div className="kov-footer-info">
             <h4 className="kov-footer-name">Kovais (AC) Hotel</h4>

@@ -40,14 +40,14 @@
           height: 120px;
           border-radius: 50%;
           object-fit: cover;
-          border: 3px solid #007bff;
+          border: 3px solid #856404;
         }
 
         .upload-overlay {
           position: absolute;
           bottom: 0;
           right: 0;
-          background-color: #007bff;
+          background-color: #856404;
           color: white;
           width: 36px;
           height: 36px;
@@ -61,7 +61,7 @@
         }
 
         .upload-overlay:hover {
-          background-color: #0056b3;
+          background-color: #856404;
         }
 
         .profile-title {
@@ -116,7 +116,7 @@
         .form-select:focus,
         .form-textarea:focus {
           outline: none;
-          border-color: #007bff;
+          border-color: #856404;
         }
 
         .form-input:disabled {
@@ -150,13 +150,13 @@
         }
 
         .file-upload-area:hover {
-          border-color: #007bff;
+          border-color: #856404;
         }
 
         .file-label {
           display: inline-block;
           padding: 8px 20px;
-          background-color: #007bff;
+          background-color: #856404;
           color: white;
           border-radius: 4px;
           cursor: pointer;
@@ -165,7 +165,7 @@
         }
 
         .file-label:hover {
-          background-color: #0056b3;
+          background-color: #856404;
         }
 
         .file-info {

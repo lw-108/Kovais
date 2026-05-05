@@ -1,0 +1,980 @@
+/* ConfirmationPage.css - White Background, Black Text, Primary Color Icons */
+/* Pops up above all sections, no hidden bounds, fully responsive */
+
+/* ==========================================
+   VARIABLES & ROOT STYLES
+   ========================================== */
+:root {
+  --conf-primary: #A07830;
+  --conf-primary-dark: #8B6918;
+  --conf-primary-light: #C4A265;
+  --conf-primary-soft: rgba(160, 120, 48, 0.06);
+  --conf-primary-glow: rgba(160, 120, 48, 0.1);
+  --conf-primary-medium: rgba(160, 120, 48, 0.2);
+  --conf-white: #ffffff;
+  --conf-off-white: #FAFAFA;
+  --conf-text-dark: #1a1a1a;
+  --conf-text-black: #000000;
+  --conf-text-soft: #4a4a4a;
+  --conf-text-muted: #6b7280;
+  --conf-border: #E5E5E5;
+  --conf-border-light: #F0F0F0;
+  --conf-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --conf-shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+  --conf-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+  --conf-shadow-xl: 0 25px 80px rgba(0, 0, 0, 0.2);
+  --conf-radius-sm: 8px;
+  --conf-radius-md: 12px;
+  --conf-radius-lg: 20px;
+  --conf-radius-xl: 24px;
+  --conf-z-index: 99999;
+}
+
+/* ==========================================
+   OVERLAY - Full screen above everything
+   ========================================== */
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--conf-z-index);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ==========================================
+   MODAL WRAPPER
+   ========================================== */
+.confirmation-modal-wrapper {
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+  position: relative;
+  z-index: calc(var(--conf-z-index) + 1);
+}
+
+/* ==========================================
+   CONFIRMATION CARD
+   ========================================== */
+.confirmation-card {
+  background: var(--conf-white);
+  border-radius: var(--conf-radius-xl);
+  box-shadow: var(--conf-shadow-xl);
+  position: relative;
+  overflow: visible;
+  width: 100%;
+}
+
+/* ==========================================
+   CLOSE BUTTON
+   ========================================== */
+.close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--conf-off-white);
+  border: 1px solid var(--conf-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  color: var(--conf-text-muted);
+}
+
+.close-button:hover {
+  background: #f0f0f0;
+  color: var(--conf-text-dark);
+  transform: rotate(90deg);
+}
+
+/* ==========================================
+   CONFIRMATION CONTAINER
+   ========================================== */
+.confirmation-container {
+  padding: 40px 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================
+   FLOATING CELEBRATION ELEMENTS
+   ========================================== */
+.floating-elements {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-element {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--conf-primary);
+  opacity: 0.2;
+}
+
+/* ==========================================
+   SUCCESS ICON
+   ========================================== */
+.success-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.success-icon-outer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-icon-inner {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C4A265 0%, #A07830 50%, #8B6918 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 12px 30px rgba(160, 120, 48, 0.4),
+    0 0 0 8px var(--conf-primary-glow),
+    0 0 0 16px var(--conf-primary-soft);
+  position: relative;
+  z-index: 2;
+}
+
+.success-ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid var(--conf-primary-medium);
+  animation: ripple 2s ease-out infinite;
+}
+
+@keyframes ripple {
+  0% {
+    width: 100px;
+    height: 100px;
+    opacity: 1;
+  }
+  100% {
+    width: 160px;
+    height: 160px;
+    opacity: 0;
+  }
+}
+
+/* ==========================================
+   HEADING SECTION
+   ========================================== */
+.heading-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.confirmation-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--conf-text-black);
+  margin-bottom: 8px;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.confirmation-subtitle {
+  color: var(--conf-text-muted);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==========================================
+   BOOKING DETAILS CARD
+   ========================================== */
+.booking-details-card {
+  background: var(--conf-white);
+  border-radius: var(--conf-radius-lg);
+  border: 1px solid var(--conf-border);
+  box-shadow: var(--conf-shadow-sm);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 32px;
+}
+
+.card-header-decoration {
+  height: 4px;
+  background: linear-gradient(90deg, 
+    var(--conf-primary-light) 0%, 
+    var(--conf-primary) 50%, 
+    var(--conf-primary-dark) 100%
+  );
+}
+
+.card-content {
+  padding: 20px;
+}
+
+/* Detail Items */
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--conf-border-light);
+  transition: all 0.2s ease;
+  border-radius: var(--conf-radius-sm);
+  cursor: default;
+}
+
+.detail-item:last-of-type {
+  border-bottom: none;
+}
+
+.detail-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--conf-primary-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--conf-primary);
+  flex-shrink: 0;
+}
+
+.detail-info {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-label {
+  color: var(--conf-text-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.detail-value {
+  color: var(--conf-text-black);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.detail-value.highlight {
+  color: var(--conf-primary);
+  font-weight: 700;
+  background: var(--conf-primary-soft);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(160, 120, 48, 0.15);
+  font-size: 0.8rem;
+}
+
+.detail-value.price {
+  color: var(--conf-text-black);
+  font-weight: 700;
+}
+
+/* Total Section */
+.total-section {
+  background: var(--conf-off-white);
+  border-radius: var(--conf-radius-sm);
+  padding: 16px !important;
+  margin: 12px 0;
+  border: 1.5px solid var(--conf-border);
+}
+
+.total-section .detail-info {
+  padding: 0;
+}
+
+.total-label {
+  font-weight: 700 !important;
+  color: var(--conf-text-black) !important;
+  font-size: 0.95rem !important;
+}
+
+.total-price {
+  font-size: 1.3rem !important;
+  font-weight: 800 !important;
+  color: var(--conf-primary) !important;
+}
+
+/* Payment & Status Row */
+.payment-status-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.payment-method-item,
+.status-badge-item {
+  background: var(--conf-off-white);
+  border-radius: var(--conf-radius-sm);
+  padding: 12px;
+  border: 1px solid var(--conf-border);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.payment-label {
+  color: var(--conf-text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.payment-value {
+  color: var(--conf-text-black);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.status-value {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--conf-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* ==========================================
+   ACTION SECTION
+   ========================================== */
+.action-section {
+  text-align: center;
+}
+
+.done-button {
+  width: 100%;
+  padding: 15px 24px;
+  background: linear-gradient(135deg, #C4A265 0%, #A07830 50%, #8B6918 100%);
+  color: white;
+  border: none;
+  border-radius: var(--conf-radius-md);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(160, 120, 48, 0.3);
+  letter-spacing: 0.3px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.done-button:hover {
+  box-shadow: 0 8px 25px rgba(160, 120, 48, 0.4);
+}
+
+.done-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 10px rgba(160, 120, 48, 0.3);
+}
+
+.done-button:focus {
+  outline: 2px solid var(--conf-primary);
+  outline-offset: 2px;
+}
+
+.confirmation-note {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: var(--conf-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.inline-icon {
+  color: var(--conf-primary);
+  flex-shrink: 0;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+  .confirmation-modal-wrapper {
+    max-width: 540px;
+  }
+  
+  .confirmation-container {
+    padding: 48px 40px;
+  }
+  
+  .confirmation-title {
+    font-size: 2rem;
+  }
+}
+
+/* Desktop (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .confirmation-modal-wrapper {
+    max-width: 520px;
+  }
+  
+  .confirmation-container {
+    padding: 44px 36px;
+  }
+}
+
+/* Tablet Landscape (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .confirmation-modal-wrapper {
+    max-width: 480px;
+  }
+  
+  .confirmation-container {
+    padding: 36px 28px;
+  }
+  
+  .confirmation-title {
+    font-size: 1.75rem;
+  }
+  
+  .success-icon-inner {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .success-icon-outer {
+    width: 110px;
+    height: 110px;
+  }
+  
+  @keyframes ripple {
+    0% {
+      width: 90px;
+      height: 90px;
+      opacity: 1;
+    }
+    100% {
+      width: 140px;
+      height: 140px;
+      opacity: 0;
+    }
+  }
+}
+
+/* Tablet Portrait / Large Mobile (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .confirmation-overlay {
+    padding: 20px;
+    align-items: flex-start;
+  }
+  
+  .confirmation-modal-wrapper {
+    max-width: 100%;
+    margin: 20px auto;
+  }
+  
+  .confirmation-container {
+    padding: 32px 24px;
+  }
+  
+  .confirmation-title {
+    font-size: 1.65rem;
+  }
+  
+  .success-icon-inner {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .success-icon-outer {
+    width: 100px;
+    height: 100px;
+  }
+  
+  @keyframes ripple {
+    0% {
+      width: 80px;
+      height: 80px;
+      opacity: 1;
+    }
+    100% {
+      width: 130px;
+      height: 130px;
+      opacity: 0;
+    }
+  }
+  
+  .card-content {
+    padding: 16px;
+  }
+  
+  .detail-item {
+    padding: 12px 0;
+  }
+}
+
+/* Mobile (480px - 575px) */
+@media (max-width: 575px) {
+  .confirmation-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  
+  .confirmation-modal-wrapper {
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .confirmation-card {
+    border-radius: 20px 20px 0 0;
+  }
+  
+  .confirmation-container {
+    padding: 28px 20px;
+  }
+  
+  .confirmation-title {
+    font-size: 1.5rem;
+  }
+  
+  .confirmation-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .success-icon-inner {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .success-icon-outer {
+    width: 95px;
+    height: 95px;
+  }
+  
+  .success-icon-wrapper {
+    margin-bottom: 22px;
+  }
+  
+  @keyframes ripple {
+    0% {
+      width: 75px;
+      height: 75px;
+      opacity: 1;
+    }
+    100% {
+      width: 120px;
+      height: 120px;
+      opacity: 0;
+    }
+  }
+  
+  .heading-section {
+    margin-bottom: 20px;
+  }
+  
+  .card-content {
+    padding: 14px;
+  }
+  
+  .detail-item {
+    padding: 10px 0;
+    gap: 10px;
+  }
+  
+  .detail-icon {
+    width: 34px;
+    height: 34px;
+  }
+  
+  .detail-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .detail-label {
+    font-size: 0.8rem;
+  }
+  
+  .detail-value {
+    font-size: 0.85rem;
+  }
+  
+  .total-price {
+    font-size: 1.15rem !important;
+  }
+  
+  .payment-status-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .done-button {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+  
+  .floating-elements {
+    display: none;
+  }
+  
+  .close-button {
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Extra Small Mobile (320px - 479px) */
+@media (max-width: 479px) {
+  .confirmation-container {
+    padding: 24px 16px;
+  }
+  
+  .confirmation-title {
+    font-size: 1.35rem;
+  }
+  
+  .confirmation-subtitle {
+    font-size: 0.8rem;
+  }
+  
+  .success-icon-inner {
+    width: 65px;
+    height: 65px;
+  }
+  
+  .success-icon-outer {
+    width: 85px;
+    height: 85px;
+  }
+  
+  @keyframes ripple {
+    0% {
+      width: 65px;
+      height: 65px;
+      opacity: 1;
+    }
+    100% {
+      width: 105px;
+      height: 105px;
+      opacity: 0;
+    }
+  }
+  
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 10px 0;
+  }
+  
+  .detail-info {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .detail-value {
+    text-align: right;
+  }
+  
+  .detail-icon {
+    margin-bottom: 2px;
+  }
+  
+  .done-button {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .confirmation-note {
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+  
+  .close-button {
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .close-button svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Landscape Mode for Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .confirmation-overlay {
+    align-items: flex-start;
+    padding: 10px;
+  }
+  
+  .confirmation-modal-wrapper {
+    max-height: 95vh;
+    overflow-y: auto;
+    margin: 10px auto;
+  }
+  
+  .confirmation-container {
+    padding: 20px 16px;
+  }
+  
+  .success-icon-wrapper {
+    margin-bottom: 14px;
+  }
+  
+  .success-icon-inner {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .success-icon-outer {
+    width: 75px;
+    height: 75px;
+  }
+  
+  @keyframes ripple {
+    0% {
+      width: 55px;
+      height: 55px;
+      opacity: 1;
+    }
+    100% {
+      width: 95px;
+      height: 95px;
+      opacity: 0;
+    }
+  }
+  
+  .confirmation-title {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+  }
+  
+  .confirmation-subtitle {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+  }
+  
+  .heading-section {
+    margin-bottom: 14px;
+  }
+  
+  .booking-details-card {
+    margin-bottom: 16px;
+  }
+  
+  .card-content {
+    padding: 10px;
+  }
+  
+  .detail-item {
+    padding: 6px 0;
+  }
+  
+  .total-section {
+    padding: 10px !important;
+    margin: 6px 0;
+  }
+  
+  .payment-status-row {
+    margin-top: 6px;
+    gap: 6px;
+  }
+  
+  .done-button {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .confirmation-note {
+    margin-top: 10px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .confirmation-card {
+    background: #1a1a1a;
+  }
+  
+  .confirmation-title {
+    color: #ffffff;
+  }
+  
+  .confirmation-subtitle {
+    color: #a0a0a0;
+  }
+  
+  .booking-details-card {
+    background: #242424;
+    border-color: #333333;
+  }
+  
+  .detail-label {
+    color: #a0a0a0;
+  }
+  
+  .detail-value {
+    color: #ffffff;
+  }
+  
+  .detail-value.price {
+    color: #ffffff;
+  }
+  
+  .detail-item {
+    border-bottom-color: #2a2a2a;
+  }
+  
+  .detail-icon {
+    background: rgba(160, 120, 48, 0.15);
+    color: #C4A265;
+  }
+  
+  .total-section {
+    background: #1e1e1e;
+    border-color: #333333;
+  }
+  
+  .total-label {
+    color: #ffffff !important;
+  }
+  
+  .payment-method-item,
+  .status-badge-item {
+    background: #1e1e1e;
+    border-color: #333333;
+  }
+  
+  .payment-value {
+    color: #ffffff;
+  }
+  
+  .confirmation-note {
+    color: #a0a0a0;
+  }
+  
+  .close-button {
+    background: #2a2a2a;
+    border-color: #333333;
+    color: #a0a0a0;
+  }
+  
+  .close-button:hover {
+    background: #333333;
+    color: #ffffff;
+  }
+  
+  .card-content {
+    background: #242424;
+  }
+}
+
+/* High DPI Screens (Retina) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .confirmation-title {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Reduced Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .success-ripple {
+    animation: none;
+  }
+  
+  .floating-element {
+    animation: none;
+    display: none;
+  }
+  
+  .done-button {
+    transition: none;
+  }
+  
+  .detail-item {
+    transition: none;
+  }
+  
+  .close-button {
+    transition: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .confirmation-overlay {
+    position: static;
+    background: white;
+    backdrop-filter: none;
+    padding: 0;
+  }
+  
+  .confirmation-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+  
+  .floating-elements,
+  .success-ripple,
+  .done-button,
+  .close-button {
+    display: none !important;
+  }
+  
+  .confirmation-container {
+    padding: 20px;
+  }
+}

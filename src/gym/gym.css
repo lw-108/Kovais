@@ -1,1541 +1,653 @@
-/* Gym Website CSS */
-/* === KOVAIS SHARED THEME === */
-@import '../styles/booking-theme.css';
+/* Gym.css - Elegant & Clean Styling */
 
-/* Root Variables — overridden to Gold palette */
+/* Root Variables */
 :root {
-  --primary-color:    #daa520;
-  --secondary-color:  #b8860b;
-  --success-color:    #28a745;
-  --warning-color:    #f0c040;
-  --danger-color:     #daa520;
-  --dark-color:       #2c2010;
-  --light-color:      #faf8f5;
-  --white:            #ffffff;
-  --black:            #1a1000;
-  --gradient-primary: linear-gradient(135deg, #f0c040 0%, #daa520 50%, #b8860b 100%);
-  --gradient-secondary: linear-gradient(135deg, #fdf9f3 0%, #f5f0e8 100%);
-  --box-shadow:       0 10px 30px rgba(184, 134, 11, 0.12);
-  --transition:       all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  --transition-fast:   all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-spring:       cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --ease-smooth:       cubic-bezier(0.23, 1, 0.32, 1);
-
-  /* Modern Glassmorphism Variables */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(201, 168, 76, 0.25);
-  --glass-shadow: 0 8px 32px 0 rgba(28, 23, 18, 0.1);
-  --glass-blur: blur(12px);
-}
-
-/* Ken Burns Effect */
-@keyframes kenBurns {
-  0% { transform: scale(1) translate(0, 0); }
-  50% { transform: scale(1.1) translate(-2%, -2%); }
-  100% { transform: scale(1) translate(0, 0); }
-}
-
-.ken-burns-img {
-  animation: kenBurns 30s infinite alternate ease-in-out;
-}
-
-/* Glassmorphic Cards */
-.glass-card {
-  background: var(--glass-bg) !important;
-  backdrop-filter: var(--glass-blur) !important;
-  -webkit-backdrop-filter: var(--glass-blur) !important;
-  border: 1px solid var(--glass-border) !important;
-  box-shadow: var(--glass-shadow) !important;
-  border-radius: 24px !important;
-  transition: all 0.3s ease;
-}
-
-.glass-card:hover {
-  border-color: var(--primary-color) !important;
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(201, 168, 76, 0.15) !important;
-}
-
-/* Page background */
-.gym-container { background-color: #faf8f5; }
-
-/* ======================================
-   KOVAIS GYM — GOLD ACCENT OVERRIDES
-   ====================================== */
-
-/* Hero */
-.gym-hero-section { background: linear-gradient(160deg, #faf8f5 0%, #f5f0e8 40%, #fdf9f3 100%) !important; }
-.gym-hero-section.bg-dark { background: linear-gradient(160deg, #faf8f5 0%, #f5f0e8 100%) !important; }
-.gym-hero-section.py-5.bg-dark.text-white { background: linear-gradient(160deg, #2c2416 0%, #3d3222 60%) !important; }
-
-/* Stat numbers (pp class used for accent color) */
-.pp { color: #daa520 !important; }
-
-/* Feature cards */
-.gym-feature-card { background: rgba(255,255,255,0.88) !important; border: 1px solid rgba(218,165,32,0.12) !important; }
-.gym-feature-card:hover { box-shadow: 0 20px 40px rgba(184,134,11,0.12) !important; }
-
-/* Offers section */
-.gym-offers { background: linear-gradient(135deg, #2c2416 0%, #3d3222 50%, #2c2416 100%) !important; }
-
-/* Selection cards */
-.gym-selection-card { background: #fff !important; border: 2px solid rgba(218,165,32,0.15) !important; }
-.gym-selection-card:hover { box-shadow: 0 15px 35px rgba(184,134,11,0.15) !important; }
-.gym-selection-card.selected { border-color: #daa520 !important; box-shadow: 0 0 0 3px rgba(218,165,32,0.2) !important; }
-
-/* Datepicker */
-.gym-datepicker:focus { border-color: #daa520 !important; box-shadow: 0 0 0 3px rgba(218,165,32,0.14) !important; }
-
-/* Time slots */
-.slot-available { border-color: rgba(218,165,32,0.28) !important; }
-.slot-available:hover { border-color: #daa520 !important; }
-.slot-selected { background: linear-gradient(135deg, #f0c040, #daa520) !important; color: #2c2010 !important; border-color: transparent !important; }
-
-/* Membership cards */
-.membership-plans .gym-membership-card { border-color: rgba(218,165,32,0.18) !important; }
-.membership-plans .gym-membership-card.best-value { border-color: #daa520 !important; }
-.membership-plans .best-value-badge { background: linear-gradient(135deg, #f0c040, #daa520) !important; color: #2c2010 !important; }
-.membership-plans .gym-membership-card .plan-price .price { color: #b8860b !important; }
-
-/* Payment modal header */
-.payment-modal .modal-header { background: linear-gradient(135deg, #2c2416, #3d3222) !important; color: #fff !important; border-bottom: 2px solid #daa520 !important; }
-.order-details   { background: linear-gradient(135deg, #faf8f5, #f5f0e8) !important; border: 1px solid rgba(218,165,32,0.18) !important; }
-.points-section  { background: rgba(218,165,32,0.07) !important; }
-
-/* Footer */
-.footer { background: linear-gradient(135deg, #2c2416, #3d3222) !important; }
-
-/* Success story cards */
-.success-story-card:hover { box-shadow: 0 20px 40px rgba(184,134,11,0.12) !important; }
-
-/* Fix for touch devices */
-.gym-membership-card {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  touch-action: manipulation;
-}
-
-.gym-membership-card:focus {
-  outline: none !important;
-}
-
-/* Improve card interaction */
-.gym-membership-card {
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.gym-membership-card:hover,
-.gym-membership-card:active,
-.gym-membership-card:focus {
-  border-color: #d4af37;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.gym-membership-card.selected {
-  border-color: #d4af37;
-  background-color: #fff9e6;
+  --primary-gold: #c7a12b;
+  --primary-gold-dark: #a07e1f;
+  --primary-gold-light: #f5e6c8;
+  --dark-bg: #1a1610;
+  --light-bg: #fefcf8;
+  --text-dark: #2c2418;
+  --text-muted: #6b624e;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+  --transition: all 0.3s ease;
 }
 
 /* Global Styles */
-.pp {
-  color: var(--danger-color);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--light-color);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #0056b3;
-}
-
-/* Container */
 .gym-container {
-  width: 100%;
-  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-dark);
+  background: var(--light-bg);
+  overflow-x: hidden;
+}
+
+.accent-text {
+  color: var(--primary-gold);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 0.5rem;
+}
+
+.section-header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
 }
 
 /* Hero Section */
-.gym-hero-section {
+.hero-section {
   position: relative;
-  min-height: 100vh;
+  min-height: 90vh;
+  background: linear-gradient(135deg, #1e1a10 0%, #2b2418 100%);
+  color: white;
   display: flex;
   align-items: center;
   overflow: hidden;
-}
-
-.gym-hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('./Img/StayStrong.jpg') center/cover;
-  opacity: 0.4;
-  z-index: 0;
-  transition: transform 8s ease;
-}
-
-.gym-hero-section:hover::before {
-  transform: scale(1.05);
 }
 
 .hero-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(44, 32, 16, 0.4) 100%);
-  z-index: 1;
+  inset: 0;
+  background: radial-gradient(circle at 80% 30%, rgba(199, 161, 43, 0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.gym-hero-section .container {
+.hero-content {
+  position: relative;
   z-index: 2;
+  padding: 4rem 0;
 }
 
-.gym-hero-image {
-  max-height: 600px;
-  object-fit: cover;
-  transition: var(--transition);
-  animation: heroFloat 8s ease-in-out infinite;
-  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.3));
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  font-family: 'Playfair Display', serif;
 }
 
-@keyframes heroFloat {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  25% { transform: translateY(-15px) rotate(0.5deg); }
-  50% { transform: translateY(-25px) rotate(0deg); }
-  75% { transform: translateY(-10px) rotate(-0.5deg); }
+.hero-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
 }
 
 .hero-stats {
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: var(--transition);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.hero-stats:hover {
-  border-color: rgba(218, 165, 32, 0.35);
-  box-shadow: 0 16px 48px rgba(218, 165, 32, 0.12);
-  transform: translateY(-4px);
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stat-number svg {
+  margin-right: 0.5rem;
+  color: var(--primary-gold);
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-custom {
+  background: var(--primary-gold);
+  border: none;
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.btn-primary-custom:hover {
+  background: var(--primary-gold-dark);
+  transform: translateY(-2px);
+}
+
+.hero-image {
+  max-height: 500px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  transition: transform 8s ease;
+}
+
+.hero-image:hover {
+  transform: scale(1.02);
 }
 
 /* Features Section */
-.gym-features {
-  padding: 100px 0;
+.features-section {
+  padding: 5rem 0;
+  background: white;
 }
 
-.feature-title {
-  top: 2px;
-  position: relative;
-  color: var(--dark-color);
-  transition: color 0.4s ease;
+.feature-card {
+  text-align: center;
+  padding: 1.5rem;
+  border-radius: 24px;
+  border: 1px solid rgba(199, 161, 43, 0.15);
+  transition: var(--transition);
+  background: white;
+  height: 100%;
 }
 
-.gym-feature-card:hover .feature-title {
-  color: #b8860b;
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-gold);
+}
+
+.feature-icon-wrapper {
+  margin-bottom: 1rem;
 }
 
 .feature-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80px;
-  width: 80px;
-  margin: 0 auto;
-  font-size: 2rem;
-  transition: all 0.6s var(--ease-spring);
+  font-size: 2.5rem;
+  color: var(--primary-gold);
 }
 
-.gym-feature-card {
-  border: none;
-  border-radius: 24px;
-  transition: all 0.5s var(--ease-smooth);
-  height: 100%;
-  background: var(--white);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(218, 165, 32, 0.08);
+.feature-card .card-title {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
 
-.gym-feature-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #f0c040, #daa520, #b8860b);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.6s var(--ease-smooth);
-}
-
-.gym-feature-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.8s ease;
-}
-
-.gym-feature-card:hover::after {
-  left: 150%;
-}
-
-.gym-feature-card:hover::before {
-  transform: scaleX(1);
-}
-
-.gym-feature-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 24px 48px rgba(184, 134, 11, 0.12), 0 8px 16px rgba(0, 0, 0, 0.04);
-  border-color: rgba(218, 165, 32, 0.2);
-}
-
-.gym-feature-card:hover .feature-icon {
-  transform: scale(1.2) rotate(8deg);
-  filter: drop-shadow(0 8px 16px rgba(218, 165, 32, 0.3));
+.feature-card .card-text {
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
 /* Offers Section */
-.gym-offers {
-  background: var(--gradient-primary);
-  position: relative;
-  overflow: hidden;
+.offers-section {
+  padding: 5rem 0;
+  background: #fef7e6;
 }
 
-.gym-offers::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  animation: rotate 30s linear infinite;
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.offer-item {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px) saturate(150%);
+.offer-card {
+  background: white;
   border-radius: 20px;
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 20px;
-  transition: all 0.5s var(--ease-smooth);
-}
-
-.offer-item:hover {
-  background: rgba(255, 255, 255, 0.14);
-  transform: translateY(-6px);
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
-}
-
-/* Selection Cards */
-.selection-card {
-  cursor: pointer;
-  transition: all 0.5s var(--ease-smooth);
-  border: 3px solid transparent;
-  border-radius: 24px;
-  overflow: hidden;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-image-wrapper {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-top-left-radius: 24px;
-  border-top-right-radius: 24px;
-}
-
-.card-img-custom {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.8s var(--ease-smooth);
-}
-
-.gym-selection-card {
-  background: var(--white);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-}
-
-.gym-selection-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 24px 48px rgba(184, 134, 11, 0.15), 0 8px 16px rgba(0, 0, 0, 0.04);
-  border-color: rgba(218, 165, 32, 0.25);
-}
-
-.gym-selection-card:hover .card-img-custom {
-  transform: scale(1.12);
-}
-
-.gym-selection-card.selected {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(218, 165, 32, 0.2), 0 16px 40px rgba(184, 134, 11, 0.15);
-  transform: translateY(-6px);
-}
-
-/* Date Picker */
-.gym-datepicker {
-  border-radius: 15px;
-  border: 2px solid var(--light-color);
-  padding: 15px;
-  font-size: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
   transition: var(--transition);
 }
 
-.gym-datepicker:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+.offer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.offer-badge {
+  margin-bottom: 0.75rem;
+  padding: 6px 14px;
+}
+
+.offer-image {
+  max-width: 100%;
+  border-radius: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+/* Selection Section */
+.selection-section {
+  padding: 5rem 0;
+}
+
+.selection-row {
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.selection-card {
+  cursor: pointer;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: var(--transition);
+  background: white;
+}
+
+.selection-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.selection-card.selected {
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(199, 161, 43, 0.2);
+}
+
+.card-image-wrapper {
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.selection-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.selection-card:hover .selection-image {
+  transform: scale(1.08);
+}
+
+.selection-card .card-title {
+  font-weight: 700;
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+/* Schedule Section */
+.schedule-section {
+  padding: 5rem 0;
 }
 
 .date-picker-wrapper {
-  background: var(--white);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: var(--box-shadow);
+  background: white;
+  border-radius: 24px;
+  padding: 1rem;
+  box-shadow: var(--shadow-md);
+  display: inline-block;
 }
 
-/* Time Slots */
 .time-slots-title {
-  font-size: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
 }
 
 .time-slots-grid {
-  gap: 10px;
+  gap: 0.75rem;
 }
 
-.gym-time-slot {
-  border-radius: 14px;
-  padding: 12px 8px;
-  font-weight: 600;
-  transition: all 0.4s var(--ease-smooth);
-  min-height: 50px;
-  min-width: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.time-slot {
+  border-radius: 40px;
+  padding: 10px 12px;
+  font-weight: 500;
+  transition: var(--transition);
   width: 100%;
+}
+
+.time-slot.available {
+  background: white;
+  border: 1px solid #e2d9cb;
+  color: var(--text-dark);
+}
+
+.time-slot.available:hover {
+  background: var(--primary-gold-light);
+  border-color: var(--primary-gold);
+}
+
+.time-slot.selected {
+  background: var(--primary-gold);
+  border-color: var(--primary-gold);
+  color: white;
+}
+
+.time-slot.booked {
+  background: #e9ecef;
+  color: #9aa0a6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Plans Section */
+.plans-section {
+  padding: 5rem 0;
+}
+
+.plans-row {
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.plan-card {
+  border-radius: 28px;
+  border: 1px solid #ede3cf;
+  transition: var(--transition);
+  background: white;
+  cursor: pointer;
+  height: 100%;
   position: relative;
+}
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.plan-card.selected {
+  border: 2px solid var(--primary-gold);
+  background: #fffef7;
+}
+
+.plan-card.best-value {
+  border-color: var(--primary-gold);
+}
+
+.best-value-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--primary-gold);
+  color: #1e1910;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 40px;
+}
+
+.plan-icon {
+  font-size: 2rem;
+  color: var(--primary-gold);
+  margin-bottom: 1rem;
+}
+
+.plan-price {
+  margin: 1rem 0;
+}
+
+.plan-price .price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-gold);
+}
+
+.plan-price span {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.save-badge {
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.plan-features li {
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Stories Section */
+.stories-section {
+  padding: 5rem 0;
+}
+
+.story-card {
+  border-radius: 24px;
   overflow: hidden;
+  border: none;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
-.slot-available {
-  border: 2px solid rgba(218, 165, 32, 0.2);
-  background: var(--white);
-  color: var(--dark-color);
+.story-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
 }
 
-.slot-available:hover {
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 10px 24px rgba(218, 165, 32, 0.15);
-  border-color: var(--primary-color);
-  background: rgba(218, 165, 32, 0.04);
-  color: var(--dark-color);
+.story-image {
+  height: 220px;
+  object-fit: cover;
 }
 
-.slot-selected {
-  background: linear-gradient(135deg, #f0c040, #daa520) !important;
-  color: #2c2010 !important;
-  border-color: transparent !important;
-  box-shadow: 0 8px 24px rgba(218, 165, 32, 0.3);
-  transform: translateY(-2px) scale(1.02);
+.story-card .card-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
-.slot-booked {
-  background-color: #e9ecef !important;
-  color: #999 !important;
-  border-color: #e9ecef !important;
+.story-card .card-text {
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+}
+
+.rating {
+  color: var(--primary-gold);
+  font-size: 1rem;
+  letter-spacing: 2px;
+}
+
+/* CTA Section */
+.cta-section {
+  padding: 5rem;
+  text-align: center;
+  background: var(--primary-gold);
+  color: white;
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.cta-section p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+}
+
+.cta-button {
+  background: white;
+  color: var(--primary-gold-dark);
+  border: none;
+  padding: 14px 36px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.cta-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cta-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Membership Plans */
-.membership-plans .gym-membership-card {
-  transition: all 0.5s var(--ease-smooth);
-  border: 2px solid rgba(218, 165, 32, 0.12);
-  border-radius: 24px;
-  overflow: hidden;
-  position: relative;
-  background-color: #ffffff;
+/* Footer */
+.footer {
+  background: var(--dark-bg);
+  color: #aaa;
+  padding: 3rem 0;
 }
 
-.membership-plans .gym-membership-card:hover,
-.membership-plans .gym-membership-card.selected {
-  transform: translateY(-14px);
-  box-shadow: 0 24px 48px rgba(184, 134, 11, 0.12), 0 8px 16px rgba(0, 0, 0, 0.04);
-  border-color: rgba(218, 165, 32, 0.35);
-}
-
-.membership-plans .gym-membership-card .card-body {
-  padding: 2.5rem 1.5rem;
-}
-
-.membership-plans .gym-membership-card .plan-header {
-  min-height: 120px;
-}
-
-.membership-plans .gym-membership-card .plan-title {
-  font-weight: 700;
-  color: #1a1000;
-  margin-top: 10px;
-  transition: color 0.3s ease;
-}
-
-.membership-plans .gym-membership-card:hover .plan-title {
-  color: #b8860b;
-}
-
-.membership-plans .gym-membership-card .plan-price .price {
-  font-size: 2.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #daa520, #b8860b);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.membership-plans .gym-membership-card .plan-price .period {
-  font-size: 1rem;
-  color: #6b5a3e;
-}
-
-.membership-plans .gym-membership-card .plan-features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.5rem 0;
-}
-
-.membership-plans .gym-membership-card .plan-features li {
-  margin-bottom: 0.75rem;
-  font-size: 0.95rem;
-  color: #4a3f2f;
-  transition: all 0.3s ease;
-}
-
-.membership-plans .gym-membership-card:hover .plan-features li {
-  transform: translateX(4px);
-}
-
-.membership-plans .gym-membership-card.best-value {
-  border-color: #daa520;
-  position: relative;
-  background: linear-gradient(180deg, #fffdf5 0%, #ffffff 100%);
-}
-
-.membership-plans .gym-membership-card.best-value.selected {
-  transform: translateY(-14px);
-  box-shadow: 0 24px 48px rgba(218, 165, 32, 0.2);
-}
-
-.membership-plans .best-value-badge {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: linear-gradient(135deg, #f0c040, #daa520);
-  color: #2c2010;
-  padding: 6px 16px;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  transform: rotate(3deg);
-  z-index: 10;
-  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
-  animation: badgePulse 3s ease-in-out infinite;
-}
-
-@keyframes badgePulse {
-  0%, 100% { box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3); }
-  50% { box-shadow: 0 6px 20px rgba(218, 165, 32, 0.5); }
-}
-
-/* Success Stories */
-.success-story-card {
-  border-radius: 24px;
-  transition: all 0.5s var(--ease-smooth);
-  overflow: hidden;
-  border: 1px solid rgba(218, 165, 32, 0.08);
-}
-
-.success-story-card:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 24px 48px rgba(184, 134, 11, 0.1);
-  border-color: rgba(218, 165, 32, 0.2);
-}
-
-.success-story-img {
+.footer-map {
+  width: 100%;
   height: 200px;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-smooth);
-}
-
-.success-story-card:hover .success-story-img {
-  transform: scale(1.08);
-}
-
-.rating {
-  font-size: 18px;
-}
-
-/* Payment Modal */
-.payment-modal .modal-dialog {
-  max-width: 600px;
-}
-
-.payment-modal .modal-content {
-  border: none;
+  border: 0;
   border-radius: 20px;
-  overflow: hidden;
+  margin-bottom: 1.5rem;
 }
 
-.payment-modal .modal-header {
-  background: var(--gradient-primary);
+.footer-info {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.footer-info h5 {
   color: white;
-  border: none;
+  margin-bottom: 0.5rem;
 }
 
-.order-details {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 15px;
-  padding: 20px;
+.footer-info p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
 }
 
-.points-section {
-  background: rgba(255, 193, 7, 0.1);
-  border-radius: 15px;
-  padding: 20px;
+.copyright {
+  text-align: center;
+  font-size: 0.8rem;
+  margin-top: 1rem;
 }
 
-.gym-payment-btn {
-  border-radius: 15px;
-  transition: var(--transition);
-  height: 120px;
+.copyright a {
+  color: var(--primary-gold);
+  text-decoration: none;
 }
 
-.gym-payment-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.payment-icon {
-  font-size: 1.5rem;
+.copyright a:hover {
+  text-decoration: underline;
 }
 
 /* Auth Modal */
-.auth-modal .modal-dialog {
-  max-width: 450px;
-}
-
 .auth-modal .modal-content {
-  border: none;
-  border-radius: 20px;
+  border-radius: 24px;
+  overflow: hidden;
 }
 
 .auth-modal .nav-tabs {
   border: none;
-  margin-bottom: 30px;
+  gap: 0.5rem;
 }
 
 .auth-modal .nav-tabs .nav-link {
-  border: none;
-  border-radius: 25px;
-  padding: 10px 30px;
-  margin: 0 5px;
-  transition: var(--transition);
+  border-radius: 40px;
+  padding: 8px 20px;
+  font-weight: 500;
 }
 
 .auth-modal .nav-tabs .nav-link.active {
-  background: var(--primary-color);
+  background: var(--primary-gold);
   color: white;
+  border: none;
 }
 
-.form-control {
-  border-radius: 10px;
-  padding: 12px;
-  transition: var(--transition);
+/* Responsive Design */
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .cta-section {
+    padding: 3rem;
+  }
+  
+  .cta-section h2 {
+    font-size: 2rem;
+  }
 }
 
-.form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: auto;
+    padding: 3rem 0;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-stats {
+    padding: 1rem;
+  }
+  
+  .stat-number {
+    font-size: 1rem;
+  }
+  
+  .hero-image {
+    margin-top: 2rem;
+    max-height: 350px;
+  }
+  
+  .selection-section {
+    padding: 3rem 0;
+  }
+  
+  .time-slots-title {
+    margin-top: 2rem;
+  }
+  
+  .plans-row {
+    gap: 1rem;
+  }
+  
+  .cta-section {
+    padding: 2rem;
+  }
+  
+  .cta-section h2 {
+    font-size: 1.5rem;
+  }
 }
 
-.input-group-text {
-  border-radius: 10px 0 0 10px;
-  background: var(--light-color);
-  border: 1px solid #ced4da;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.social-separator {
-  position: relative;
-}
-
-.social-separator-text {
-  z-index: 1;
-}
-
-.social-separator::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: #dee2e6;
-  z-index: 0;
-}
-
-/* Footer */
-.footer {
-  background: var(--dark-color) !important;
-  color: var(--white);
-}
-
-.footer-map {
-  border: 0;
-  border-radius: 15px;
-  transition: var(--transition);
-}
-
-.footer-map:hover {
-  transform: scale(1.02);
+@media (max-width: 576px) {
+  .hero-buttons {
+    flex-direction: column;
+  }
+  
+  .hero-buttons .btn {
+    width: 100%;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+  }
+  
+  .plan-price .price {
+    font-size: 1.5rem;
+  }
+  
+  .story-image {
+    height: 180px;
+  }
 }
 
 /* Animations */
-@keyframes slideInUp {
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(218, 165, 32, 0.3);
-  }
-  50% {
-    transform: scale(1.03);
-    box-shadow: 0 0 20px 4px rgba(218, 165, 32, 0.15);
-  }
-}
-
-@keyframes goldGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(218, 165, 32, 0); }
-  50% { box-shadow: 0 0 30px 8px rgba(218, 165, 32, 0.12); }
-}
-
-/* Utility Classes */
-.text-gradient {
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.bg-gradient-primary {
-  background: var(--gradient-primary);
-}
-
-.bg-gradient-secondary {
-  background: var(--gradient-secondary);
-}
-
-.shadow-custom {
-  box-shadow: var(--box-shadow);
-}
-
-.border-radius-custom {
-  border-radius: 20px;
-}
-
-/* Responsive Design */
-/* Large Desktops (1400px+) */
-@media (min-width: 1400px) {
-  .gym-hero-section {
-    min-height: 100vh;
-  }
-  
-  .gym-hero-image {
-    max-height: 700px;
-  }
-  
-  .container {
-    max-width: 1200px;
-  }
-}
-
-/* Desktops (1200px - 1399px) */
-@media (max-width: 1399px) {
-  .gym-hero-section {
-    min-height: 90vh;
-  }
-  
-  .hero-stats h3 {
-    font-size: 1.8rem;
-  }
-  
-  .gym-hero-image {
-    max-height: 550px;
-  }
-}
-
-/* Large Tablets (992px - 1199px) */
-@media (max-width: 1199px) {
-  .gym-hero-section {
-    min-height: 80vh;
-  }
-  
-  .hero-stats h3 {
-    font-size: 1.5rem;
-  }
-  
-  .membership-plans {
-    justify-content: center;
-  }
-  
-  .membership-plans .row.justify-content-center {
-    gap: 1rem;
-  }
-  
-  .gym-membership-card {
-    max-width: 350px;
-    margin: 0 auto;
-  }
-  
-  .time-slots-title {
-    font-size: 26px;
-  }
-}
-
-/* Tablets (768px - 991px) */
-@media (max-width: 991px) {
-  .gym-hero-section {
-    text-align: center;
-    min-height: 70vh;
-    padding: 60px 0;
-  }
-  
-  .gym-hero-image {
-    margin-top: 30px;
-    max-height: 400px;
-  }
-  
-  .display-4 {
-    font-size: 2.8rem;
-  }
-  
-  .display-6 {
-    font-size: 2rem;
-  }
-  
-  .hero-stats {
-    margin: 30px 0;
-  }
-  
-  .hero-stats h3 {
-    font-size: 1.4rem;
-  }
-  
-  .card-image-wrapper {
-    aspect-ratio: 1 / 1;
-  }
-  
-  .time-slots-title {
-    font-size: 24px;
-  }
-  
-  .gym-time-slot {
-    min-height: 45px;
-    min-width: 140px;
-    font-size: 14px;
-  }
-}
-
-/* Large Mobile (576px - 767px) */
-@media (max-width: 767px) {
-  .gym-hero-section {
-    min-height: 60vh;
-    padding: 40px 0;
-  }
-  
-  .display-4 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .display-6 {
-    font-size: 1.8rem;
-  }
-  
-  .lead {
-    font-size: 1rem;
-  }
-  
-  .hero-stats {
-    margin: 20px 0;
-    padding: 15px;
-  }
-  
-  .hero-stats h3 {
-    font-size: 1.2rem;
-  }
-  
-  .hero-stats small {
-    font-size: 0.8rem;
-  }
-  
-  .gym-feature-card,
-  .gym-selection-card,
-  .success-story-card {
-    margin-bottom: 20px;
-  }
-  
-  .card-image-wrapper {
-    aspect-ratio: 1 / 1;
-  }
-  
-  .selection-card {
-    border-radius: 15px;
-  }
-  
-  .time-slots-title {
-    font-size: 22px;
-    margin-top: 2rem;
-  }
-  
-  .time-slots-grid .col {
-    margin-bottom: 10px;
-  }
-  
-  .gym-time-slot {
-    min-height: 45px;
-    min-width: 120px;
-    font-size: 13px;
-    padding: 8px 6px;
-  }
-  
-  .plan-price .price {
-    font-size: 2rem;
-  }
-  
-  .plan-header {
-    min-height: 100px;
-  }
-  
-  .payment-modal .modal-dialog,
-  .auth-modal .modal-dialog {
-    margin: 10px;
-    max-width: calc(100% - 20px);
-  }
-  
-  .gym-payment-btn {
-    height: 100px;
-    font-size: 14px;
-  }
-  
-  .payment-icon {
-    font-size: 1.2rem;
-  }
-  
-  .success-story-img {
-    height: 180px;
-  }
-  
-  .footer-map {
-    height: 180px;
-  }
-}
-
-/* Small Mobile (480px - 575px) */
-@media (max-width: 575px) {
-  .container {
-    padding: 0 15px;
-  }
-  
-  .gym-hero-section {
-    min-height: 50vh;
-    padding: 30px 0;
-  }
-  
-  .display-4 {
-    font-size: 2rem;
-    line-height: 1.2;
-  }
-  
-  .display-6 {
-    font-size: 1.6rem;
-  }
-  
-  .lead {
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .hero-stats {
-    padding: 12px;
-  }
-  
-  .hero-stats h3 {
-    font-size: 1rem;
-  }
-  
-  .hero-stats small {
-    font-size: 0.75rem;
-  }
-  
-  .btn-lg {
-    font-size: 0.9rem;
-    padding: 8px 16px;
-  }
-  
-  .card-image-wrapper {
-    aspect-ratio: 3 / 4;
-  }
-  
-  .selection-card {
-    border-radius: 12px;
-  }
-  
-  .selection-card .h5 {
-    font-size: 1rem;
-  }
-  
-  .time-slots-title {
-    font-size: 20px;
-    margin-top: 1.5rem;
-  }
-  
-  .gym-time-slot {
-    min-height: 40px;
-    min-width: 100px;
-    font-size: 12px;
-    padding: 6px 4px;
-  }
-  
-  .gym-membership-card {
-    margin-bottom: 20px;
-  }
-  
-  .gym-membership-card .card-body {
-    padding: 1.5rem 1rem;
-  }
-  
-  .plan-price .price {
-    font-size: 1.8rem;
-  }
-  
-  .plan-header {
-    min-height: 80px;
-  }
-  
-  .plan-features {
-    font-size: 0.85rem;
-  }
-  
-  .best-value-badge {
-    font-size: 0.65rem;
-    padding: 0.15rem 0.5rem;
-    top: 10px;
-    right: 10px;
-  }
-  
-  .success-story-img {
-    height: 150px;
-  }
-  
-  .footer-map {
-    height: 150px;
-  }
-  
-  .gym-payment-btn {
-    height: 90px;
-    font-size: 13px;
-    padding: 8px;
-  }
-  
-  .payment-icon {
-    font-size: 1rem;
-  }
-  
-  .modal-body {
-    padding: 1rem;
-  }
-  
-  .order-details {
-    padding: 15px;
-  }
-  
-  .points-section {
-    padding: 15px;
-  }
-}
-
-/* Extra Small Mobile (320px - 479px) */
-@media (max-width: 479px) {
-  .display-4 {
-    font-size: 1.8rem;
-  }
-  
-  .display-6 {
-    font-size: 1.4rem;
-  }
-  
-  .hero-stats h3 {
-    font-size: 0.9rem;
-  }
-  
-  .time-slots-title {
-    font-size: 18px;
-  }
-  
-  .gym-time-slot {
-    min-height: 35px;
-    min-width: 90px;
-    font-size: 11px;
-  }
-  
-  .plan-price .price {
-    font-size: 1.6rem;
-  }
-  
-  .card-image-wrapper {
-    aspect-ratio: 3 / 4;
-  }
-  
-  .gym-payment-btn {
-    height: 80px;
-    font-size: 12px;
-  }
-  
-  .selection-card .h5 {
-    font-size: 0.9rem;
-  }
-}
-
-/* Ultra Wide Screens (1920px+) */
-@media (min-width: 1920px) {
-  .container {
-    max-width: 1400px;
-  }
-  
-  .gym-hero-image {
-    max-height: 800px;
-  }
-  
-  .hero-stats h3 {
-    font-size: 2.2rem;
-  }
-  
-  .time-slots-title {
-    font-size: 32px;
-  }
-}
-
-/* Portrait Tablets */
-@media (orientation: portrait) and (min-width: 768px) and (max-width: 1024px) {
-  .gym-hero-section {
-    min-height: 60vh;
-  }
-  
-  .gym-hero-image {
-    max-height: 350px;
-  }
-  
-  .card-image-wrapper {
-    aspect-ratio: 4 / 3;
-  }
-}
-
-/* Landscape Phones */
-@media (orientation: landscape) and (max-width: 767px) {
-  .gym-hero-section {
-    min-height: 80vh;
-  }
-  
-  .hero-stats {
-    margin: 15px 0;
-  }
-  
-  .card-image-wrapper {
-    aspect-ratio: 3 / 2;
-  }
-  
-  .time-slots-title {
-    margin-top: 1rem;
-  }
-}
-
-/* High DPI Screens */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .gym-hero-image,
-  .card-img-custom,
-  .success-story-img {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: optimize-contrast;
-  }
-}
-
-/* Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  
-  .gym-hero-image {
-    animation: none;
-  }
-  
-  .gym-offers::before {
-    animation: none;
-  }
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  .gym-selection-card {
-    background: #2d3748;
-    color: #fff;
-  }
-  
-  .gym-feature-card {
-    background: #2d3748;
-    color: #fff;
-  }
-  
-  .date-picker-wrapper {
-    background: #2d3748;
-    color: #fff;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .gym-hero-section,
-  .gym-offers,
-  .modal,
-  .footer,
-  .btn {
-    display: none !important;
-  }
-  
-  .gym-container {
-    color: black !important;
-    background: white !important;
-  }
-  
-  .gym-selection-card,
-  .gym-feature-card,
-  .gym-membership-card {
-    break-inside: avoid;
-    border: 1px solid #ccc;
-  }
-}
-
-/* Loading States */
-.spinner-border-sm {
-  width: 1rem;
-  height: 1rem;
-}
-
-/* Toast Notifications */
-.Toastify__toast-container {
-  font-family: 'Inter', sans-serif;
-}
-
-/* SweetAlert2 Customization */
-.swal2-popup {
-  border-radius: 20px;
-  font-family: 'Inter', sans-serif;
-}
-
-.swal2-title {
-  color: var(--dark-color);
-}
-
-.swal2-confirm {
-  border-radius: 10px;
-  padding: 10px 25px;
-}
-
-/* Smooth transitions for all interactive elements */
-button, .btn {
-  transition: var(--transition);
-}
-
-button:hover:not(:disabled), .btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-/* Custom scrollbar for modal */
-.modal-body {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-color) var(--light-color);
-}
-
-.modal-body::-webkit-scrollbar {
-  width: 6px;
-}
-
-.modal-body::-webkit-scrollbar-track {
-  background: var(--light-color);
-}
-
-.modal-body::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 3px;
-}
-
-/* Focus states for accessibility */
-.btn:focus-visible, 
-.form-control:focus-visible, 
-.gym-time-slot:focus-visible {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-/* Ensure cards maintain proper spacing on all devices */
-@media (min-width: 992px) {
-  .membership-plans .row.justify-content-center {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 1rem;
-  }
-
-  .membership-plans .col-lg-3 {
-    flex-basis: 25%;
-    max-width: 25%;
-  }
-}
-
-/* Hover effects for touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .gym-selection-card:hover,
-  .gym-feature-card:hover,
-  .success-story-card:hover,
-  .gym-membership-card:hover {
-    transform: translateY(-8px);
-  }
-}
-
-/* Touch device optimizations */
-@media (hover: none) and (pointer: coarse) {
-  .gym-time-slot {
-    min-height: 48px; /* Minimum touch target size */
-  }
-  
-  .btn {
-    min-height: 44px;
-    padding: 12px 20px;
-  }
-  
-  .selection-card {
-    margin-bottom: 15px;
-  }
-}
-
-/* MODAL CENTER FIXED PERFECTLY */
-.gym-center-modal {
-  margin:auto !important;
-  top:50% !important;
-  transform:translateY(-50%) !important;
-}
-
-/* Modal Body + Colors */
-.gym-modal-main .modal-content {
-  border-radius:12px;
-  background:#ffffff;
-}
-
-/* Header */
-.gym-modal-header {
-  border-bottom:2px solid #e7e7e7 !important;
-}
-.gym-modal-header .modal-title { 
-  font-size:20px; font-weight:700; 
-}
-
-/* Banner */
-.gym-banner {
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:8px;
-  margin-bottom:15px;
-}
-
-/* Order Details Box */
-.gym-details-box {
-  background:#f8f9ff;
-  border-radius:10px;
-  padding:12px;
-  margin-bottom:20px;
-}
-.gym-row{
-  display:flex;justify-content:space-between;
-  margin-bottom:6px;font-weight:500;
-}
-.gym-row.total span:last-child {color:#198754;font-weight:700;}
-.gym-row.discount span:last-child {color:#d9534f;font-weight:700;}
-.gym-row.strike span:last-child {text-decoration:line-through;opacity:.7;}
-
-/* POINTS SECTION */
-.gym-points-box {
-  background:#f4fff7;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:22px;
-}
-
-/* INPUT FULL WIDTH */
-.gym-input {
-  width:100%;
-  padding:10px;
-  border-radius:6px;
-  border:1px solid #cfd8dc;
-  font-size:16px;
-  margin-bottom:10px;
-}
-
-/* APPLY BUTTON FULL WIDTH */
-.gym-apply-btn {
-  width:100%;
-  font-weight:600;
-  padding:12px 0;
-  border-radius:6px;
-}
-
-/* Applied Box */
-.gym-alert{
-  background:#d4f8da;
-  color:#0a8f41;
-  border-left:4px solid #0a8f41;
-  padding:6px;
-  border-radius:4px;
-}
-
-/* PAYMENT AREA */
-.section-title{
-  font-weight:700;
-  margin-bottom:10px;
-}
-
-/* Buttons Responsive Grid */
-.gym-payment-options{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-
-/* Button UI */
-.gym-pay-btn{
-  background:var(--gradient-primary);
-  border:2px solid hsla(0, 93%, 60%, 0.439);
-  border-radius:10px;
-  padding:14px;
-  font-weight:600;
-  display:flex;flex-direction:column;
-  align-items:center;text-align:center;
-  transition:0.3s;
-}
-.gym-pay-btn small{opacity:.7;font-size:12px}
-
-/* Active Selection */
-.gym-pay-btn.active{
-  background:#0d6efd;
-  color:white;
-  transform:scale(1.04);
-}
-
-/* MOBILE RESPONSIVE */
-@media(max-width:600px){
-  .gym-payment-options{grid-template-columns:1fr;}
 }

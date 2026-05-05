@@ -65,6 +65,22 @@ function Header({ user, setUser, points, setPoints, url }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Body scroll lock when drawer opens
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.classList.add('drawer-open');
+      document.documentElement.classList.add('drawer-open');
+    } else {
+      document.body.classList.remove('drawer-open');
+      document.documentElement.classList.remove('drawer-open');
+    }
+    
+    return () => {
+      document.body.classList.remove('drawer-open');
+      document.documentElement.classList.remove('drawer-open');
+    };
+  }, [isDrawerOpen]);
+
   useEffect(() => {
     const storedUser = localStorage.getItem("loggedInUser");
     if (storedUser) {
@@ -107,7 +123,7 @@ function Header({ user, setUser, points, setPoints, url }) {
         text: "Are you sure you want to exit?",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#daa520',
+        confirmButtonColor: '#A07830',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, Logout'
       }).then((result) => {
@@ -195,7 +211,7 @@ function Header({ user, setUser, points, setPoints, url }) {
   return (
     <header className={`modern-header ${scrolled ? 'scrolled' : ''}`}>
       <Navbar className="modern-navbar">
-        <Container className="navbar-container">
+        <Container className="navbar-container" fluid>
           
           {/* Logo Section */}
           <div className="brand-wrapper" onClick={() => handleNavigation("/")} style={{ cursor: 'pointer' }}>
@@ -300,9 +316,17 @@ function Header({ user, setUser, points, setPoints, url }) {
             </button>
           </div>
 
-          {/* Mobile Hamburger */}
-          <button className="mobile-toggle" onClick={() => setIsDrawerOpen(true)}>
-            <HiMenuAlt3 />
+          {/* Mobile Hamburger - Color #A07830 */}
+          <button 
+            className={`mobile-toggle ${isDrawerOpen ? 'active' : ''}`} 
+            onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+            aria-label="Menu"
+          >
+            <div className="hamburger-icon">
+              <span className="line line-1"></span>
+              <span className="line line-2"></span>
+              <span className="line line-3"></span>
+            </div>
           </button>
 
         </Container>
@@ -311,81 +335,84 @@ function Header({ user, setUser, points, setPoints, url }) {
       {/* ─── SIDE DRAWER (MOBILE) ─── */}
       <div className={`drawer-overlay ${isDrawerOpen ? 'show' : ''}`} onClick={() => setIsDrawerOpen(false)}></div>
       <div className={`side-drawer ${isDrawerOpen ? 'open' : ''}`}>
-        <button className="mobile-toggle" style={{ position: 'absolute', top: '2rem', right: '2rem', display: 'block' }} onClick={() => setIsDrawerOpen(false)}>
-          <HiX />
-        </button>
-
-        <div className="brand-wrapper mb-5" onClick={() => handleNavigation("/")}>
-          <div className="logo-container" style={{ width: '40px', height: '40px' }}>
-            <img src={logo} alt="Logo" className="brand-logo" />
+        <div className="drawer-header">
+          <div className="brand-wrapper" onClick={() => handleNavigation("/")}>
+            <div className="logo-container" style={{ width: '40px', height: '40px' }}>
+              <img src={logo} alt="Logo" className="brand-logo" />
+            </div>
+            <span className="brand-name" style={{ fontSize: '1.4rem' }}>KOVAIS</span>
           </div>
-          <span className="brand-name" style={{ fontSize: '1.4rem' }}>KOVAIS</span>
-        </div>
-
-        <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/")}>
-          <FaHome className="me-2" /> Home
-        </button>
-        
-        <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/about")}>
-          <FaInfoCircle className="me-2" /> About Us
-        </button>
-
-        {/* Mobile Booking */}
-        <div className="mobile-dropdown-section">
-          <button className={`mobile-dropdown-trigger ${showMobileBooking ? 'active' : ''}`} onClick={() => setShowMobileBooking(!showMobileBooking)}>
-            <span><FaHotel className="me-2" /> Booking</span>
-            <FaChevronDown className="mobile-arrow" />
+          <button className="drawer-close" onClick={() => setIsDrawerOpen(false)}>
+            <HiX />
           </button>
-          <div className={`mobile-dropdown-content ${showMobileBooking ? 'show' : ''}`}>
-            {bookingItems.map((item, i) => (
-              <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                <item.icon className="me-2" /> {item.label}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Mobile Info */}
-        <div className="mobile-dropdown-section">
-          <button className={`mobile-dropdown-trigger ${showMobileInfo ? 'active' : ''}`} onClick={() => setShowMobileInfo(!showMobileInfo)}>
-            <span><FaInfoCircle className="me-2" /> Information</span>
-            <FaChevronDown className="mobile-arrow" />
+        <div className="drawer-nav">
+          <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/")}>
+            <FaHome className="me-2" /> Home
           </button>
-          <div className={`mobile-dropdown-content ${showMobileInfo ? 'show' : ''}`}>
-            {infoItems.map((item, i) => (
-              <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
-                <item.icon className="me-2" /> {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
+          
+          <button className="mobile-dropdown-trigger" onClick={() => handleNavigation("/about")}>
+            <FaInfoCircle className="me-2" /> About Us
+          </button>
 
-        {user && (
+          {/* Mobile Booking */}
           <div className="mobile-dropdown-section">
-            <button className={`mobile-dropdown-trigger ${showMobileProfile ? 'active' : ''}`} onClick={() => setShowMobileProfile(!showMobileProfile)}>
-              <span><FaUser className="me-2" /> My Account</span>
+            <button className={`mobile-dropdown-trigger ${showMobileBooking ? 'active' : ''}`} onClick={() => setShowMobileBooking(!showMobileBooking)}>
+              <span><FaHotel className="me-2" /> Booking</span>
               <FaChevronDown className="mobile-arrow" />
             </button>
-            <div className={`mobile-dropdown-content ${showMobileProfile ? 'show' : ''}`}>
-              {profileItems.map((item, i) => (
+            <div className={`mobile-dropdown-content ${showMobileBooking ? 'show' : ''}`}>
+              {bookingItems.map((item, i) => (
                 <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
                   <item.icon className="me-2" /> {item.label}
                 </button>
               ))}
             </div>
           </div>
-        )}
 
-        <div className="mt-auto">
+          {/* Mobile Info */}
+          <div className="mobile-dropdown-section">
+            <button className={`mobile-dropdown-trigger ${showMobileInfo ? 'active' : ''}`} onClick={() => setShowMobileInfo(!showMobileInfo)}>
+              <span><FaInfoCircle className="me-2" /> Information</span>
+              <FaChevronDown className="mobile-arrow" />
+            </button>
+            <div className={`mobile-dropdown-content ${showMobileInfo ? 'show' : ''}`}>
+              {infoItems.map((item, i) => (
+                <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+                  <item.icon className="me-2" /> {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {user && (
-            <div className="points-badge mb-4" onClick={() => handleNavigation("/points")}>
-              <img src={emblemUrl || url} alt="Medal" className="points-icon" />
-              <span className="points-text">{points} pts</span>
+            <div className="mobile-dropdown-section">
+              <button className={`mobile-dropdown-trigger ${showMobileProfile ? 'active' : ''}`} onClick={() => setShowMobileProfile(!showMobileProfile)}>
+                <span><FaUser className="me-2" /> My Account</span>
+                <FaChevronDown className="mobile-arrow" />
+              </button>
+              <div className={`mobile-dropdown-content ${showMobileProfile ? 'show' : ''}`}>
+                {profileItems.map((item, i) => (
+                  <button key={i} className="mobile-dropdown-item" onClick={() => handleNavigation(item.path)}>
+                    <item.icon className="me-2" /> {item.label}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
-          <button className={`auth-btn w-100 m-0 ${user ? 'logout' : ''}`} onClick={handleAuthClick}>
-            {user ? 'Logout' : 'Login / Register'}
-          </button>
+
+          <div className="drawer-footer">
+            {user && (
+              <div className="points-badge mb-4" onClick={() => handleNavigation("/points")}>
+                <img src={emblemUrl || url} alt="Medal" className="points-icon" />
+                <span className="points-text">{points} pts</span>
+              </div>
+            )}
+            <button className={`auth-btn w-100 m-0 ${user ? 'logout' : ''}`} onClick={handleAuthClick}>
+              {user ? 'Logout' : 'Login / Register'}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -403,7 +430,7 @@ function Header({ user, setUser, points, setPoints, url }) {
           <Form>
             <Form.Group className="mb-4">
               <InputGroup className="input-group-custom">
-                <InputGroup.Text className="bg-transparent border-0"><FaUser color="#daa520"/></InputGroup.Text>
+                <InputGroup.Text className="bg-transparent border-0"><FaUser color="#A07830"/></InputGroup.Text>
                 <Form.Control 
                   className="form-input-custom"
                   type="text" 
@@ -417,7 +444,7 @@ function Header({ user, setUser, points, setPoints, url }) {
             {isNewUser && (
               <Form.Group className="mb-4">
                 <InputGroup className="input-group-custom">
-                  <InputGroup.Text className="bg-transparent border-0"><FaPhoneAlt color="#daa520"/></InputGroup.Text>
+                  <InputGroup.Text className="bg-transparent border-0"><FaPhoneAlt color="#A07830"/></InputGroup.Text>
                   <Form.Control 
                     className="form-input-custom"
                     type="tel" 
@@ -436,7 +463,7 @@ function Header({ user, setUser, points, setPoints, url }) {
 
             <Form.Group className="mb-4">
               <InputGroup className="input-group-custom">
-                <InputGroup.Text className="bg-transparent border-0"><FaLock color="#daa520"/></InputGroup.Text>
+                <InputGroup.Text className="bg-transparent border-0"><FaLock color="#A07830"/></InputGroup.Text>
                 <Form.Control 
                   className="form-input-custom"
                   type={showPassword ? "text" : "password"} 

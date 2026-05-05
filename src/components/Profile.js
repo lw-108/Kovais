@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Profile.css";
 
 // Placeholder avatar
-const avatarPlaceholder = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect fill='%23007bff' width='120' height='120'/%3E%3Ctext x='50%25' y='50%25' font-size='48' fill='white' text-anchor='middle' dy='.3em'%3EU%3C/text%3E%3C/svg%3E";
+import avatarPlaceholder from "./placeholderlogo.svg";
 
 function Profile({ user, setUser }) {
   const [userData, setUserData] = useState({
@@ -27,7 +27,18 @@ function Profile({ user, setUser }) {
     console.log(storedUser)
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      setUserData(parsedUser);
+      setUserData({
+        name: parsedUser.name || "",
+        customer_id: parsedUser.customer_id || "",
+        phone_number: parsedUser.phone_number || "",
+        address: parsedUser.address || "",
+        date_of_birth: parsedUser.date_of_birth || "",
+        marriage_date: parsedUser.marriage_date || "",
+        marital_status: parsedUser.marital_status || "",
+        blood_group: parsedUser.blood_group || "",
+        aadhar: parsedUser.aadhar || null,
+        profile_image: parsedUser.profile_image || null,
+      });
       if (parsedUser.aadhar && typeof parsedUser.aadhar === "string") {
         setAadharPreview(`https://api.codingboss.in/kovais/${parsedUser.aadhar}`);
       }
