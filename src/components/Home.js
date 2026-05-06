@@ -378,9 +378,7 @@ function Home({ user }) {
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.07, duration: 0.5 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.03 }}
-              onClick={() => setSelectedImage(item)}
-              style={{ cursor: 'pointer' }}
+              whileHover={{ scale: 1.02 }}
             >
               <img src={item.image} alt={item.caption} loading="lazy" decoding="async" />
               <div className="gallery-caption">{item.caption}</div>

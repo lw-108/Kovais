@@ -214,7 +214,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
   // Helper Functions
   const calculateTotal = () => {
     const serviceTotal = booking.services.reduce((sum, service) => sum + service.price, 0);
-    return serviceTotal + 250; // Doorstep charge
+    return booking.location === 'Door Step' ? serviceTotal + 250 : serviceTotal;
   };
 
   const isStepValid = (step) => {
@@ -225,7 +225,8 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
       case 3:
         const isPhoneValid = booking.customerInfo.phone && /^[\d\s\-\(\)]+$/.test(booking.customerInfo.phone) && booking.customerInfo.phone.replace(/[^\d]/g, '').length >= 10;
         const isEmailValid = booking.customerInfo.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email);
-        return booking.customerInfo.name && isPhoneValid && isEmailValid;
+        const isAddressValid = booking.location === 'Door Step' ? !!address : true;
+        return booking.customerInfo.name && isPhoneValid && isEmailValid && isAddressValid;
       default: return true;
     }
   };
@@ -255,14 +256,24 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
   const nextStep = () => {
     if (currentStep < 4 && isStepValid(currentStep)) {
       setShowErrors(false);
-      setCurrentStep(prev => prev + 1);
+      // Skip Step 3 (Details) if user is logged in
+      if (currentStep === 2 && user) {
+        setCurrentStep(4);
+      } else {
+        setCurrentStep(prev => prev + 1);
+      }
     }
   };
 
   const prevStep = () => {
     if (currentStep > 0) {
       setShowErrors(false);
-      setCurrentStep(prev => prev - 1);
+      // Skip back from Confirmation to Date/Time if user is logged in
+      if (currentStep === 4 && user) {
+        setCurrentStep(2);
+      } else {
+        setCurrentStep(prev => prev - 1);
+      }
     }
   };
 
@@ -609,12 +620,28 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
 
           {/* Service Type */}
           <div className="service-type-selector">
-            <div className="type-card selected">
+            <div 
+              className={`type-card ${booking.location === 'Salon' ? 'selected' : ''}`}
+              onClick={() => setBooking(prev => ({ ...prev, location: 'Salon' }))}
+              style={{ cursor: 'pointer' }}
+            >
+              <Users className="type-icon" />
+              <h4>At Salon</h4>
+              <p>Visit our premium outlet for your session</p>
+              <span className="type-charge">No Service Charge</span>
+              <span className="type-badge">Standard</span>
+            </div>
+            
+            <div 
+              className={`type-card ${booking.location === 'Door Step' ? 'selected' : ''}`}
+              onClick={() => setBooking(prev => ({ ...prev, location: 'Door Step' }))}
+              style={{ cursor: 'pointer' }}
+            >
               <Home className="type-icon" />
               <h4>Doorstep Service</h4>
               <p>Professional event grooming at your venue</p>
               <span className="type-charge">+ ₹250 Service Charge</span>
-              <span className="type-badge">Available</span>
+              <span className="type-badge">Premium</span>
             </div>
           </div>
 
@@ -638,16 +665,31 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
           </div>
 
           {/* Services Grid */}
-          <div id="services-grid" className="services-grid">
-            {filteredServices.map((service, index) => (
+          <motion.div 
+            id="services-grid" 
+            className="services-grid"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+          >
+            {filteredServices.map((service) => (
               <motion.div
                 key={service.id}
                 className={`service-card ${booking.services.some(s => s.id === service.id) ? 'selected' : ''}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
+                variants={{
+                  hidden: { opacity: 0, y: 30 },
+                  show: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
+                whileHover={{ y: -10 }}
               >
                 <div className="service-image">
                   <LazyImage src={service.image} alt={service.name} className="service-img" />
@@ -668,7 +710,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -689,18 +731,25 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
             {/* Progress Steps */}
             <div className="progress-steps">
               {stepConfig.map((step, index) => {
+                // If logged in, don't show the "Your Details" step in the progress bar
+                if (user && index === 3) return null;
+                
                 const isActive = currentStep >= index;
                 const isCurrent = currentStep === index;
+                
+                // Adjust step numbering for display if logged in
+                const displayStepNumber = (user && index > 3) ? index : index + 1;
+                
                 return (
                   <div key={step.number} className={`step-item ${isActive ? 'active' : ''} ${isCurrent ? 'current' : ''}`}>
                     <div className="step-circle">
                       <step.icon size={18} />
                     </div>
                     <div className="step-info">
-                      <span className="step-number">Step {step.number}</span>
+                      <span className="step-number">Step {displayStepNumber}</span>
                       <span className="step-title">{step.title}</span>
                     </div>
-                    {index < stepConfig.length - 1 && (
+                    {index < stepConfig.length - 1 && !(user && index === 2) && (
                       <div className={`step-line ${index < currentStep ? 'filled' : ''}`} />
                     )}
                   </div>
@@ -742,12 +791,31 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                 {currentStep === 1 && (
                   <motion.div key="step1" className="step-panel" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                     <h3 className="step-heading">Choose Specialist</h3>
-                    <div className="specialist-grid">
+                    <motion.div 
+                      className="specialist-grid"
+                      initial="hidden"
+                      whileInView="show"
+                      viewport={{ once: true }}
+                      variants={{
+                        hidden: { opacity: 0 },
+                        show: {
+                          opacity: 1,
+                          transition: {
+                            staggerChildren: 0.1
+                          }
+                        }
+                      }}
+                    >
                       {availableEmployees.map(employee => (
-                        <div
+                        <motion.div
                           key={employee.id}
                           className={`specialist-card ${booking.employee?.id === employee.id ? 'selected' : ''}`}
                           onClick={() => setBooking(prev => ({ ...prev, employee }))}
+                          variants={{
+                            hidden: { opacity: 0, scale: 0.95 },
+                            show: { opacity: 1, scale: 1 }
+                          }}
+                          whileHover={{ y: -5 }}
                         >
                           <div className="specialist-avatar">
                             <User size={32} />
@@ -760,9 +828,9 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                               <span>{employee.rating}</span>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                     <div className="step-actions">
                       <button className="btn-outline" onClick={prevStep}>Previous</button>
                       <button className="btn-primary" onClick={nextStep} disabled={!booking.employee}>Continue</button>
@@ -844,6 +912,18 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
                             className={showErrors && (!booking.customerInfo.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.customerInfo.email)) ? 'error' : ''}
                           />
                         </div>
+                        {booking.location === 'Door Step' && (
+                          <div className="form-group full-width">
+                            <label>Doorstep Address *</label>
+                            <textarea
+                              rows="2"
+                              value={address}
+                              onChange={(e) => setAddress(e.target.value)}
+                              placeholder="Enter your full address for doorstep service..."
+                              className={showErrors && !address ? 'error' : ''}
+                            />
+                          </div>
+                        )}
                         <div className="form-group full-width">
                           <label>Event Details (Optional)</label>
                           <textarea
@@ -948,7 +1028,7 @@ const SingleBarberPage = ({ user, setUser, points, setPoints, setAadhar }) => {
           setPoints(prev => prev - pts);
           setAmount(prev => Math.max(0, prev - discount));
         }}
-        showAddressInput={true}
+        showAddressInput={booking.location === 'Door Step' && !address}
       />
 
       <ConfirmationPage
